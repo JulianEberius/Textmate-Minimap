@@ -1,8 +1,12 @@
 **Textmate-Minimap Plugin**
 ===========================
 
+A minimap plugin for TextMate.
+
 License: 
 MIT License (see LICENSE.txt)
+
+Screenshots and more info can be found at http://julianeberius.github.com/Textmate-Minimap/.
 
 **Usage**
 ----------
@@ -10,6 +14,9 @@ Hit ^~@m to Show/Hide the minimap (analogue to ^~@d for the project drawer), or 
 
 **Known Problems**
 ------------------
-There are some problems with bigger documents. On my late 2008 MacBook it runs fine with documents of <1000 lines, which is ok for my editing needs (as we know, classes shouldn't get that big anyway ^^)
+- There are some problems with bigger documents. On my late 2008 MacBook it runs fine with documents of <1000 lines, which is ok for my editing needs (as we know, classes shouldn't get that big anyway ^^)
 I'm sure there are a lot of unexplored ways to make it faster, such as more drawing in the background, and incremental drawing etc... 
 Maybe I can incorporate some of them in the future.
+
+- There is a small misalignment of the scrollbar of the textview and the minimap when soft wrapping is 
+activated in TextMate.
