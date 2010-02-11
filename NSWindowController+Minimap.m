@@ -97,7 +97,7 @@
 		[minimapDrawer setLeadingOffset:24];
 	}
 	else if ([[self className] isEqualToString:@"OakDocumentController"]) {
-		[minimapDrawer setTrailingOffset:56];
+		[minimapDrawer setTrailingOffset:40];
 		[minimapDrawer setLeadingOffset:0];
 	}
 	

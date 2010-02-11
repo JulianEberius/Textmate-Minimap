@@ -318,7 +318,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>TextMateMinimap.m</string>
+								<string>NSWindowController+Minimap.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -326,11 +326,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>TextMateMinimap.m</string>
+										<string>NSWindowController+Minimap.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>0458D5211124736D002550F2</string>
+										<string>041FFA291124790500D8C5BD</string>
 										<key>history</key>
 										<array>
 											<string>04DB4425110F285900762426</string>
@@ -346,15 +346,15 @@
 											<string>0458D4F511246AAE002550F2</string>
 											<string>0458D4F711246AAE002550F2</string>
 											<string>0458D4FA11246AAE002550F2</string>
-											<string>0458D4FD11246AAE002550F2</string>
 											<string>0458D50F11246B1F002550F2</string>
-											<string>0458D51011246B1F002550F2</string>
 											<string>0458D51111246B1F002550F2</string>
 											<string>0458D51D1124736D002550F2</string>
 											<string>0458D51E1124736D002550F2</string>
 											<string>0458D51F1124736D002550F2</string>
 											<string>0458D5201124736D002550F2</string>
-											<string>0458D50D11246B1F002550F2</string>
+											<string>041FFA12112478EA00D8C5BD</string>
+											<string>041FFA13112478EA00D8C5BD</string>
+											<string>0458D4FD11246AAE002550F2</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -412,9 +412,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>0458D46511244FFA002550F2</string>
+				<string>041FFA15112478EA00D8C5BD</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>0458D46611244FFA002550F2</string>
+				<string>041FFA16112478EA00D8C5BD</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -552,7 +552,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>1C530D57069F1CE1000CFCEE</string>
 		<string>047C7E4B110F278C00CC049E</string>
 		<string>/Users/ebi/dev/Textmate-Minimap/Textmate-Minimap.xcodeproj</string>
 	</array>
@@ -578,7 +577,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>TextMateMinimap.m</string>
+								<string></string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -595,8 +594,6 @@
 							<string>229pt</string>
 						</dict>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -636,7 +633,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>047C7E4B110F278C00CC049E</string>
-				<string>0458D45911244FD1002550F2</string>
+				<string>041FFA17112478EA00D8C5BD</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>

@@ -1,0 +1,15 @@
+**Textmate-Minimap Plugin**
+===========================
+
+License: 
+MIT License (see LICENSE.txt)
+
+**Usage**
+----------
+Hit ^~@m to Show/Hide the minimap (analogue to ^~@d for the project drawer), or use the menu item under "View". Click anywhere on the map to go to that line. That's basically it ;-)
+
+**Known Problems**
+------------------
+There are some problems with bigger documents. On my late 2008 MacBook it runs fine with documents of <1000 lines, which is ok for my editing needs (as we know, classes shouldn't get that big anyway ^^)
+I'm sure there are a lot of unexplored ways to make it faster, such as more drawing in the background, and incremental drawing etc... 
+Maybe I can incorporate some of them in the future.
