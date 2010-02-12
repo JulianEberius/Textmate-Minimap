@@ -18,5 +18,4 @@ Hit ^~@m to Show/Hide the minimap (analogue to ^~@d for the project drawer), or 
 I'm sure there are a lot of unexplored ways to make it faster, such as more drawing in the background, and incremental drawing etc... 
 Maybe I can incorporate some of them in the future.
 
-- There is a small misalignment of the scrollbar of the textview and the minimap when soft wrapping is 
-activated in TextMate.
+- Sometimes there could be a small misalignment of the scrollbar of the textview and the minimap. If it occurs, just activate and deactivate Soft Wrap to fix it.
