@@ -16,6 +16,7 @@
 - (void)scrollToLine:(unsigned int)newLine;
 - (void)refreshMinimap;
 - (void)toggleMinimap;
+- (BOOL)isSoftWrapEnabled;
 
 #pragma mark swizzled-methods
 - (void)MM_windowWillClose:(id)aNotification;

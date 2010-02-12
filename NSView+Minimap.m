@@ -14,8 +14,6 @@
 @interface NSView (MM_NSView_Private)
 
 - (void)refreshMinimap;
-- (BOOL)minimapNeedsNewImage;
-- (void)setMinimapImage:(NSImage*)image;
 - (MinimapView*)getMinimap;
 - (void)scheduleRefresh;
 
@@ -24,26 +22,35 @@
 
 @implementation NSView (MM_NSView)
 
-#pragma mark drawing
-- (NSImage *)allocScreenshotByDrawing {
-	NSImage *screenshot = [[NSImage alloc] initWithSize: 
-							[self bounds].size];
+#pragma mark drawing	
+
+- (NSBitmapImageRep *)screenshot
+{
+	[[[self getMinimap] theLock] lock];	
+	NSBitmapImageRep *imageRep = [self bitmapImageRepForCachingDisplayInRect:[self bounds]];
+	[self cacheDisplayInRect:[self bounds] toBitmapImageRep:imageRep];
+	[[[self getMinimap] theLock] unlock];	
+	return imageRep;
+}
+
+- (NSImage *)allocScreenshotByDrawing
+{
+	
+	NSImage *screenshot = [[NSImage alloc] initWithSize:
+						   [self bounds].size];
 	[screenshot lockFocus];
-		[self MM_drawRect: [self frame]];
+	[self drawRect: [self frame]];
 	[screenshot unlockFocus];
 	return screenshot;
 }
 
-- (void)MM_drawRect:(NSRect)rect
+- (NSBitmapImageRep *) screenshotInRect:(NSRect)rect
 {
-	[self MM_drawRect:rect];
-	
-	if ([self minimapNeedsNewImage]) 
-	{
-		NSLog(@"there is need");
-		NSImage* image = [self allocScreenshotByDrawing];
-		[self setMinimapImage:image];
-	}
+	[[[self getMinimap] theLock] lock];	
+	NSBitmapImageRep *imageRep = [self bitmapImageRepForCachingDisplayInRect:rect];
+	[self cacheDisplayInRect:rect toBitmapImageRep:imageRep];
+	[[[self getMinimap] theLock] unlock];	
+	return imageRep;
 }
 
 #pragma mark minimap
@@ -76,26 +83,14 @@
 	[[self getMinimap] refreshDisplay];
 }
 
-- (void)setMinimapNeedsNoImage
-{
-	[[self getMinimap] setNeedsNewImage:NO];
-}
-
-- (BOOL)minimapNeedsNewImage
-{
-	return [[self getMinimap] needsNewImage];
-}
-
-- (void)setMinimapImage:(NSImage*)image
-{
-	[[self getMinimap] setMinimapImage:image];
-}
-
 #pragma mark other_swizzled_events
 
 - (void)MM_selectTab:(id)sender
 {
+	[[[self getMinimap] theLock] lock];	
 	[self MM_selectTab:sender];
+	[[[self getMinimap] theLock] unlock];	
+	[self refreshMinimap];
 }
 
 - (void)MM_mouseUp:(NSEvent *)theEvent
@@ -104,15 +99,21 @@
 	[self scheduleRefresh];
 }
 
-- (void)MM_mouseDragged:(NSEvent *)theEvent
-{
-	[self MM_mouseDragged:theEvent];
-	//[self refreshMinimap];
-}
-
 - (void)MM_keyUp:(NSEvent *)theEvent
 {
 	[self scheduleRefresh];
+}
+
+- (void)MM_toggleSoftWrap:(id)sender
+{
+	[self MM_toggleSoftWrap:sender];
+	NSWindowController* wc = [[self window] windowController];
+	if ([wc isKindOfClass:OakProjectController] || [wc isKindOfClass:OakDocumentController])
+		for (NSDrawer *drawer in [[wc window] drawers])
+			if ([[drawer contentView] isKindOfClass:[MinimapView class]] ) {
+				[drawer setTrailingOffset:([sender state])?56:40];
+				[(MinimapView*)[drawer contentView] refreshDisplay];
+			}
 }
 
 - (void)MM_undo:(id)sender
@@ -123,7 +124,8 @@
 - (void)MM_redo:(id)sender
 {
 	[self MM_redo:sender];
-	[self scheduleRefresh];}
+	[self scheduleRefresh];
+}
 
 
 @end

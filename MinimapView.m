@@ -13,56 +13,86 @@
 #import "TextmateMinimap.h"
 
 @interface MinimapView (Private_TextHelp)
-- (NSImage*)doDrawRect:(NSRect)rect withImage:(NSImage*)image;
-- (int)getGutterSize:(NSImage *)screenshot;
-- (void) updateViewableRange;
+- (void)updateViewableRange;
 - (int)getNumberOfLines;
 - (void)drawFinished:(NSImage*) bitmap;
+- (void)setPixelPerLine:(int)ppl;
 @end
 
 @interface DrawOperation : NSOperation
 {	
-	MinimapView *minimapView;
-	NSImage* image;
-	NSRect rect;
+	MinimapView* minimapView;
 }
 
-- (id)initWithMinimapView:(MinimapView*)mv andRect:(NSRect) rect andImage:(NSImage*)image;
+- (id)initWithMinimapView:(MinimapView*)mv;
 
 @end
 
 @implementation DrawOperation
 
-- (id)initWithMinimapView:(MinimapView*)mv andRect:(NSRect)r andImage:(NSImage*)img
+- (id)initWithMinimapView:(MinimapView*)mv
 {
     if (![super init]) return nil;
     minimapView = [mv retain];
-	rect = r;
-	image = [img retain];
     return self;
 }
 
 - (void)dealloc {
     [minimapView release], minimapView = nil;
-	[image release], image = nil;
     [super dealloc];
 }
 
+- (NSBitmapImageRep*)cropImageRep:(NSBitmapImageRep*)rep ToRect:(NSRect)rect {
+	CGImageRef cgImg = CGImageCreateWithImageInRect([rep CGImage], NSRectToCGRect(rect)); NSBitmapImageRep *result = [[NSBitmapImageRep alloc] initWithCGImage:cgImg];
+	
+	CGImageRelease(cgImg);          
+	return [result autorelease];
+}       
+
 - (void)main {
-	if (![self isCancelled]) 
-	{
-		NSImage* bitmap;
-		bitmap = [minimapView doDrawRect:rect withImage:image];
-		if (![self isCancelled] && bitmap != nil)
-		{
-			[minimapView performSelectorOnMainThread:@selector(drawFinished:) withObject:bitmap waitUntilDone:FALSE];
-		}
-		else {
-			//NSLog(@"got cancelled 1");
-		}
-	} else {
-		//NSLog(@"got cancelled 2");
+	if ([self isCancelled]) 
+		return;
+
+	NSRect bounds = [minimapView bounds];
+	NSView* textView = [minimapView textView];
+	NSBitmapImageRep* screenshot = [textView screenshot];
+	
+	NSColor* refColor = [[screenshot colorAtX:0 y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+	int i = 1;
+	NSColor* color = [[screenshot colorAtX:i y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+	while ([color isEqual:refColor]) {
+		i++;
+		color = [[screenshot colorAtX:i y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
 	}
+	
+	if ([self isCancelled]) 
+		return;
+
+	NSBitmapImageRep* croppedScreenshot = [self cropImageRep:screenshot ToRect:NSMakeRect(i+1, 0, [screenshot size].width-(i+1), [screenshot size].height)];
+		
+	if ([self isCancelled]) 
+		return;
+
+	NSImage* image = [[[NSImage alloc] initWithSize:bounds.size] autorelease];
+	[image setFlipped:YES];
+
+	[image lockFocus];
+		NSRect rectToDrawTo = bounds;
+		float numLines = [minimapView getNumberOfLines];
+
+		int _pixelPerLine = bounds.size.height / numLines;
+		if (_pixelPerLine > 6) {
+			float newHeight = 6*numLines;
+			rectToDrawTo.size.height = newHeight;		
+			rectToDrawTo.origin.y = bounds.size.height-newHeight;
+		}
+		[croppedScreenshot drawInRect:rectToDrawTo];
+	[image unlockFocus];
+	
+	if ([self isCancelled] || image == nil)
+		return;
+
+	[minimapView performSelectorOnMainThread:@selector(drawFinished:) withObject:image  waitUntilDone:FALSE];
 }
 
 @end
@@ -77,7 +107,7 @@
 
 @implementation MinimapView
 
-@synthesize windowController;
+@synthesize windowController, theLock;
 
 - (id)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];
@@ -86,14 +116,13 @@
 		[_queue setMaxConcurrentOperationCount:1];
 		_refreshViewableRange = FALSE;
 		_refreshAll = TRUE;
-		_needsNewImage = FALSE;
+		theLock = [[NSLock alloc] init];
 	}
     return self;
 }
 
 - (void) viewDidEndLiveResize
 {
-	_pixelPerLine = [self bounds].size.height / [self getNumberOfLines];
 	[self refreshDisplay];
 }
 
@@ -112,6 +141,10 @@
 	[_queue release];
 	_queue = nil;
 	[_textView release];
+	if (theLock)
+	{
+		[theLock release];theLock = nil;
+	}
 }
 
 #pragma mark drawing routines
@@ -126,47 +159,33 @@
     return YES;
 }
 
-- (BOOL)needsNewImage
-{
-	return _needsNewImage;
-}
-
 - (void)drawRect:(NSRect)rect
 {	
-	NSLog(@"drawing...");
 	if (![self inLiveResize] && _refreshAll) 
 	{
-		_needsNewImage = YES;
-		[_textView setNeedsDisplay:YES];
+		[_queue cancelAllOperations];
+		DrawOperation* op = [[DrawOperation alloc] initWithMinimapView:self];
+		[_queue addOperation:op];
+		[op release];
+		// for snow leopard
+		//[self gcdDraw];
+		_refreshAll = FALSE;
 	}
-	NSRect rectToDrawTo = [self bounds];
-	BOOL fillWithBlack = NO;
-	_pixelPerLine = [self bounds].size.height / [self getNumberOfLines];
-	if (_pixelPerLine > 6) {
-		float newHeight = 6*[self getNumberOfLines];
-		rectToDrawTo.size.height = newHeight;		
-		fillWithBlack = YES;
-		_pixelPerLine = 6;	
-	}
-	[self updateViewableRange];
-	
-	[_nextImage drawInRect:rectToDrawTo fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.0];
-	if (fillWithBlack)
-		NSRectFill(NSMakeRect(rectToDrawTo.origin.x,
-							  rectToDrawTo.origin.y+rectToDrawTo.size.height, 
-							  rectToDrawTo.size.width, [self bounds].size.height-rectToDrawTo.size.height));
+	[_nextImage drawInRect:[self bounds] fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.0];
 
-	
+	// drawing the vis rect
+	[self updateViewableRange];
 	NSRect visibleHighlightRect = NSMakeRect(0,
 											 _viewableRange.location*_pixelPerLine,
 											 rect.size.width-1,
 											 _viewableRange.length*_pixelPerLine);
+
 	[NSGraphicsContext saveGraphicsState];
 	[[NSColor colorWithCalibratedRed:0.549 green:0.756 blue:1 alpha:0.7] set];
 	[NSBezierPath setDefaultLineWidth:1];
 	[NSBezierPath strokeRect:visibleHighlightRect];
 	[NSGraphicsContext restoreGraphicsState];
-	_refreshAll = FALSE;
+	
 	_refreshViewableRange = FALSE;
 }
 
@@ -202,56 +221,9 @@
 	_nextImage = [bitmap retain];
 	
 	_pixelPerLine = [self bounds].size.height / [self getNumberOfLines];
-	
+	if (_pixelPerLine > 6)
+		_pixelPerLine = 6;
 	[self setNeedsDisplay:YES];
-}
-
-- (void)setMinimapImage:(NSImage *)image
-{
-	_needsNewImage = NO;
-	DrawOperation* op = [[DrawOperation alloc] initWithMinimapView:self andRect:[self bounds] andImage:image];
-	[_queue cancelAllOperations];
-	[_queue addOperation:op];
-	[op release];
-	[image release];
-}
-
-- (NSImage*)doDrawRect:(NSRect) rect withImage:(NSImage*) screenshot
-{
-	NSImage* bitmap = [[NSImage alloc] initWithSize: rect.size];
-	
-	[bitmap lockFocus];
-	
-		[screenshot drawInRect:rect
-					  fromRect:NSMakeRect([self getGutterSize:screenshot], 0, [screenshot size].width, [screenshot size].height) 
-					 operation:NSCompositeCopy 
-					  fraction:1.0];
-	[bitmap unlockFocus];
-	[bitmap autorelease];
-	return bitmap;
-}
-
-- (int)getGutterSize:(NSImage*)screenshot
-{
-	int w = [screenshot size].width;
-	NSImage* firstLine = [[NSImage alloc] initWithSize: NSMakeSize(w, 1)];
-	[firstLine lockFocus];
-	[screenshot drawInRect:NSMakeRect(0, 0, w, 1) 
-				  fromRect:NSMakeRect(0, 0, w, 1) 
-				 operation:NSCompositeCopy fraction:1.0];
-	[firstLine unlockFocus];
-				
-	NSBitmapImageRep* raw_img = [NSBitmapImageRep imageRepWithData:[firstLine TIFFRepresentation]];
-	[firstLine release];
-	NSColor* refColor = [[raw_img colorAtX:0 y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
-	
-	int i = 1;
-	NSColor* color = [[raw_img colorAtX:i y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
-	while ([color isEqual:refColor]) {
-		i++;
-		color = [[raw_img colorAtX:i y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
-	}
-	return i+1;
 }
 
 - (void)mouseDown:(NSEvent *)theEvent
@@ -296,9 +268,17 @@
 	[self setNeedsDisplayInRect:[self visibleRect]];
 }
 
-- (void)setNeedsNewImage:(BOOL)flag
+- (NSRange)viewableRange
 {
-	_needsNewImage = flag;
+	return _viewableRange;
+}
+- (NSView*)textView
+{
+	return _textView;	
+}
+- (void)setPixelPerLine:(int)ppl
+{
+	_pixelPerLine = ppl;
 }
 
 - (int) getNumberOfLines
@@ -310,4 +290,59 @@
 	
 	return totalLines;
 }
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//FOR SNOW LEOPARD
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+- (NSBitmapImageRep*)cropImageRep:(NSBitmapImageRep*)rep ToRect:(NSRect)rect {
+	CGImageRef cgImg = CGImageCreateWithImageInRect([rep CGImage], NSRectToCGRect(rect)); NSBitmapImageRep *result = [[NSBitmapImageRep alloc] initWithCGImage:cgImg];
+	
+	CGImageRelease(cgImg);          
+	return [result autorelease];
+}       
+
+- (void)gcdDraw {
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+		
+		NSRect bounds = [self bounds];
+		NSBitmapImageRep* screenshot = [_textView screenshot];
+		
+		NSColor* refColor = [[screenshot colorAtX:0 y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+		int i = 1;
+		NSColor* color = [[screenshot colorAtX:i y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+		while ([color isEqual:refColor]) {
+			i++;
+			color = [[screenshot colorAtX:i y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+		}
+		
+		NSBitmapImageRep* croppedScreenshot = [self cropImageRep:screenshot ToRect:NSMakeRect(i+1, 0, [screenshot size].width-(i+1), [screenshot size].height)];
+		
+		NSImage* image = [[[NSImage alloc] initWithSize:bounds.size] autorelease];
+		[image setFlipped:YES];
+		[image lockFocus];
+		NSRect rectToDrawTo = bounds;
+		float numLines = [self getNumberOfLines];
+		
+		_pixelPerLine = bounds.size.height / numLines;
+		if (_pixelPerLine > 6) {
+			float newHeight = 6*numLines;
+			rectToDrawTo.size.height = newHeight;		
+			rectToDrawTo.origin.y = bounds.size.height-newHeight;
+		}
+		[croppedScreenshot drawInRect:rectToDrawTo];
+		
+		[image unlockFocus];
+		
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self drawFinished:image];
+        });
+    });
+	
+}
+
+*/
+
+
 @end

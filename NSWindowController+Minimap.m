@@ -9,6 +9,8 @@
 #import "NSWindowController+Minimap.h"
 #import "MinimapView.h"
 #import "TextMate.h"
+#import "TextMateMinimap.h"
+#import "objc/runtime.h"
 
 // stuff that the textmate-windowcontrollers (OakProjectController, OakDocumentControler) implement 
 @interface NSWindowController (Textmate_Additions)
@@ -70,6 +72,19 @@
 		}
 }
 
+- (BOOL) isSoftWrapEnabled
+{
+	NSMenu* viewMenu = [[[NSApp mainMenu] itemWithTitle:@"View"] submenu];
+	for (NSMenuItem* item in [viewMenu itemArray])
+	{
+		if ([[item title] isEqualToString:@"Soft Wrap"])
+		{
+			return [item state];
+		}
+	}
+	return NO;
+}
+
 #pragma mark swizzled_methods
 
 - (void)MM_windowWillClose:(id)aNotification
@@ -97,15 +112,34 @@
 		[minimapDrawer setLeadingOffset:24];
 	}
 	else if ([[self className] isEqualToString:@"OakDocumentController"]) {
-		[minimapDrawer setTrailingOffset:40];
+		[minimapDrawer setTrailingOffset:56];
 		[minimapDrawer setLeadingOffset:0];
 	}
+	
+	//Really hacky solution, but I don't see a way to find out whether softwrap is enabled except the main menu... which is not initialized at this point!
+	NSTimer* old_timer = [[TextmateMinimap instance] timer];
+	if (old_timer != nil && [old_timer isValid]) {
+		[old_timer invalidate];
+	}
+	NSTimer* timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(setTrailingOffset) userInfo:nil repeats:NO];
+	[[TextmateMinimap instance ] setTimer:timer];
 	
 	[minimapDrawer setContentView:textshapeView];
 	[minimapDrawer openOnEdge:NSMaxXEdge];
 
 	[minimapDrawer release];
 	[textshapeView release];
+}
+
+- (void)setTrailingOffset
+{
+	NSWindow* window = [self window];
+	for (NSDrawer *drawer in [window drawers])
+		if ([[drawer contentView] isKindOfClass:[MinimapView class]] )  {
+			int trailingSpace = ([self isSoftWrapEnabled]) ? 56 : 40;
+			[drawer setTrailingOffset:trailingSpace];
+			[(MinimapView*)[drawer contentView] refreshDisplay];
+		}
 }
 
 @end

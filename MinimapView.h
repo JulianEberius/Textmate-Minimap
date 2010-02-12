@@ -9,9 +9,8 @@
 #import <Cocoa/Cocoa.h>
 
 @interface MinimapView : NSView {
-	
+	NSLock*	theLock;
 	NSView* _textView;
-	int _numLines;
 	
 	NSRange _viewableRange;
 	NSImage* _nextImage;
@@ -23,18 +22,16 @@
 	Boolean _refreshViewableRange;
 	
 	float _pixelPerLine;
-	Boolean _needsNewImage;
 }
 #pragma mark public-properties
 @property(retain) NSWindowController* windowController;
+@property(retain, readonly) NSLock*	theLock;
 
 #pragma mark public-api
 - (id)initWithTextView:(NSView*) textView;
 
-- (BOOL)needsNewImage;
-- (void)setNeedsNewImage:(BOOL)flag;
-- (void)setMinimapImage:(NSImage *)image;
-
+- (NSRange)viewableRange;
 - (void)refreshDisplay;
 - (void)refreshViewableRange;
+- (NSView*)textView;
 @end

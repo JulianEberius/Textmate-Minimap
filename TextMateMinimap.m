@@ -11,6 +11,9 @@
 #import "TextMate.h"
 #import "JRSwizzle.h"
 #import "NSWindowController+Minimap.h"
+#import "MinimapView.h"
+#import "objc/runtime.h"
+
 
 //TODO: improve performance for longer documents
 //TODO: (maybe) support for 10.4
@@ -24,7 +27,7 @@
 
 static TextmateMinimap *sharedInstance = nil;
 
-@synthesize timer, theLock;
+@synthesize timer;
 
 #pragma mark public-api
 
@@ -45,8 +48,6 @@ static TextmateMinimap *sharedInstance = nil;
 		
 		[self installMenuItem];
 		
-		theLock = [[NSLock alloc] init];
-		
 		[OakProjectController jr_swizzleMethod:@selector(windowDidLoad) withMethod:@selector(MM_windowDidLoad) error:NULL];
 		[OakProjectController jr_swizzleMethod:@selector(windowWillClose:) withMethod:@selector(MM_windowWillClose:) error:NULL];
 		[OakDocumentController jr_swizzleMethod:@selector(windowDidLoad) withMethod:@selector(MM_windowDidLoad) error:NULL];
@@ -59,9 +60,7 @@ static TextmateMinimap *sharedInstance = nil;
 		[OakTextView jr_swizzleMethod:@selector(mouseUp:) withMethod:@selector(MM_mouseUp:) error:NULL];
 		[OakTextView jr_swizzleMethod:@selector(undo:) withMethod:@selector(MM_undo:) error:NULL];
 		[OakTextView jr_swizzleMethod:@selector(redo:) withMethod:@selector(MM_redo:) error:NULL];
-		
-		
-		[OakTextView jr_swizzleMethod:@selector(drawRect:) withMethod:@selector(MM_drawRect:) error:NULL];
+		[OakTextView jr_swizzleMethod:@selector(toggleSoftWrap:) withMethod:@selector(MM_toggleSoftWrap:) error:NULL];
 		[OakTabBar jr_swizzleMethod:@selector(selectTab:) withMethod:@selector(MM_selectTab:) error:NULL];
 		 
 	}
@@ -73,17 +72,21 @@ static TextmateMinimap *sharedInstance = nil;
 {
 	if(windowMenu = [[[[NSApp mainMenu] itemWithTitle:@"View"] submenu] retain])
 	{
-		unsigned index = 0;
 		NSArray* items = [windowMenu itemArray];
-		int separators ;
-		for(separators = 0; index != [items count] && separators != 1; index++)
-			separators += [[items objectAtIndex:index] isSeparatorItem] ? 1 : 0;
 		
+		int index = 0;
+		for (NSMenuItem* item in items)
+		{
+			if ([[item title] isEqualToString:@"Show/Hide Project Drawer"])
+			{
+				index = [items indexOfObject:item]+1;
+			} 
+		}
 		showMinimapMenuItem = [[NSMenuItem alloc] initWithTitle:@"Hide Minimap" action:@selector(toggleMinimap:) keyEquivalent:@""];
 		[showMinimapMenuItem setKeyEquivalent:@"m"];
 		[showMinimapMenuItem setKeyEquivalentModifierMask:NSControlKeyMask|NSAlternateKeyMask|NSCommandKeyMask];
 		[showMinimapMenuItem setTarget:self];
-		[windowMenu insertItem:showMinimapMenuItem atIndex:index ? index-1 : 0];
+		[windowMenu insertItem:showMinimapMenuItem atIndex:index];
 	}
 }
 
@@ -128,12 +131,6 @@ static TextmateMinimap *sharedInstance = nil;
 	[self uninstallMenuItem];
 	[sharedInstance release];
 	sharedInstance = nil;
-	
-	if ( theLock )
-    {
-        [theLock release];
-        theLock = NULL;
-    }
 	if (timer)
 	{
 		[timer release];

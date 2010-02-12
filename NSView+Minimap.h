@@ -11,14 +11,17 @@
 
 @interface NSView (MM_NSView)
 
-- (NSImage *) allocScreenshotByDrawing;
-- (void)MM_drawRect:(NSRect)rect;
+- (NSBitmapImageRep *) screenshot;
+- (NSBitmapImageRep *) screenshotInRect:(NSRect)rect;
+
+- (NSImage *)allocScreenshotByDrawing;
 
 - (void)MM_selectTab:(id)sender;
 - (void)MM_keyUp:(NSEvent *)theEvent;
-- (void)MM_mouseDragged:(NSEvent *)theEvent;
 - (void)MM_mouseUp:(NSEvent *)theEvent;
 - (void)MM_undo:(id)sender;
 - (void)MM_redo:(id)sender;
+
+- (void)MM_toggleSoftWrap:(id)sender;
 
 @end

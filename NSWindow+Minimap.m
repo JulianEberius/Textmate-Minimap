@@ -16,7 +16,7 @@
 // called when the user switches tabs (or load files)
 - (void)MM_setRepresentedFilename:(NSString*)aPath
 {
-	[[self windowController] refreshMinimap];
+	//[[self windowController] refreshMinimap];
 	[self MM_setRepresentedFilename:aPath];
 }
 
@@ -24,6 +24,7 @@
 - (void)MM_setDocumentEdited:(BOOL)flag
 {
 	[self MM_setDocumentEdited:flag];
+	[[self windowController] refreshMinimap];
 }
 
 - (void)MM_becomeMainWindow
