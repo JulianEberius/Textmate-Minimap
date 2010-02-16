@@ -14,8 +14,6 @@ Hit ^~@m to Show/Hide the minimap (analogue to ^~@d for the project drawer), or 
 
 **Known Problems**
 ------------------
-- There are some problems with bigger documents. On my late 2008 MacBook it runs fine with documents of <1000 lines, which is ok for my editing needs (as we know, classes shouldn't get that big anyway ^^)
-I'm sure there are a lot of unexplored ways to make it faster, such as more drawing in the background, and incremental drawing etc... 
-Maybe I can incorporate some of them in the future.
-
+- Scrolling big documents will get a bit slower, because the minimap is redrawn in parallel. Not a severe problem, but noticeable.
 - Sometimes there could be a small misalignment of the scrollbar of the textview and the minimap. If it occurs, just activate and deactivate Soft Wrap to fix it.
+- No working on OSX < 10.5. Sorry, Tiger users!

@@ -13,14 +13,11 @@
 #import "objc/runtime.h"
 
 // stuff that the textmate-windowcontrollers (OakProjectController, OakDocumentControler) implement 
-@interface NSWindowController (Textmate_Additions)
-
+@interface NSWindowController (TextMate_WindowControllers_Only)
 - (id)textView;
 - (void)goToLineNumber:(id)newLine;
 - (unsigned int)getLineHeight;
-
 @end
-
 
 @implementation NSWindowController (MM_NSWindowController)
 
@@ -116,14 +113,6 @@
 		[minimapDrawer setLeadingOffset:0];
 	}
 	
-	//Really hacky solution, but I don't see a way to find out whether softwrap is enabled except the main menu... which is not initialized at this point!
-	NSTimer* old_timer = [[TextmateMinimap instance] timer];
-	if (old_timer != nil && [old_timer isValid]) {
-		[old_timer invalidate];
-	}
-	NSTimer* timer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(setTrailingOffset) userInfo:nil repeats:NO];
-	[[TextmateMinimap instance ] setTimer:timer];
-	
 	[minimapDrawer setContentView:textshapeView];
 	[minimapDrawer openOnEdge:NSMaxXEdge];
 
@@ -131,15 +120,5 @@
 	[textshapeView release];
 }
 
-- (void)setTrailingOffset
-{
-	NSWindow* window = [self window];
-	for (NSDrawer *drawer in [window drawers])
-		if ([[drawer contentView] isKindOfClass:[MinimapView class]] )  {
-			int trailingSpace = ([self isSoftWrapEnabled]) ? 56 : 40;
-			[drawer setTrailingOffset:trailingSpace];
-			[(MinimapView*)[drawer contentView] refreshDisplay];
-		}
-}
 
 @end

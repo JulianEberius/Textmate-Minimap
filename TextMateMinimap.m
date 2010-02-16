@@ -15,19 +15,18 @@
 #import "objc/runtime.h"
 
 
-//TODO: improve performance for longer documents
-//TODO: (maybe) support for 10.4
-
-/*
- Notizen: nochmal den lock um switchtab und draw probiern, dazu deas zeichnen in N kleine NSOperation aufteilen, um es leichter canceln zu können 
- --> zeichnen im hintergrund muss sein!
- */
+@interface TextmateMinimap (Private_TextMateMinimap)
+- (void)toggleMinimap:(id)sender;
+- (void)installMenuItem;
+- (void)uninstallMenuItem;
+- (void)dealloc;
+@end
 
 @implementation TextmateMinimap
 
 static TextmateMinimap *sharedInstance = nil;
 
-@synthesize timer;
+@synthesize timer, theLock;
 
 #pragma mark public-api
 
@@ -61,8 +60,11 @@ static TextmateMinimap *sharedInstance = nil;
 		[OakTextView jr_swizzleMethod:@selector(undo:) withMethod:@selector(MM_undo:) error:NULL];
 		[OakTextView jr_swizzleMethod:@selector(redo:) withMethod:@selector(MM_redo:) error:NULL];
 		[OakTextView jr_swizzleMethod:@selector(toggleSoftWrap:) withMethod:@selector(MM_toggleSoftWrap:) error:NULL];
+		[OakTextView jr_swizzleMethod:@selector(toggleShowSoftWrapInGutter:) withMethod:@selector(MM_toggleShowSoftWrapInGutter:) error:NULL];
+		[OakTextView jr_swizzleMethod:@selector(toggleLineNumbers:) withMethod:@selector(MM_toggleLineNumbers:) error:NULL];
+		[OakTextView jr_swizzleMethod:@selector(toggleShowBookmarksInGutter:) withMethod:@selector(MM_toggleShowBookmarksInGutter:) error:NULL];
+		[OakTextView jr_swizzleMethod:@selector(toggleFoldingsEnabled:) withMethod:@selector(MM_toggleFoldingsEnabled:) error:NULL];
 		[OakTabBar jr_swizzleMethod:@selector(selectTab:) withMethod:@selector(MM_selectTab:) error:NULL];
-		 
 	}
 	return self;
 	
@@ -108,6 +110,7 @@ static TextmateMinimap *sharedInstance = nil;
 	else
 		[showMinimapMenuItem setTitle:@"Show Minimap"];
 }
+
 
 - (void) toggleMinimap:(id)sender
 {

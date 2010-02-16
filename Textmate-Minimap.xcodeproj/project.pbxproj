@@ -14,6 +14,9 @@
 		048D06A3112171BE009F7865 /* NSWindowController+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D06A2112171BE009F7865 /* NSWindowController+Minimap.m */; };
 		048D06A6112171D3009F7865 /* NSWindow+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D06A5112171D3009F7865 /* NSWindow+Minimap.m */; };
 		048D06A9112171DE009F7865 /* NSScrollView+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D06A8112171DE009F7865 /* NSScrollView+Minimap.m */; };
+		04B9A452112AE40C0082EF25 /* AsyncDrawOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04B9A451112AE40C0082EF25 /* AsyncDrawOperation.mm */; };
+		04B9A499112AF27F0082EF25 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 04B9A497112AF27F0082EF25 /* LICENSE.txt */; };
+		04B9A49A112AF27F0082EF25 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 04B9A498112AF27F0082EF25 /* README */; };
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -35,6 +38,10 @@
 		048D06A5112171D3009F7865 /* NSWindow+Minimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindow+Minimap.m"; sourceTree = "<group>"; };
 		048D06A7112171DE009F7865 /* NSScrollView+Minimap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScrollView+Minimap.h"; sourceTree = "<group>"; };
 		048D06A8112171DE009F7865 /* NSScrollView+Minimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScrollView+Minimap.m"; sourceTree = "<group>"; };
+		04B9A450112AE40C0082EF25 /* AsyncDrawOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncDrawOperation.h; sourceTree = "<group>"; };
+		04B9A451112AE40C0082EF25 /* AsyncDrawOperation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AsyncDrawOperation.mm; sourceTree = "<group>"; };
+		04B9A497112AF27F0082EF25 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		04B9A498112AF27F0082EF25 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
@@ -95,6 +102,8 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				04B9A497112AF27F0082EF25 /* LICENSE.txt */,
+				04B9A498112AF27F0082EF25 /* README */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 			);
@@ -104,6 +113,8 @@
 		08FB77AFFE84173DC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				04B9A450112AE40C0082EF25 /* AsyncDrawOperation.h */,
+				04B9A451112AE40C0082EF25 /* AsyncDrawOperation.mm */,
 				048D06A0112171A8009F7865 /* Categories */,
 				048D064411216B1C009F7865 /* TextMateMinimap.h */,
 				048D064511216B1C009F7865 /* TextMateMinimap.m */,
@@ -195,6 +206,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
+				04B9A499112AF27F0082EF25 /* LICENSE.txt in Resources */,
+				04B9A49A112AF27F0082EF25 /* README in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,6 +241,7 @@
 				048D06A3112171BE009F7865 /* NSWindowController+Minimap.m in Sources */,
 				048D06A6112171D3009F7865 /* NSWindow+Minimap.m in Sources */,
 				048D06A9112171DE009F7865 /* NSScrollView+Minimap.m in Sources */,
+				04B9A452112AE40C0082EF25 /* AsyncDrawOperation.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

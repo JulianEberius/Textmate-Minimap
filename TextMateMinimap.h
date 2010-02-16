@@ -15,21 +15,15 @@
 @interface TextmateMinimap : NSObject {
 
 	NSTimer* timer;
+	NSLock* theLock;
 	NSMenu* windowMenu;
 	NSMenuItem* showMinimapMenuItem;
-	
-	SEL _originalSoftWrapAction;
-	id _originalSoftWrapTarget;
 }
 @property(retain) NSTimer* timer;
-
+@property(retain, readonly) NSLock* theLock;
 
 + (TextmateMinimap*)instance;
 - (id)initWithPlugInController:(id <TMPlugInController>)aController;
-- (void)toggleMinimap:(id)sender;
 - (void)setMinimapMenuItem:(BOOL)flag;
-- (void)installMenuItem;
-- (void)uninstallMenuItem;
-- (void)dealloc;
 
 @end

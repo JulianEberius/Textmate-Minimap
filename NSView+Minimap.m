@@ -11,57 +11,59 @@
 #import "TextMate.h"
 #import "TextmateMinimap.h"
 
-@interface NSView (MM_NSView_Private)
-
+@interface NSView (Private_MM_NSView)
 - (void)refreshMinimap;
 - (MinimapView*)getMinimap;
 - (void)scheduleRefresh;
-
 @end
 
 
 @implementation NSView (MM_NSView)
 
-#pragma mark drawing	
-
+#pragma mark snapshot	
 - (NSBitmapImageRep *)snapshot
 {
-	[[[self getMinimap] theLock] lock];	
-	NSBitmapImageRep *imageRep = [self bitmapImageRepForCachingDisplayInRect:[self bounds]];
-	[self cacheDisplayInRect:[self bounds] toBitmapImageRep:imageRep];
-	[[[self getMinimap] theLock] unlock];	
+	[[[TextmateMinimap instance] theLock] lock];
+		NSBitmapImageRep *imageRep = [self bitmapImageRepForCachingDisplayInRect:[self bounds]];
+		[self cacheDisplayInRect:[self bounds] toBitmapImageRep:imageRep];
+	[[[TextmateMinimap instance] theLock] unlock];
+	
 	return imageRep;
 }
-
-- (NSImage *)snapshotByDrawing
-{
-	
-	NSImage *snapshot = [[NSImage alloc] initWithSize:
-						   [self bounds].size];
-	[snapshot lockFocus];
-	[self drawRect: [self frame]];
-	[snapshot unlockFocus];
-	return [snapshot autorelease];
-}
-
-- (NSImage *)snapshotByDrawingInRect:(NSRect)rect	
-{
-	NSImage *snapshot = [[NSImage alloc] initWithSize:
-						   [self bounds].size];
-	[snapshot lockFocus];
-	[self drawRect: rect];
-	[snapshot unlockFocus];
-	return [snapshot autorelease];
-}
-
 - (NSBitmapImageRep *) snapshotInRect:(NSRect)rect
 {
-	[[[self getMinimap] theLock] lock];	
-	NSBitmapImageRep *imageRep = [self bitmapImageRepForCachingDisplayInRect:[self bounds]];
-	[self cacheDisplayInRect:rect toBitmapImageRep:imageRep];
-	[[[self getMinimap] theLock] unlock];	
+	[[[TextmateMinimap instance] theLock] lock];
+		NSBitmapImageRep *imageRep = [self bitmapImageRepForCachingDisplayInRect:[self bounds]];
+		[self cacheDisplayInRect:rect toBitmapImageRep:imageRep];
+	[[[TextmateMinimap instance] theLock] unlock];	
+	
 	return imageRep;
 }
+- (NSImage *)snapshotByDrawing
+{
+	[[[TextmateMinimap instance] theLock] lock];
+		NSImage *snapshot = [[NSImage alloc] initWithSize:
+							   [self bounds].size];
+		[snapshot lockFocus];
+		[self drawRect: [self frame]];
+		[snapshot unlockFocus];
+	[[[TextmateMinimap instance] theLock] unlock];
+	
+	return [snapshot autorelease];
+}
+- (NSImage *)snapshotByDrawingInRect:(NSRect)rect	
+{
+	[[[TextmateMinimap instance] theLock] lock];
+		NSImage *snapshot = [[NSImage alloc] initWithSize:
+							   [self bounds].size];
+		[snapshot lockFocus];
+		[self drawRect: rect];
+		[snapshot unlockFocus];
+	[[[TextmateMinimap instance] theLock] unlock];
+	
+	return [snapshot autorelease];
+}
+
 
 #pragma mark minimap
 - (MinimapView*) getMinimap
@@ -93,13 +95,13 @@
 	[[self getMinimap] refreshDisplay];
 }
 
-#pragma mark other_swizzled_events
 
+#pragma mark other_swizzled_events
 - (void)MM_selectTab:(id)sender
 {
-	[[[self getMinimap] theLock] lock];	
+	[[[TextmateMinimap instance] theLock] lock];
 	[self MM_selectTab:sender];
-	[[[self getMinimap] theLock] unlock];	
+	[[[TextmateMinimap instance] theLock] unlock];
 	[self refreshMinimap];
 }
 
@@ -122,21 +124,41 @@
 	if ([wc isKindOfClass:OakProjectController] || [wc isKindOfClass:OakDocumentController])
 		for (NSDrawer *drawer in [[wc window] drawers])
 			if ([[drawer contentView] isKindOfClass:[MinimapView class]] ) {
-				[drawer setTrailingOffset:([sender state])?56:40];
+				int offset = [sender state] ? 56:40;
+				[drawer setTrailingOffset:offset];
 				[(MinimapView*)[drawer contentView] refreshDisplay];
 			}
+}
+
+- (void)MM_toggleShowSoftWrapInGutter:(id)sender
+{
+	[self MM_toggleShowSoftWrapInGutter:sender];
+	[[self getMinimap] updateGutterSize];
+}
+- (void)MM_toggleLineNumbers:(id)sender
+{
+	[self MM_toggleLineNumbers:sender];
+	[[self getMinimap] updateGutterSize];
+}
+- (void)MM_toggleShowBookmarksInGutter:(id)sender
+{
+	[self MM_toggleShowBookmarksInGutter:sender];
+	[[self getMinimap] updateGutterSize];
+}
+- (void)MM_toggleFoldingsEnabled:(id)sender
+{
+	[self MM_toggleFoldingsEnabled:sender];
+	[[self getMinimap] updateGutterSize];
 }
 
 - (void)MM_undo:(id)sender
 {
 	[self MM_undo:sender];
-	// [self scheduleRefresh];
 	[self refreshMinimap];
 }
 - (void)MM_redo:(id)sender
 {
 	[self MM_redo:sender];
-	// [self scheduleRefresh];
 	[self refreshMinimap];
 }
 

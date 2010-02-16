@@ -10,7 +10,5 @@
 
 
 @interface NSScrollView (MM_NSScrollView)
-
 - (void)MM_reflectScrolledClipView:(NSClipView*)clipView;
-	
 @end
