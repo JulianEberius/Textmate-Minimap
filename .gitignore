@@ -1,0 +1,6 @@
+.DS_Store
+
+build/
+*.tmproj
+*.tm_build_errors
+*.TM_Completions.txt.gz
