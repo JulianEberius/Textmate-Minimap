@@ -22,6 +22,8 @@
 	Boolean _refreshViewableRange;
 	
 	float _pixelPerLine;
+	float _viewableRangeScale;
+	int _minimapLinesStart;
 }
 #pragma mark public-properties
 @property(retain) NSWindowController* windowController;
@@ -34,4 +36,6 @@
 - (void)refreshDisplay;
 - (void)refreshViewableRange;
 - (NSView*)textView;
+- (void)setViewableRangeScaling:(float)scale;
+- (void)setMinimapLinesStart:(int)start;
 @end

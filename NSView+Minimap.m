@@ -1,5 +1,5 @@
 //
-//  NSView+Screenshot.m
+//  NSView+Minimap.m
 //  TextmateMinimap
 //
 //  Created by Julian Eberius on 09.02.10.
@@ -24,7 +24,7 @@
 
 #pragma mark drawing	
 
-- (NSBitmapImageRep *)screenshot
+- (NSBitmapImageRep *)snapshot
 {
 	[[[self getMinimap] theLock] lock];	
 	NSBitmapImageRep *imageRep = [self bitmapImageRepForCachingDisplayInRect:[self bounds]];
@@ -33,21 +33,31 @@
 	return imageRep;
 }
 
-- (NSImage *)allocScreenshotByDrawing
+- (NSImage *)snapshotByDrawing
 {
 	
-	NSImage *screenshot = [[NSImage alloc] initWithSize:
+	NSImage *snapshot = [[NSImage alloc] initWithSize:
 						   [self bounds].size];
-	[screenshot lockFocus];
+	[snapshot lockFocus];
 	[self drawRect: [self frame]];
-	[screenshot unlockFocus];
-	return screenshot;
+	[snapshot unlockFocus];
+	return [snapshot autorelease];
 }
 
-- (NSBitmapImageRep *) screenshotInRect:(NSRect)rect
+- (NSImage *)snapshotByDrawingInRect:(NSRect)rect	
+{
+	NSImage *snapshot = [[NSImage alloc] initWithSize:
+						   [self bounds].size];
+	[snapshot lockFocus];
+	[self drawRect: rect];
+	[snapshot unlockFocus];
+	return [snapshot autorelease];
+}
+
+- (NSBitmapImageRep *) snapshotInRect:(NSRect)rect
 {
 	[[[self getMinimap] theLock] lock];	
-	NSBitmapImageRep *imageRep = [self bitmapImageRepForCachingDisplayInRect:rect];
+	NSBitmapImageRep *imageRep = [self bitmapImageRepForCachingDisplayInRect:[self bounds]];
 	[self cacheDisplayInRect:rect toBitmapImageRep:imageRep];
 	[[[self getMinimap] theLock] unlock];	
 	return imageRep;
@@ -96,7 +106,8 @@
 - (void)MM_mouseUp:(NSEvent *)theEvent
 {
 	[self MM_mouseUp:theEvent];
-	[self scheduleRefresh];
+	// [self scheduleRefresh];
+	[self refreshMinimap];
 }
 
 - (void)MM_keyUp:(NSEvent *)theEvent
@@ -119,12 +130,14 @@
 - (void)MM_undo:(id)sender
 {
 	[self MM_undo:sender];
-	[self scheduleRefresh];
+	// [self scheduleRefresh];
+	[self refreshMinimap];
 }
 - (void)MM_redo:(id)sender
 {
 	[self MM_redo:sender];
-	[self scheduleRefresh];
+	// [self scheduleRefresh];
+	[self refreshMinimap];
 }
 
 

@@ -121,7 +121,7 @@
 	if (old_timer != nil && [old_timer isValid]) {
 		[old_timer invalidate];
 	}
-	NSTimer* timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(setTrailingOffset) userInfo:nil repeats:NO];
+	NSTimer* timer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(setTrailingOffset) userInfo:nil repeats:NO];
 	[[TextmateMinimap instance ] setTimer:timer];
 	
 	[minimapDrawer setContentView:textshapeView];
