@@ -53,6 +53,8 @@ int const scaleUpTo = 4;
 	[queue release];
 	queue = nil;
 	[textView release];
+	[nextImage release];
+	[windowController release];
 }
 
 #pragma mark drawing routines

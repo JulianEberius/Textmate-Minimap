@@ -86,6 +86,12 @@
 
 - (void)MM_windowWillClose:(id)aNotification
 {
+	for (NSDrawer *drawer in [[self window] drawers])
+		if ([[drawer contentView] isKindOfClass:[MinimapView class]] )  {
+			[drawer setContentView:nil];
+			[drawer setParentWindow:nil];
+		}
+
 	// call original
     [self MM_windowWillClose:aNotification];
 }
