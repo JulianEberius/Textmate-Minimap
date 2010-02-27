@@ -13,6 +13,9 @@
 
 @implementation NSScrollView (MM_NSScrollView) 
 
+/*
+ Swizzled method: while scrolling, do "small refresh" of the minimap (redraw only the "viewableRange" not the complete image)
+ */
 - (void) MM_reflectScrolledClipView:(NSClipView*)clipView
 {
 	[self MM_reflectScrolledClipView:clipView];

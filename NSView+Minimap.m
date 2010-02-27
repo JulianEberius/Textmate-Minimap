@@ -20,7 +20,10 @@
 
 @implementation NSView (MM_NSView)
 
-#pragma mark snapshot	
+#pragma mark snapshot
+/*
+ Takes a snapshot of the complete TextView, returning NSBitmapImageRep
+ */
 - (NSBitmapImageRep *)snapshot
 {
 	[[[TextmateMinimap instance] theLock] lock];
@@ -30,6 +33,9 @@
 	
 	return imageRep;
 }
+/*
+ Takes a snapshot of a part of the TextView, returning NSBitmapImageRep
+ */
 - (NSBitmapImageRep *) snapshotInRect:(NSRect)rect
 {
 	[[[TextmateMinimap instance] theLock] lock];
@@ -39,6 +45,9 @@
 	
 	return imageRep;
 }
+/*
+ Takes a snapshot of the complete TextView, returning NSImage
+ */
 - (NSImage *)snapshotByDrawing
 {
 	[[[TextmateMinimap instance] theLock] lock];
@@ -51,6 +60,9 @@
 	
 	return [snapshot autorelease];
 }
+/*
+ Takes a snapshot of a part of the TextView, returning NSImage
+ */
 - (NSImage *)snapshotByDrawingInRect:(NSRect)rect	
 {
 	[[[TextmateMinimap instance] theLock] lock];
@@ -66,6 +78,9 @@
 
 
 #pragma mark minimap
+/*
+ Get this TextView's minimap
+ */
 - (MinimapView*) getMinimap
 {
 	NSWindowController* controller = [[self window] windowController];
@@ -79,6 +94,11 @@
 	return nil;
 }
 
+/*
+ Schedule a mimimap refresh in the near future... each subsequent call cancels the one before.
+ Makes sense for typing events: not every keystroke triggers a refresh. Instead, a short time after the last keystroke
+ the last scheduled refresh is carried out
+ */
 - (void)scheduleRefresh
 {
 	NSTimer* old_timer = [[TextmateMinimap instance] timer];
@@ -150,7 +170,6 @@
 	[self MM_toggleFoldingsEnabled:sender];
 	[[self getMinimap] updateGutterSize];
 }
-
 - (void)MM_undo:(id)sender
 {
 	[self MM_undo:sender];

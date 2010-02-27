@@ -29,6 +29,12 @@
     [super dealloc];
 }
 
+/*
+ decide which of the three drawing modes has to be used:
+ - Draw Mode A: scaling the picture down, if there the lines in the minimap would get to big (aka "look stupid")
+ - Draw Mode B: draw only a part of the textview if the lines in the minimap would get to small (and performance would be horrible :-) )
+ - Draw Mode C: draw the complete textView into the minimap as it is (aka "looks cool and is usable")
+ */
 - (void)main {
 	if ([self isCancelled]) 
 		return;
@@ -37,6 +43,7 @@
 	rectToDrawTo = bounds;
 	numLines = [minimapView getNumberOfLines];
 	pixelPerLine = bounds.size.height / numLines;
+	float scaleUpThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"Minimap_scaleUpThreshold"];
 	
 	if (pixelPerLine > scaleDownThreshold) {
 		float newHeight = scaleDownTo*numLines;
@@ -57,7 +64,10 @@
 		[self fullDraw];
 	}
 }
-
+/*
+ Draw the complete TextView into the minimap, using rectToDrawTo to realize "Draw Mode A" (for very small texts)
+ or just doing Draw Mode C when everything is fine
+ */
 - (void) fullDraw
 {
 	NSView* textView = [minimapView textView];
@@ -85,11 +95,15 @@
 
 	[minimapView performSelectorOnMainThread:@selector(asyncDrawFinished:) withObject:image  waitUntilDone:FALSE];
 }
-
+/*
+ Implements drawing mode B: draw only a part of the minimap
+ a bit more complicated...
+ */
 - (void) partialDraw
 {
 	NSView* textView = [minimapView textView];
 	NSRect tvBounds = [textView bounds];
+	int scaleUpTo = [[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_scaleUpTo"];
 	float visiblePercentage = bounds.size.height / (numLines*scaleUpTo);
 	[minimapView setViewableRangeScaling:(1/visiblePercentage)];
 	
@@ -118,6 +132,9 @@
 	[minimapView performSelectorOnMainThread:@selector(asyncDrawFinished:) withObject:image  waitUntilDone:FALSE];
 }
 
+/*
+ Copy&Pasted from the interwebs for cropping NSBitmapImageReps (used for cropping the gutter from the TextView Snapshots)
+ */
 - (NSBitmapImageRep*)cropImageRep:(NSBitmapImageRep*)rep ToRect:(NSRect)rect {
 	CGImageRef cgImg = CGImageCreateWithImageInRect([rep CGImage], NSRectToCGRect(rect)); NSBitmapImageRep *result = [[NSBitmapImageRep alloc] initWithCGImage:cgImg];
 	
@@ -125,9 +142,13 @@
 	return [result autorelease];
 }
 
+/*
+ Get the size of the gutter in pixel from the minimap.
+ */
 - (int)getGutterSize
 {
 	int gutterSize = [minimapView gutterSize];
+	// lazy initialization... 
 	if (gutterSize == -1)
 	{
 		[minimapView updateGutterSize];

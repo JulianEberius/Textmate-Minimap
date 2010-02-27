@@ -15,8 +15,6 @@
 
 int const scaleDownThreshold = 6;
 int const scaleDownTo = 6;
-int const scaleUpThreshold = 2;
-int const scaleUpTo = 4;
 
 @interface MinimapView (Private_MinimapView)
 - (void)updateViewableRange;
@@ -186,6 +184,7 @@ int const scaleUpTo = 4;
 }
 - (void)refreshViewableRange{
 	int ppl = [self bounds].size.height / [self getNumberOfLines];
+	float scaleUpThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"Minimap_scaleUpThreshold"];
 	if (ppl < scaleUpThreshold)
 	{
 		[self refreshDisplay];
@@ -218,6 +217,9 @@ int const scaleUpTo = 4;
 	nextImage = [bitmap retain];
 	
 	pixelPerLine = [self bounds].size.height / [self getNumberOfLines];
+	int scaleUpTo = [[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_scaleUpTo"];
+	float scaleUpThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"Minimap_scaleUpThreshold"];
+	
 	if (pixelPerLine > scaleDownThreshold)
 	{
 		pixelPerLine = scaleDownTo;

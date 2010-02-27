@@ -13,19 +13,27 @@
 #import "MinimapView.h"
 
 @implementation NSWindow (MM_NSWindow)
-// called when the user switches tabs (or load files)
+/*
+ Swizzled method: called when the user switches tabs (or load files)
+ */
 - (void)MM_setRepresentedFilename:(NSString*)aPath
 {
 	[self MM_setRepresentedFilename:aPath];
 }
 
-// called when a document change state (e.g. when saved to disk)
+/*
+ Swizzled method: called when a document change state (e.g. when saved to disk)
+ */
 - (void)MM_setDocumentEdited:(BOOL)flag
 {
 	[self MM_setDocumentEdited:flag];
 	[[self windowController] refreshMinimap];
 }
-
+/*
+ Swizzled method: called when a window is brought to the front
+ - update the main menu to show the correct menu item ("show" or "hide" minimap)
+ - update the lastWindowController
+ */
 - (void)MM_becomeMainWindow
 {
 	[self MM_becomeMainWindow];
@@ -39,6 +47,7 @@
 				else 
 					[[TextmateMinimap instance] setMinimapMenuItem:YES];
 			}
+	[[TextmateMinimap instance] setLastWindowController:controller];
 }
 
 @end

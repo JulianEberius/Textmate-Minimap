@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-
+#import "MinimapView.h"
 
 @interface  NSWindowController (MM_NSWindowController)
 	
@@ -17,9 +17,10 @@
 - (void)refreshMinimap;
 - (void)toggleMinimap;
 - (BOOL)isSoftWrapEnabled;
+- (MinimapView*) minimap;
 
 #pragma mark swizzled-methods
 - (void)MM_windowWillClose:(id)aNotification;
 - (void)MM_windowDidLoad;
-
+- (void)MM_toggleGroupsAndFilesDrawer:(id)sender;
 @end

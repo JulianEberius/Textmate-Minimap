@@ -11,9 +11,18 @@
 #import "TextMate.h"
 #import "JRSwizzle.h"
 #import "NSWindowController+Minimap.h"
+#import "NSWindowController+Preferences.h"
 #import "MinimapView.h"
 #import "objc/runtime.h"
+#import "ShortcutRecorder/SRRecorderControl.h"
+#import "ShortcutRecorder/SRCommon.h"
 
+NSString* explanationString1 = @"Explanation: based on the current height of the minimap (%ipx), documents with more than %i lines would be drawn only partially, with %ipx per line. \nSetting the first value to low can decrease performance!";
+NSString* explanationString2 = @"Explanation: based on a minimap with a height of %ipx, documents with more than %i lines would be drawn only partially, with %ipx per line. \nSetting the first value to low can decrease performance!";
+
+@interface NSAttributedString (Hyperlink)
++(id)hyperlinkFromString:(NSString*)inString withURL:(NSURL*)aURL;
+@end
 
 @interface TextmateMinimap (Private_TextMateMinimap)
 - (void)toggleMinimap:(id)sender;
@@ -26,7 +35,7 @@
 
 static TextmateMinimap *sharedInstance = nil;
 
-@synthesize timer, theLock;
+@synthesize timer, theLock, iconImage, preferencesView, lastWindowController;
 
 #pragma mark public-api
 
@@ -47,13 +56,19 @@ static TextmateMinimap *sharedInstance = nil;
 		
 		[self installMenuItem];
 		
+		NSString* iconPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"textmate-minimap" ofType:@"tiff"];
+		iconImage = [[NSImage alloc] initByReferencingFile:iconPath];
+		
 		[OakProjectController jr_swizzleMethod:@selector(windowDidLoad) withMethod:@selector(MM_windowDidLoad) error:NULL];
 		[OakProjectController jr_swizzleMethod:@selector(windowWillClose:) withMethod:@selector(MM_windowWillClose:) error:NULL];
 		[OakDocumentController jr_swizzleMethod:@selector(windowDidLoad) withMethod:@selector(MM_windowDidLoad) error:NULL];
 		[OakDocumentController jr_swizzleMethod:@selector(windowWillClose:) withMethod:@selector(MM_windowWillClose:) error:NULL];
-		[NSWindow jr_swizzleMethod:@selector(setRepresentedFilename:) withMethod:@selector(MM_setRepresentedFilename:) error:NULL];
-		[NSWindow jr_swizzleMethod:@selector(setDocumentEdited:) withMethod:@selector(MM_setDocumentEdited:) error:NULL];
-		[NSWindow jr_swizzleMethod:@selector(becomeMainWindow) withMethod:@selector(MM_becomeMainWindow) error:NULL];
+		
+		[OakProjectController jr_swizzleMethod:@selector(toggleGroupsAndFilesDrawer:) withMethod:@selector(MM_toggleGroupsAndFilesDrawer:) error:NULL];
+		
+		[OakWindow jr_swizzleMethod:@selector(setRepresentedFilename:) withMethod:@selector(MM_setRepresentedFilename:) error:NULL];
+		[OakWindow jr_swizzleMethod:@selector(setDocumentEdited:) withMethod:@selector(MM_setDocumentEdited:) error:NULL];
+		[OakWindow jr_swizzleMethod:@selector(becomeMainWindow) withMethod:@selector(MM_becomeMainWindow) error:NULL];
 		[NSScrollView jr_swizzleMethod:@selector(reflectScrolledClipView:) withMethod:@selector(MM_reflectScrolledClipView:) error:NULL];
 		[OakTextView jr_swizzleMethod:@selector(keyUp:) withMethod:@selector(MM_keyUp:) error:NULL];
 		[OakTextView jr_swizzleMethod:@selector(mouseUp:) withMethod:@selector(MM_mouseUp:) error:NULL];
@@ -65,6 +80,40 @@ static TextmateMinimap *sharedInstance = nil;
 		[OakTextView jr_swizzleMethod:@selector(toggleShowBookmarksInGutter:) withMethod:@selector(MM_toggleShowBookmarksInGutter:) error:NULL];
 		[OakTextView jr_swizzleMethod:@selector(toggleFoldingsEnabled:) withMethod:@selector(MM_toggleFoldingsEnabled:) error:NULL];
 		[OakTabBar jr_swizzleMethod:@selector(selectTab:) withMethod:@selector(MM_selectTab:) error:NULL];
+		
+		
+		//Prefs... this directly reuses a lot of code from Ciarán Walsh's ProjectPlus ( http://ciaranwal.sh/2008/08/05/textmate-plug-in-projectplus )
+		//Source: git://github.com/ciaran/projectplus.git
+		// settings userdefault defaults
+		[[NSUserDefaults standardUserDefaults] 
+		 registerDefaults:[NSDictionary 
+			dictionaryWithObjects:[NSArray arrayWithObjects:
+										[NSNumber numberWithFloat:2.0],
+										[NSNumber numberWithInt:4],
+										[NSNumber numberWithInt:46], //this is "m"
+										[NSNumber numberWithInt:NSControlKeyMask|NSAlternateKeyMask|NSCommandKeyMask],
+										[NSNumber numberWithInt:MinimapAutoSide],
+										NULL
+									]
+						 forKeys:[NSArray arrayWithObjects:
+									  @"Minimap_scaleUpThreshold",
+									  @"Minimap_scaleUpTo",
+									  @"Minimap_triggerMinimapKeyCode",
+									  @"Minimap_triggerMinimapKeyFlags",
+									  @"Minimap_minimapSide",
+									  NULL
+								]]];
+
+		NSString* nibPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"Preferences" ofType:@"nib"];
+		prefWindowController = [[NSWindowController alloc] initWithWindowNibPath:nibPath owner:self];
+		[prefWindowController showWindow:self];
+
+		[OakPreferencesManager jr_swizzleMethod:@selector(toolbarAllowedItemIdentifiers:) withMethod:@selector(MM_toolbarAllowedItemIdentifiers:) error:NULL];
+		[OakPreferencesManager jr_swizzleMethod:@selector(toolbarDefaultItemIdentifiers:) withMethod:@selector(MM_toolbarDefaultItemIdentifiers:) error:NULL];
+		[OakPreferencesManager jr_swizzleMethod:@selector(toolbarSelectableItemIdentifiers:) withMethod:@selector(MM_toolbarSelectableItemIdentifiers:) error:NULL];
+		[OakPreferencesManager jr_swizzleMethod:@selector(toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:) withMethod:@selector(MM_toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:) error:NULL];
+		[OakPreferencesManager jr_swizzleMethod:@selector(selectToolbarItem:) withMethod:@selector(MM_selectToolbarItem:) error:NULL];
+		
 	}
 	return self;
 	
@@ -139,7 +188,89 @@ static TextmateMinimap *sharedInstance = nil;
 		[timer release];
 		timer = NULL;
 	}
+	[lastWindowController release];
+	[prefWindowController release];
 	[super dealloc];
+}
+
+#pragma mark prefs
+
+- (void)awakeFromNib
+{
+	[self changeScaleValues:nil];
+	[keyRecorder setKeyCombo:SRMakeKeyCombo(
+		[[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_triggerMinimapKeyCode"],
+		[[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_triggerMinimapKeyFlags"])];
+}
+
+- (IBAction)changeScaleValues:(id)sender
+{
+	float scaleUpThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"Minimap_scaleUpThreshold"];
+	int scaleUpTo = [[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_scaleUpTo"];
+	
+	NSWindowController* lwc = [self lastWindowController];
+	int height;
+	NSString* expStr;
+	if (lwc != nil) {
+		NSRect minimapBounds = [[lwc minimap] bounds];
+		height = floor(minimapBounds.size.height);
+		expStr = explanationString1;
+	}
+	else {
+		height = 500;
+		expStr = explanationString2;
+	}
+	int lines = floor(height / scaleUpThreshold);
+	
+	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+	[formatter setMaximumFractionDigits:2];
+	[formatter setRoundingMode: NSNumberFormatterRoundDown];
+	NSString* numberString = [formatter stringFromNumber:[NSNumber numberWithFloat:scaleUpThreshold]];
+	[formatter release];
+	
+	[explanationText setStringValue:[NSString stringWithFormat:expStr, height, lines, scaleUpTo]];
+	[scaleUpToPixelField setStringValue:[NSString stringWithFormat:@"%i",scaleUpTo]];
+ 	[scaleUpThresholdPixelField setStringValue:numberString];
+	
+	if (lwc != nil)
+		[[lwc minimap] refreshDisplay];
+}
+
+- (IBAction)resetDefaultScaleValues:(id)sender
+{
+	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setFloat:2.0 forKey:@"Minimap_scaleUpThreshold"];
+	[defaults setInteger:4 forKey:@"Minimap_scaleUpTo"];
+	[self changeScaleValues:nil];
+}
+
+- (IBAction)changeMinimapSide:(id)sender
+{
+	int newMode = [(NSMatrix*)sender selectedRow];
+	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setInteger:newMode forKey:@"Minimap_minimapSide"];
+}
+
+- (BOOL)shortcutRecorder:(SRRecorderControl *)aRecorder isKeyCode:(NSInteger)keyCode andFlagsTaken:(NSUInteger)flags reason:(NSString **)aReason
+{
+	return NO;
+}
+
+- (void)shortcutRecorder:(SRRecorderControl *)aRecorder keyComboDidChange:(KeyCombo)newKeyCombo
+{
+	if (newKeyCombo.code != -1)
+	{
+		[showMinimapMenuItem setKeyEquivalent:[SRStringForKeyCode(newKeyCombo.code) lowercaseString]];
+		[showMinimapMenuItem setKeyEquivalentModifierMask:newKeyCombo.flags];
+	}
+	else
+	{
+		[showMinimapMenuItem setKeyEquivalent:@""];
+		[showMinimapMenuItem setKeyEquivalentModifierMask:0];
+	}
+	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setInteger:newKeyCombo.code forKey:@"Minimap_triggerMinimapKeyCode"];
+	[defaults setInteger:newKeyCombo.flags forKey:@"Minimap_triggerMinimapKeyFlags"];
 }
 
 #pragma mark singleton

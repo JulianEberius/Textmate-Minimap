@@ -23,7 +23,6 @@
 - (void)MM_mouseUp:(NSEvent *)theEvent;
 - (void)MM_undo:(id)sender;
 - (void)MM_redo:(id)sender;
-
 - (void)MM_toggleSoftWrap:(id)sender;
 - (void)MM_toggleShowSoftWrapInGutter:(id)sender;
 - (void)MM_toggleLineNumbers:(id)sender;

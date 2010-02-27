@@ -8,24 +8,43 @@
 
 /* Begin PBXBuildFile section */
 		0429C0FF111EFFDA0062C5AE /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 0429C0FD111EFFDA0062C5AE /* JRSwizzle.m */; };
+		045379821138180E0019F7BF /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045379811138180E0019F7BF /* ShortcutRecorder.framework */; };
+		04537B7F113828CB0019F7BF /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 045379811138180E0019F7BF /* ShortcutRecorder.framework */; };
 		048D064611216B1C009F7865 /* TextMateMinimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D064511216B1C009F7865 /* TextMateMinimap.m */; };
 		048D065E11216C0F009F7865 /* MinimapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D065D11216C0F009F7865 /* MinimapView.m */; };
 		048D067D11216DDE009F7865 /* NSView+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D067C11216DDE009F7865 /* NSView+Minimap.m */; };
 		048D06A3112171BE009F7865 /* NSWindowController+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D06A2112171BE009F7865 /* NSWindowController+Minimap.m */; };
 		048D06A6112171D3009F7865 /* NSWindow+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D06A5112171D3009F7865 /* NSWindow+Minimap.m */; };
 		048D06A9112171DE009F7865 /* NSScrollView+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D06A8112171DE009F7865 /* NSScrollView+Minimap.m */; };
+		04A843DB1136972E002743B0 /* textmate-minimap.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 04A843DA1136972E002743B0 /* textmate-minimap.tiff */; };
+		04A843DF11369759002743B0 /* NSWindowController+Preferences.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04A843DE11369759002743B0 /* NSWindowController+Preferences.mm */; };
 		04B9A452112AE40C0082EF25 /* AsyncDrawOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04B9A451112AE40C0082EF25 /* AsyncDrawOperation.mm */; };
 		04B9A499112AF27F0082EF25 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 04B9A497112AF27F0082EF25 /* LICENSE.txt */; };
 		04B9A49A112AF27F0082EF25 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 04B9A498112AF27F0082EF25 /* README */; };
+		04D1F7421136CF58008BF7DA /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04D1F7411136CF58008BF7DA /* Preferences.xib */; };
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		04537B88113828FD0019F7BF /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				04537B7F113828CB0019F7BF /* ShortcutRecorder.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0429C0FC111EFFDA0062C5AE /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzle.h; sourceTree = "<group>"; };
 		0429C0FD111EFFDA0062C5AE /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
 		0429C0FE111EFFDA0062C5AE /* TextMate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMate.h; sourceTree = "<group>"; };
 		0451552D11244E160097261D /* TextMateMinimap_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMateMinimap_Prefix.pch; sourceTree = "<group>"; };
+		045379811138180E0019F7BF /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ShortcutRecorder.framework; path = Frameworks/ShortcutRecorder.framework; sourceTree = "<group>"; };
 		048D064411216B1C009F7865 /* TextMateMinimap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMateMinimap.h; sourceTree = "<group>"; };
 		048D064511216B1C009F7865 /* TextMateMinimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextMateMinimap.m; sourceTree = "<group>"; };
 		048D065C11216C0F009F7865 /* MinimapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MinimapView.h; sourceTree = "<group>"; };
@@ -38,10 +57,14 @@
 		048D06A5112171D3009F7865 /* NSWindow+Minimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindow+Minimap.m"; sourceTree = "<group>"; };
 		048D06A7112171DE009F7865 /* NSScrollView+Minimap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScrollView+Minimap.h"; sourceTree = "<group>"; };
 		048D06A8112171DE009F7865 /* NSScrollView+Minimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScrollView+Minimap.m"; sourceTree = "<group>"; };
+		04A843DA1136972E002743B0 /* textmate-minimap.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "textmate-minimap.tiff"; sourceTree = "<group>"; };
+		04A843DD11369759002743B0 /* NSWindowController+Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindowController+Preferences.h"; sourceTree = "<group>"; };
+		04A843DE11369759002743B0 /* NSWindowController+Preferences.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSWindowController+Preferences.mm"; sourceTree = "<group>"; };
 		04B9A450112AE40C0082EF25 /* AsyncDrawOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncDrawOperation.h; sourceTree = "<group>"; };
 		04B9A451112AE40C0082EF25 /* AsyncDrawOperation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AsyncDrawOperation.mm; sourceTree = "<group>"; };
 		04B9A497112AF27F0082EF25 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		04B9A498112AF27F0082EF25 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		04D1F7411136CF58008BF7DA /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
@@ -57,6 +80,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
+				045379821138180E0019F7BF /* ShortcutRecorder.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +90,8 @@
 		048D06A0112171A8009F7865 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				04A843DD11369759002743B0 /* NSWindowController+Preferences.h */,
+				04A843DE11369759002743B0 /* NSWindowController+Preferences.mm */,
 				048D067B11216DDE009F7865 /* NSView+Minimap.h */,
 				048D067C11216DDE009F7865 /* NSView+Minimap.m */,
 				048D06A1112171BE009F7865 /* NSWindowController+Minimap.h */,
@@ -78,12 +104,25 @@
 			name = Categories;
 			sourceTree = "<group>";
 		};
+		04A843D91136972E002743B0 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				04D1F7411136CF58008BF7DA /* Preferences.xib */,
+				04A843DA1136972E002743B0 /* textmate-minimap.tiff */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
 		089C166AFE841209C02AAC07 /* Clock */ = {
 			isa = PBXGroup;
 			children = (
+				04B9A497112AF27F0082EF25 /* LICENSE.txt */,
+				04B9A498112AF27F0082EF25 /* README */,
+				8D5B49B7048680CD000E48DA /* Info.plist */,
+				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
+				04A843D91136972E002743B0 /* resources */,
 				08FB77AFFE84173DC02AAC07 /* Classes */,
 				32C88E010371C26100C91783 /* Other Sources */,
-				089C167CFE841241C02AAC07 /* Resources */,
 				089C1671FE841209C02AAC07 /* Frameworks and Libraries */,
 				19C28FB8FE9D52D311CA2CBB /* Products */,
 			);
@@ -97,17 +136,6 @@
 				1058C7AEFEA557BF11CA2CBB /* Other Frameworks */,
 			);
 			name = "Frameworks and Libraries";
-			sourceTree = "<group>";
-		};
-		089C167CFE841241C02AAC07 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				04B9A497112AF27F0082EF25 /* LICENSE.txt */,
-				04B9A498112AF27F0082EF25 /* README */,
-				8D5B49B7048680CD000E48DA /* Info.plist */,
-				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
-			);
-			name = Resources;
 			sourceTree = "<group>";
 		};
 		08FB77AFFE84173DC02AAC07 /* Classes */ = {
@@ -138,6 +166,7 @@
 				089C167FFE841241C02AAC07 /* AppKit.framework */,
 				D2F7E65807B2D6F200F64583 /* CoreData.framework */,
 				089C1672FE841209C02AAC07 /* Foundation.framework */,
+				045379811138180E0019F7BF /* ShortcutRecorder.framework */,
 			);
 			name = "Other Frameworks";
 			sourceTree = "<group>";
@@ -171,6 +200,7 @@
 				8D5B49AF048680CD000E48DA /* Resources */,
 				8D5B49B1048680CD000E48DA /* Sources */,
 				8D5B49B3048680CD000E48DA /* Frameworks */,
+				04537B88113828FD0019F7BF /* CopyFiles */,
 				177E4DB50913322B0064163D /* ShellScript */,
 			);
 			buildRules = (
@@ -208,6 +238,8 @@
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
 				04B9A499112AF27F0082EF25 /* LICENSE.txt in Resources */,
 				04B9A49A112AF27F0082EF25 /* README in Resources */,
+				04A843DB1136972E002743B0 /* textmate-minimap.tiff in Resources */,
+				04D1F7421136CF58008BF7DA /* Preferences.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,7 +257,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p \"$HOME/Library/Application Support/TextMate/PlugIns\"\ncp -pR \"${TARGET_BUILD_DIR}/${FULL_PRODUCT_NAME}\" \"$HOME/Library/Application Support/TextMate/PlugIns\"";
+			shellScript = "mkdir -p \"$HOME/Library/Application Support/TextMate/PlugIns\"\nrm -rf \"$HOME/Library/Application Support/TextMate/PlugIns/${FULL_PRODUCT_NAME}\"\ncp -pR \"${TARGET_BUILD_DIR}/${FULL_PRODUCT_NAME}\" \"$HOME/Library/Application Support/TextMate/PlugIns\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -242,6 +274,7 @@
 				048D06A6112171D3009F7865 /* NSWindow+Minimap.m in Sources */,
 				048D06A9112171DE009F7865 /* NSScrollView+Minimap.m in Sources */,
 				04B9A452112AE40C0082EF25 /* AsyncDrawOperation.mm in Sources */,
+				04A843DF11369759002743B0 /* NSWindowController+Preferences.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,6 +298,15 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/Frameworks\"";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -287,6 +329,11 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

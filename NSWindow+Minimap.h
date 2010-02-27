@@ -11,9 +11,7 @@
 @interface NSWindow (MM_NSWindow)
 // called when the user switches tabs (or load files)
 - (void)MM_setRepresentedFilename:(NSString*)aPath;
-
 // called when a document change state (e.g. when saved to disk)
 - (void)MM_setDocumentEdited:(BOOL)flag;
-
 - (void)MM_becomeMainWindow;
 @end

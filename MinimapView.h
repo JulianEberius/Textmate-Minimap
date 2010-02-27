@@ -10,8 +10,6 @@
 
 extern int const scaleDownThreshold;
 extern int const scaleDownTo;
-extern int const scaleUpThreshold;
-extern int const scaleUpTo;
 
 @interface MinimapView : NSView {
 
