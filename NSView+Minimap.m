@@ -173,12 +173,12 @@
 - (void)MM_undo:(id)sender
 {
 	[self MM_undo:sender];
-	[self refreshMinimap];
+	[self scheduleRefresh];
 }
 - (void)MM_redo:(id)sender
 {
 	[self MM_redo:sender];
-	[self refreshMinimap];
+	[self scheduleRefresh];
 }
 
 

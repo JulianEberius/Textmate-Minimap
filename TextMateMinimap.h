@@ -48,5 +48,14 @@ enum MinimapSideModes {
 	MinimapRightSide = 1,
 	MinimapAutoSide = 2
 };
+enum MinimapNewDocumentModes {
+	MinimapInheritShow = 0,
+	MinimapAlwaysShow = 1,
+	MinimapNeverShow = 2
+};
+enum MinimapOpenDocumentModes {
+	MinimapAsSaved = 0,
+	MinimapAsNewDocument = 1,
+};
 
 @end

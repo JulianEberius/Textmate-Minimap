@@ -21,7 +21,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="1"/>
+			<integer value="5"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -63,7 +63,7 @@
 							<object class="NSTabViewItem" id="926000077">
 								<string key="NSIdentifier">General</string>
 								<object class="NSView" key="NSView" id="980884557">
-									<nil key="NSNextResponder"/>
+									<reference key="NSNextResponder" ref="520768783"/>
 									<int key="NSvFlags">256</int>
 									<object class="NSMutableArray" key="NSSubviews">
 										<bool key="EncodedWithXMLCoder">YES</bool>
@@ -117,7 +117,7 @@
 													<int key="NSColorSpace">6</int>
 													<string key="NSCatalogName">System</string>
 													<string key="NSColorName">textColor</string>
-													<object class="NSColor" key="NSColor" id="75728600">
+													<object class="NSColor" key="NSColor">
 														<int key="NSColorSpace">3</int>
 														<bytes key="NSWhite">MAA</bytes>
 													</object>
@@ -360,6 +360,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 										</object>
 									</object>
 									<string key="NSFrame">{{10, 33}, {402, 222}}</string>
+									<reference key="NSSuperview" ref="520768783"/>
 								</object>
 								<string key="NSLabel">General</string>
 								<reference key="NSColor" ref="646245018"/>
@@ -377,12 +378,13 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 											<int key="NSvFlags">268</int>
 											<string key="NSFrame">{{27, 133}, {192, 58}}</string>
 											<reference key="NSSuperview" ref="451116678"/>
+											<bool key="NSEnabled">YES</bool>
 											<int key="NSNumRows">3</int>
 											<int key="NSNumCols">1</int>
 											<object class="NSMutableArray" key="NSCells">
 												<bool key="EncodedWithXMLCoder">YES</bool>
 												<object class="NSButtonCell" id="169459131">
-													<int key="NSCellFlags">-1543373312</int>
+													<int key="NSCellFlags">-2080244224</int>
 													<int key="NSCellFlags2">0</int>
 													<string key="NSContents">Inherit</string>
 													<reference key="NSSupport" ref="62353035"/>
@@ -401,7 +403,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 													<int key="NSPeriodicInterval">25</int>
 												</object>
 												<object class="NSButtonCell" id="124197476">
-													<int key="NSCellFlags">604110336</int>
+													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">0</int>
 													<string key="NSContents">Always</string>
 													<reference key="NSSupport" ref="62353035"/>
@@ -413,7 +415,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 													<int key="NSPeriodicInterval">75</int>
 												</object>
 												<object class="NSButtonCell" id="224104339">
-													<int key="NSCellFlags">604110336</int>
+													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">0</int>
 													<string key="NSContents">Never</string>
 													<reference key="NSSupport" ref="62353035"/>
@@ -430,7 +432,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 											<int key="NSMatrixFlags">1151868928</int>
 											<string key="NSCellClass">NSActionCell</string>
 											<object class="NSButtonCell" key="NSProtoCell" id="343200362">
-												<int key="NSCellFlags">604110336</int>
+												<int key="NSCellFlags">67239424</int>
 												<int key="NSCellFlags2">134217728</int>
 												<string key="NSContents">Radio</string>
 												<reference key="NSSupport" ref="62353035"/>
@@ -507,12 +509,13 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 											<int key="NSvFlags">268</int>
 											<string key="NSFrame">{{27, 57}, {244, 38}}</string>
 											<reference key="NSSuperview" ref="451116678"/>
+											<bool key="NSEnabled">YES</bool>
 											<int key="NSNumRows">2</int>
 											<int key="NSNumCols">1</int>
 											<object class="NSMutableArray" key="NSCells">
 												<bool key="EncodedWithXMLCoder">YES</bool>
 												<object class="NSButtonCell" id="517716510">
-													<int key="NSCellFlags">-1543373312</int>
+													<int key="NSCellFlags">-2080244224</int>
 													<int key="NSCellFlags2">0</int>
 													<string key="NSContents">As when the document was saved</string>
 													<reference key="NSSupport" ref="62353035"/>
@@ -528,7 +531,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 													<int key="NSPeriodicInterval">25</int>
 												</object>
 												<object class="NSButtonCell" id="187657871">
-													<int key="NSCellFlags">604110336</int>
+													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">0</int>
 													<string key="NSContents">Same as with new documents</string>
 													<reference key="NSSupport" ref="62353035"/>
@@ -545,7 +548,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 											<int key="NSMatrixFlags">1151868928</int>
 											<string key="NSCellClass">NSActionCell</string>
 											<object class="NSButtonCell" key="NSProtoCell" id="1024327276">
-												<int key="NSCellFlags">604110336</int>
+												<int key="NSCellFlags">67239424</int>
 												<int key="NSCellFlags2">134217728</int>
 												<string key="NSContents">Radio</string>
 												<reference key="NSSupport" ref="62353035"/>
@@ -610,66 +613,9 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 											<object class="NSTextFieldCell" key="NSCell" id="240282183">
 												<int key="NSCellFlags">-2079195584</int>
 												<int key="NSCellFlags2">272630784</int>
-												<string key="NSContents">Reopened documents show minimap:</string>
+												<string key="NSContents">Opened documents show minimap:</string>
 												<reference key="NSSupport" ref="62353035"/>
 												<reference key="NSControlView" ref="510616370"/>
-												<reference key="NSBackgroundColor" ref="378432873"/>
-												<reference key="NSTextColor" ref="257136541"/>
-											</object>
-										</object>
-										<object class="NSTextField" id="563662109">
-											<reference key="NSNextResponder" ref="451116678"/>
-											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{11, 12}, {374, 17}}</string>
-											<reference key="NSSuperview" ref="451116678"/>
-											<bool key="NSEnabled">YES</bool>
-											<object class="NSTextFieldCell" key="NSCell" id="364535894">
-												<int key="NSCellFlags">67239424</int>
-												<int key="NSCellFlags2">138412032</int>
-												<string key="NSContents">These settings will take effect for new project windows</string>
-												<object class="NSFont" key="NSSupport">
-													<string key="NSName">LucidaGrande</string>
-													<double key="NSSize">12</double>
-													<int key="NSfFlags">16</int>
-												</object>
-												<reference key="NSControlView" ref="563662109"/>
-												<reference key="NSBackgroundColor" ref="646245018"/>
-												<object class="NSColor" key="NSTextColor">
-													<int key="NSColorSpace">6</int>
-													<string key="NSCatalogName">System</string>
-													<string key="NSColorName">controlTextColor</string>
-													<reference key="NSColor" ref="75728600"/>
-												</object>
-											</object>
-										</object>
-										<object class="NSTextField" id="784046093">
-											<reference key="NSNextResponder" ref="451116678"/>
-											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{224, 65}, {189, 22}}</string>
-											<reference key="NSSuperview" ref="451116678"/>
-											<bool key="NSEnabled">YES</bool>
-											<object class="NSTextFieldCell" key="NSCell" id="1004265153">
-												<int key="NSCellFlags">-2079195584</int>
-												<int key="NSCellFlags2">138417152</int>
-												<string key="NSContents">Coming soon!</string>
-												<reference key="NSSupport" ref="62353035"/>
-												<reference key="NSControlView" ref="784046093"/>
-												<reference key="NSBackgroundColor" ref="378432873"/>
-												<reference key="NSTextColor" ref="257136541"/>
-											</object>
-										</object>
-										<object class="NSTextField" id="614688986">
-											<reference key="NSNextResponder" ref="451116678"/>
-											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{224, 149}, {189, 22}}</string>
-											<reference key="NSSuperview" ref="451116678"/>
-											<bool key="NSEnabled">YES</bool>
-											<object class="NSTextFieldCell" key="NSCell" id="935593132">
-												<int key="NSCellFlags">-2079195584</int>
-												<int key="NSCellFlags2">138417152</int>
-												<string key="NSContents">Coming soon!</string>
-												<reference key="NSSupport" ref="62353035"/>
-												<reference key="NSControlView" ref="614688986"/>
 												<reference key="NSBackgroundColor" ref="378432873"/>
 												<reference key="NSTextColor" ref="257136541"/>
 											</object>
@@ -684,7 +630,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<object class="NSTabViewItem" id="612337179">
 								<string key="NSIdentifier">FineTuning</string>
 								<object class="NSView" key="NSView" id="269742298">
-									<reference key="NSNextResponder" ref="520768783"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">256</int>
 									<object class="NSMutableArray" key="NSSubviews">
 										<bool key="EncodedWithXMLCoder">YES</bool>
@@ -883,21 +829,20 @@ b3dlciB3aWxsIGxvd2VyIHBlcmZvcm1hbmNlIHdpdGggYmlnIGRvY3VtZW50cyEgA</string>
 										</object>
 									</object>
 									<string key="NSFrame">{{10, 33}, {402, 222}}</string>
-									<reference key="NSSuperview" ref="520768783"/>
 								</object>
 								<string key="NSLabel">Fine-Tuning</string>
 								<reference key="NSColor" ref="646245018"/>
 								<reference key="NSTabView" ref="520768783"/>
 							</object>
 						</object>
-						<reference key="NSSelectedTabViewItem" ref="612337179"/>
+						<reference key="NSSelectedTabViewItem" ref="926000077"/>
 						<reference key="NSFont" ref="62353035"/>
 						<int key="NSTvFlags">0</int>
 						<bool key="NSAllowTruncatedLabels">YES</bool>
 						<bool key="NSDrawsBackground">YES</bool>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="269742298"/>
+							<reference ref="980884557"/>
 						</object>
 					</object>
 				</object>
@@ -1040,6 +985,38 @@ b3dlciB3aWxsIGxvd2VyIHBlcmZvcm1hbmNlIHdpdGggYmlnIGRvY3VtZW50cyEgA</string>
 					</object>
 					<int key="connectionID">377</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">selectedIndex: values.Minimap_newDocumentBehaviour</string>
+						<reference key="source" ref="400131902"/>
+						<reference key="destination" ref="330941994"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="400131902"/>
+							<reference key="NSDestination" ref="330941994"/>
+							<string key="NSLabel">selectedIndex: values.Minimap_newDocumentBehaviour</string>
+							<string key="NSBinding">selectedIndex</string>
+							<string key="NSKeyPath">values.Minimap_newDocumentBehaviour</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">379</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">selectedIndex: values.Minimap_openDocumentBehaviour</string>
+						<reference key="source" ref="36029198"/>
+						<reference key="destination" ref="330941994"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="36029198"/>
+							<reference key="NSDestination" ref="330941994"/>
+							<string key="NSLabel">selectedIndex: values.Minimap_openDocumentBehaviour</string>
+							<string key="NSBinding">selectedIndex</string>
+							<string key="NSKeyPath">values.Minimap_openDocumentBehaviour</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">381</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -1102,13 +1079,10 @@ b3dlciB3aWxsIGxvd2VyIHBlcmZvcm1hbmNlIHdpdGggYmlnIGRvY3VtZW50cyEgA</string>
 						<reference key="object" ref="451116678"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="563662109"/>
 							<reference ref="510616370"/>
 							<reference ref="835037461"/>
 							<reference ref="400131902"/>
-							<reference ref="614688986"/>
 							<reference ref="36029198"/>
-							<reference ref="784046093"/>
 						</object>
 						<reference key="parent" ref="865866011"/>
 					</object>
@@ -1160,48 +1134,6 @@ b3dlciB3aWxsIGxvd2VyIHBlcmZvcm1hbmNlIHdpdGggYmlnIGRvY3VtZW50cyEgA</string>
 							<reference ref="870285530"/>
 						</object>
 						<reference key="parent" ref="612337179"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">242</int>
-						<reference key="object" ref="614688986"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="935593132"/>
-						</object>
-						<reference key="parent" ref="451116678"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">243</int>
-						<reference key="object" ref="935593132"/>
-						<reference key="parent" ref="614688986"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">240</int>
-						<reference key="object" ref="784046093"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="1004265153"/>
-						</object>
-						<reference key="parent" ref="451116678"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">241</int>
-						<reference key="object" ref="1004265153"/>
-						<reference key="parent" ref="784046093"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">238</int>
-						<reference key="object" ref="563662109"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="364535894"/>
-						</object>
-						<reference key="parent" ref="451116678"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">239</int>
-						<reference key="object" ref="364535894"/>
-						<reference key="parent" ref="563662109"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">232</int>
@@ -1548,12 +1480,6 @@ b3dlciB3aWxsIGxvd2VyIHBlcmZvcm1hbmNlIHdpdGggYmlnIGRvY3VtZW50cyEgA</string>
 					<string>236.IBPluginDependency</string>
 					<string>237.IBAttributePlaceholdersKey</string>
 					<string>237.IBPluginDependency</string>
-					<string>238.IBPluginDependency</string>
-					<string>239.IBPluginDependency</string>
-					<string>240.IBPluginDependency</string>
-					<string>241.IBPluginDependency</string>
-					<string>242.IBPluginDependency</string>
-					<string>243.IBPluginDependency</string>
 					<string>244.IBPluginDependency</string>
 					<string>245.IBPluginDependency</string>
 					<string>267.IBPluginDependency</string>
@@ -1651,15 +1577,12 @@ b3dlciB3aWxsIGxvd2VyIHBlcmZvcm1hbmNlIHdpdGggYmlnIGRvY3VtZW50cyEgA</string>
 						<object class="IBToolTipAttribute" key="NS.object.0">
 							<string key="name">ToolTip</string>
 							<reference key="object" ref="517716510"/>
-							<string key="toolTip">When reopening a document, the minimap will be hiden or shown depending on whether it was hidden or not when the document was saved</string>
+							<string type="base64-UTF8" key="toolTip">V2hlbiByZW9wZW5pbmcgYSBkb2N1bWVudCwgdGhlIG1pbmltYXAgd2lsbCBiZSBoaWRlbiBvciBzaG93
+biBkZXBlbmRpbmcgb24gd2hldGhlciBpdCB3YXMgaGlkZGVuIG9yIG5vdCB3aGVuIHRoZSBkb2N1bWVu
+dCB3YXMgc2F2ZWQuIApXaGVuIHRoZSBkb2N1bWVudCBoYXMgbmV2ZXIgYmVlbiBzYXZlZCBiZWZvcmUs
+IHRoZSAibmV3IGRvY3VtZW50IiBiZWhhdmlvdXIgd2lsbCBiZSB1c2VkLg</string>
 						</object>
 					</object>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1757,7 +1680,7 @@ b3dlciB3aWxsIGxvd2VyIHBlcmZvcm1hbmNlIHdpdGggYmlnIGRvY3VtZW50cyEgA</string>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">377</int>
+			<int key="maxID">381</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

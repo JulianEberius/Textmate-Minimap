@@ -5,20 +5,22 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>TextmateMinimap</string>
+	<string>ShortcutRecorder</string>
 	<key>CFBundleIdentifier</key>
-	<string>de.eberius-mail.textmate-minimap</string>
+	<string>net.wafflesoftware.ShortcutRecorder.IB.Leopard</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>TextmateMinimap</string>
+	<string>ShortcutRecorder</string>
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>0.6</string>
+	<string>1</string>
 	<key>NSPrincipalClass</key>
-	<string>TextmateMinimap</string>
+	<string>SR_Leopard</string>
 </dict>
 </plist>

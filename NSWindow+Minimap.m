@@ -42,12 +42,17 @@
 		for (NSDrawer *drawer in [self drawers])
 			if ([[drawer contentView] isKindOfClass:[MinimapView class]] )  {
 				int state = [drawer state];
-				if (state == NSDrawerClosedState || state == NSDrawerClosingState)
+				if (state == NSDrawerClosedState || state == NSDrawerClosingState) {
 					[[TextmateMinimap instance] setMinimapMenuItem:NO];
-				else 
+					[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Minimap_lastDocumentHadMinimapOpen"];
+				}
+				else { 
 					[[TextmateMinimap instance] setMinimapMenuItem:YES];
+					[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Minimap_lastDocumentHadMinimapOpen"];
+				}
 			}
 	[[TextmateMinimap instance] setLastWindowController:controller];
+	
 }
 
 @end

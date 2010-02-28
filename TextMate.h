@@ -6,3 +6,4 @@
 #define OakTextView					NSClassFromString(@"OakTextView")
 #define OakTabBar					NSClassFromString(@"OakTabBarView")
 #define OakWindow					NSClassFromString(@"OakWindow")
+#define OakDocument					NSClassFromString(@"OakDocument")

@@ -11,7 +11,6 @@
 @interface AsyncDrawOperation : NSOperation
 {
 	MinimapView* minimapView;
-	int pixelPerLine;
 	NSRect bounds;
 	NSRect rectToDrawTo;
 	int numLines;

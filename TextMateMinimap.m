@@ -17,9 +17,6 @@
 #import "ShortcutRecorder/SRRecorderControl.h"
 #import "ShortcutRecorder/SRCommon.h"
 
-NSString* explanationString1 = @"Explanation: based on the current height of the minimap (%ipx), documents with more than %i lines would be drawn only partially, with %ipx per line. \nSetting the first value to low can decrease performance!";
-NSString* explanationString2 = @"Explanation: based on a minimap with a height of %ipx, documents with more than %i lines would be drawn only partially, with %ipx per line. \nSetting the first value to low can decrease performance!";
-
 @interface NSAttributedString (Hyperlink)
 +(id)hyperlinkFromString:(NSString*)inString withURL:(NSURL*)aURL;
 @end
@@ -31,11 +28,15 @@ NSString* explanationString2 = @"Explanation: based on a minimap with a height o
 - (void)dealloc;
 @end
 
+
+NSString* const explanationString1 = @"Explanation: based on the current height of the minimap (%ipx), documents with more than %i lines would be drawn only partially, with %ipx per line. \nSetting the first value to low can decrease performance!";
+NSString* const explanationString2 = @"Explanation: based on a minimap with a height of %ipx, documents with more than %i lines would be drawn only partially, with %ipx per line. \nSetting the first value to low can decrease performance!";
+
 @implementation TextmateMinimap
 
-static TextmateMinimap *sharedInstance = nil;
-
 @synthesize timer, theLock, iconImage, preferencesView, lastWindowController;
+
+static TextmateMinimap *sharedInstance = nil;
 
 #pragma mark public-api
 
@@ -63,9 +64,7 @@ static TextmateMinimap *sharedInstance = nil;
 		[OakProjectController jr_swizzleMethod:@selector(windowWillClose:) withMethod:@selector(MM_windowWillClose:) error:NULL];
 		[OakDocumentController jr_swizzleMethod:@selector(windowDidLoad) withMethod:@selector(MM_windowDidLoad) error:NULL];
 		[OakDocumentController jr_swizzleMethod:@selector(windowWillClose:) withMethod:@selector(MM_windowWillClose:) error:NULL];
-		
 		[OakProjectController jr_swizzleMethod:@selector(toggleGroupsAndFilesDrawer:) withMethod:@selector(MM_toggleGroupsAndFilesDrawer:) error:NULL];
-		
 		[OakWindow jr_swizzleMethod:@selector(setRepresentedFilename:) withMethod:@selector(MM_setRepresentedFilename:) error:NULL];
 		[OakWindow jr_swizzleMethod:@selector(setDocumentEdited:) withMethod:@selector(MM_setDocumentEdited:) error:NULL];
 		[OakWindow jr_swizzleMethod:@selector(becomeMainWindow) withMethod:@selector(MM_becomeMainWindow) error:NULL];
@@ -81,7 +80,6 @@ static TextmateMinimap *sharedInstance = nil;
 		[OakTextView jr_swizzleMethod:@selector(toggleFoldingsEnabled:) withMethod:@selector(MM_toggleFoldingsEnabled:) error:NULL];
 		[OakTabBar jr_swizzleMethod:@selector(selectTab:) withMethod:@selector(MM_selectTab:) error:NULL];
 		
-		
 		//Prefs... this directly reuses a lot of code from Ciarán Walsh's ProjectPlus ( http://ciaranwal.sh/2008/08/05/textmate-plug-in-projectplus )
 		//Source: git://github.com/ciaran/projectplus.git
 		// settings userdefault defaults
@@ -93,16 +91,22 @@ static TextmateMinimap *sharedInstance = nil;
 										[NSNumber numberWithInt:46], //this is "m"
 										[NSNumber numberWithInt:NSControlKeyMask|NSAlternateKeyMask|NSCommandKeyMask],
 										[NSNumber numberWithInt:MinimapAutoSide],
+										[NSNumber numberWithInt:MinimapInheritShow],
+										[NSNumber numberWithInt:MinimapAsSaved],
+										[NSNumber numberWithBool:YES],
 										NULL
 									]
 						 forKeys:[NSArray arrayWithObjects:
-									  @"Minimap_scaleUpThreshold",
-									  @"Minimap_scaleUpTo",
-									  @"Minimap_triggerMinimapKeyCode",
-									  @"Minimap_triggerMinimapKeyFlags",
-									  @"Minimap_minimapSide",
-									  NULL
-								]]];
+										@"Minimap_scaleUpThreshold",
+										@"Minimap_scaleUpTo",
+										@"Minimap_triggerMinimapKeyCode",
+										@"Minimap_triggerMinimapKeyFlags",
+										@"Minimap_minimapSide",
+										@"Minimap_newDocumentBehaviour",
+										@"Minimap_openDocumentBehaviour",
+										@"Minimap_lastDocumentHadMinimapOpen",
+										NULL
+									]]];
 
 		NSString* nibPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"Preferences" ofType:@"nib"];
 		prefWindowController = [[NSWindowController alloc] initWithWindowNibPath:nibPath owner:self];
@@ -271,6 +275,13 @@ static TextmateMinimap *sharedInstance = nil;
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setInteger:newKeyCombo.code forKey:@"Minimap_triggerMinimapKeyCode"];
 	[defaults setInteger:newKeyCombo.flags forKey:@"Minimap_triggerMinimapKeyFlags"];
+}
+
+- (void)tabView:(NSTabView *)tabView willSelectTabViewItem:(NSTabViewItem *)tabViewItem
+{
+	if ([[tabViewItem identifier] isEqualToString:@"FineTuning"] ) {
+		[self changeScaleValues:nil];
+	}
 }
 
 #pragma mark singleton

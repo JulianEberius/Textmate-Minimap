@@ -42,7 +42,7 @@
 	bounds = [minimapView bounds];
 	rectToDrawTo = bounds;
 	numLines = [minimapView getNumberOfLines];
-	pixelPerLine = bounds.size.height / numLines;
+	float pixelPerLine = bounds.size.height / numLines;
 	float scaleUpThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"Minimap_scaleUpThreshold"];
 	
 	if (pixelPerLine > scaleDownThreshold) {
