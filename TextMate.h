@@ -7,3 +7,4 @@
 #define OakTabBar					NSClassFromString(@"OakTabBarView")
 #define OakWindow					NSClassFromString(@"OakWindow")
 #define OakDocument					NSClassFromString(@"OakDocument")
+#define OakFontsAndColorsController	NSClassFromString(@"OakFontsAndColorsController")

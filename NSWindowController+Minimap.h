@@ -18,9 +18,13 @@
 - (void)toggleMinimap;
 - (BOOL)isSoftWrapEnabled;
 - (MinimapView*) minimap;
+- (void)updateTrailingSpace;
 
 #pragma mark swizzled-methods
 - (void)MM_windowWillClose:(id)aNotification;
 - (void)MM_windowDidLoad;
 - (void)MM_toggleGroupsAndFilesDrawer:(id)sender;
+
+// for the OakPrefManager
+- (void)MM_PrefWindowWillClose:(id)arg1;
 @end

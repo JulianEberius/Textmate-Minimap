@@ -41,6 +41,7 @@ int const scaleDownTo = 6;
 		viewableRangeScale = 1.0;
 		gutterSize = -1;
 		textView = [tv retain];
+		firstDraw = YES;
 	}
     return self;
 }
@@ -59,6 +60,10 @@ int const scaleDownTo = 6;
 
 - (void)drawRect:(NSRect)rect
 {	
+	if (firstDraw) {
+		[windowController updateTrailingSpace];
+		firstDraw = NO;
+	}
 	if (![self inLiveResize] && refreshAll) 
 	{
 		[queue cancelAllOperations];
@@ -197,7 +202,7 @@ int const scaleDownTo = 6;
 - (void)updateGutterSize
 {
 	int w = [textView bounds].size.width;
-	NSBitmapImageRep* rawImg = [textView snapshotInRect:NSMakeRect(0	,0,w,1)];
+	NSBitmapImageRep* rawImg = [textView snapshotInRect:NSMakeRect(0,0,w,1)];
 	NSColor* refColor = [[rawImg colorAtX:0 y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
 
 	int i = 1;

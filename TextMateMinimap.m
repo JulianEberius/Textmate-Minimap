@@ -17,9 +17,6 @@
 #import "ShortcutRecorder/SRRecorderControl.h"
 #import "ShortcutRecorder/SRCommon.h"
 
-@interface NSAttributedString (Hyperlink)
-+(id)hyperlinkFromString:(NSString*)inString withURL:(NSURL*)aURL;
-@end
 
 @interface TextmateMinimap (Private_TextMateMinimap)
 - (void)toggleMinimap:(id)sender;
@@ -27,7 +24,6 @@
 - (void)uninstallMenuItem;
 - (void)dealloc;
 @end
-
 
 NSString* const explanationString1 = @"Explanation: based on the current height of the minimap (%ipx), documents with more than %i lines would be drawn only partially, with %ipx per line. \nSetting the first value to low can decrease performance!";
 NSString* const explanationString2 = @"Explanation: based on a minimap with a height of %ipx, documents with more than %i lines would be drawn only partially, with %ipx per line. \nSetting the first value to low can decrease performance!";
@@ -60,6 +56,9 @@ static TextmateMinimap *sharedInstance = nil;
 		NSString* iconPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"textmate-minimap" ofType:@"tiff"];
 		iconImage = [[NSImage alloc] initByReferencingFile:iconPath];
 		
+		sparkleUpdater = [MMSUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
+		[sparkleUpdater resetUpdateCycle];
+		
 		[OakProjectController jr_swizzleMethod:@selector(windowDidLoad) withMethod:@selector(MM_windowDidLoad) error:NULL];
 		[OakProjectController jr_swizzleMethod:@selector(windowWillClose:) withMethod:@selector(MM_windowWillClose:) error:NULL];
 		[OakDocumentController jr_swizzleMethod:@selector(windowDidLoad) withMethod:@selector(MM_windowDidLoad) error:NULL];
@@ -78,6 +77,7 @@ static TextmateMinimap *sharedInstance = nil;
 		[OakTextView jr_swizzleMethod:@selector(toggleLineNumbers:) withMethod:@selector(MM_toggleLineNumbers:) error:NULL];
 		[OakTextView jr_swizzleMethod:@selector(toggleShowBookmarksInGutter:) withMethod:@selector(MM_toggleShowBookmarksInGutter:) error:NULL];
 		[OakTextView jr_swizzleMethod:@selector(toggleFoldingsEnabled:) withMethod:@selector(MM_toggleFoldingsEnabled:) error:NULL];
+		[OakPreferencesManager jr_swizzleMethod:@selector(windowWillClose:) withMethod:@selector(MM_PrefWindowWillClose:) error:NULL];
 		[OakTabBar jr_swizzleMethod:@selector(selectTab:) withMethod:@selector(MM_selectTab:) error:NULL];
 		
 		//Prefs... this directly reuses a lot of code from Ciarán Walsh's ProjectPlus ( http://ciaranwal.sh/2008/08/05/textmate-plug-in-projectplus )
@@ -117,6 +117,7 @@ static TextmateMinimap *sharedInstance = nil;
 		[OakPreferencesManager jr_swizzleMethod:@selector(toolbarSelectableItemIdentifiers:) withMethod:@selector(MM_toolbarSelectableItemIdentifiers:) error:NULL];
 		[OakPreferencesManager jr_swizzleMethod:@selector(toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:) withMethod:@selector(MM_toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:) error:NULL];
 		[OakPreferencesManager jr_swizzleMethod:@selector(selectToolbarItem:) withMethod:@selector(MM_selectToolbarItem:) error:NULL];
+		
 		
 	}
 	return self;
@@ -167,8 +168,9 @@ static TextmateMinimap *sharedInstance = nil;
 
 - (void) toggleMinimap:(id)sender
 {
-		
 	NSWindowController* wc = [[NSApp mainWindow] windowController];
+	
+	
 	if ([wc isKindOfClass:OakProjectController] || [wc isKindOfClass:OakDocumentController])
 	{
 		//change menu item
@@ -205,6 +207,11 @@ static TextmateMinimap *sharedInstance = nil;
 	[keyRecorder setKeyCombo:SRMakeKeyCombo(
 		[[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_triggerMinimapKeyCode"],
 		[[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_triggerMinimapKeyFlags"])];
+}
+
+- (IBAction)update:(id)sender
+{
+	[sparkleUpdater checkForUpdates:nil];
 }
 
 - (IBAction)changeScaleValues:(id)sender
@@ -253,6 +260,10 @@ static TextmateMinimap *sharedInstance = nil;
 	int newMode = [(NSMatrix*)sender selectedRow];
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setInteger:newMode forKey:@"Minimap_minimapSide"];
+}
+
+- (MMSUUpdater *)updater {
+    return [MMSUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];;
 }
 
 - (BOOL)shortcutRecorder:(SRRecorderControl *)aRecorder isKeyCode:(NSInteger)keyCode andFlagsTaken:(NSUInteger)flags reason:(NSString **)aReason

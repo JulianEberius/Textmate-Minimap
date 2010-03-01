@@ -13,6 +13,7 @@
 	MinimapView* minimapView;
 	NSRect bounds;
 	NSRect rectToDrawTo;
+	NSColor* fillColor;
 	int numLines;
 }
 - (id)initWithMinimapView:(MinimapView*)mv;

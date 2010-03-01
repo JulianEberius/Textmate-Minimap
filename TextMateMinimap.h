@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "ShortcutRecorder/SRRecorderControl.h"
+#import "MMSparkle/MMSUUpdater.h"
 
 @protocol TMPlugInController
 - (float)version;
@@ -22,12 +23,14 @@
 	NSWindowController* prefWindowController;
 	
 	NSWindowController* lastWindowController;
-	
+
 	IBOutlet NSView* preferencesView;
 	IBOutlet NSTextField* explanationText;
 	IBOutlet NSTextField* scaleUpThresholdPixelField;
 	IBOutlet NSTextField* scaleUpToPixelField;
 	IBOutlet SRRecorderControl* keyRecorder;
+	
+	MMSUUpdater* sparkleUpdater;
 }
 @property(retain) NSWindowController* lastWindowController;
 @property(retain, readonly) NSImage* iconImage;
@@ -39,9 +42,12 @@
 - (id)initWithPlugInController:(id <TMPlugInController>)aController;
 - (void)setMinimapMenuItem:(BOOL)flag;
 
+- (IBAction)update:(id)sender;
 - (IBAction)changeScaleValues:(id)sender;
 - (IBAction)resetDefaultScaleValues:(id)sender;
 - (IBAction)changeMinimapSide:(id)sender;
+- (MMSUUpdater*)updater;
+
 
 enum MinimapSideModes {
 	MinimapLeftSide = 0,

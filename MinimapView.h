@@ -25,6 +25,7 @@ extern int const scaleDownTo;
 	float viewableRangeScale;
 	int minimapLinesStart;
 	int gutterSize;
+	BOOL firstDraw;
 }
 #pragma mark public-properties
 @property(retain) NSWindowController* windowController;

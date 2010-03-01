@@ -19,8 +19,16 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>0.6</string>
+	<string>0.61</string>
 	<key>NSPrincipalClass</key>
 	<string>TextmateMinimap</string>
+	<key>SUPublicDSAKeyFile</key>
+	<string>dsa_pub.pem</string>
+	<key>SUFeedURL</key>
+	<string>http://julianeberius.github.com/Textmate-Minimap/appcast.xml</string>
+	<key>SUEnableSystemProfiling</key>
+	<string>false</string>
+	<key>SUScheduledCheckInterval</key>
+	<string>86400</string>
 </dict>
 </plist>

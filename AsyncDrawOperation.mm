@@ -8,11 +8,17 @@
 #import "AsyncDrawOperation.h"
 #import "NSView+Minimap.h"
 
+@interface NSView (TextMate_OakTextView_Only)
+- (id)currentStyleSheet;
+@end
+
+
 @interface AsyncDrawOperation (Private_AsyncDrawOperation)
 - (void)fullDraw;
 - (void)partialDraw;
 - (int)getGutterSize;
 - (NSBitmapImageRep*)cropImageRep:(NSBitmapImageRep*)rep ToRect:(NSRect)rect;
+- (void)initializeFillColorFromTextView;
 @end
 
 @implementation AsyncDrawOperation
@@ -49,6 +55,8 @@
 		float newHeight = scaleDownTo*numLines;
 		rectToDrawTo.size.height = newHeight;		
 		rectToDrawTo.origin.y = bounds.size.height-newHeight;
+		
+		[self initializeFillColorFromTextView];
 		[minimapView setMinimapLinesStart:0];
 		[minimapView setViewableRangeScaling:1.0];
 		[self fullDraw];
@@ -87,6 +95,12 @@
 	[image setFlipped:YES];
 
 	[image lockFocus];
+		// fill the rest of the minimap if necessary
+		if (rectToDrawTo.size.height != bounds.size.height)
+		{
+			[fillColor set];
+			NSRectFill(bounds);
+		}
 		[croppedSnapshot drawInRect:rectToDrawTo];
 	[image unlockFocus];
 	
@@ -117,7 +131,7 @@
 	int gutterSize = [self getGutterSize];
 	NSRect rectToSnapshot = NSMakeRect( gutterSize,
 										begin,
-										tvBounds.size.width,
+										tvBounds.size.width-gutterSize,
 										visiblePercentage * tvBounds.size.height);
 	[minimapView setMinimapLinesStart:((begin/tvBounds.size.height)*numLines)];
 
@@ -155,6 +169,24 @@
 		gutterSize = [minimapView gutterSize];
 	}
 	return gutterSize;
+}
+
+- (void)initializeFillColorFromTextView
+{
+	id stylesheet = [[minimapView textView] currentStyleSheet];
+	NSDictionary* firstEntry = [(NSArray*)stylesheet objectAtIndex:0]; // the first entry seems to always contain the main settings
+	NSString* bgColor = [[firstEntry objectForKey:@"settings"] objectForKey:@"background"];
+	unsigned aValue = strtoul([[bgColor substringWithRange:NSMakeRange(1, 6)] UTF8String], NULL, 16);
+	CGFloat red = ((CGFloat)((aValue & 0xFF0000) >> 16)) / 255.0f;
+	CGFloat green = ((CGFloat)((aValue & 0xFF00) >> 8)) / 255.0f;
+	CGFloat blue = (CGFloat)(aValue & 0xFF) / 255.0f;
+	CGFloat alpha = 1.0;
+	if ([bgColor length] == 9) //  if a alpha was given
+	{
+		unsigned alphaValue = strtoul([[bgColor substringWithRange:NSMakeRange(7, 2)] UTF8String], NULL, 16);
+		alpha = (CGFloat)(alphaValue & 0xFF) / 255.0f;
+	}
+	fillColor = [NSColor colorWithCalibratedRed:red green:green blue:blue alpha:alpha];
 }
 
 @end

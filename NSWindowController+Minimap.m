@@ -22,6 +22,12 @@
 - (NSString*)filename;
 @end
 
+//stuff that textmate's textview implements
+@interface NSView (TextMate_OakTextView_Only)
+- (id)currentStyleSheet;
+- (BOOL)storedSoftWrapSetting;
+@end
+
 @interface NSWindowController (Private_MM_NSWindowController)
 - (NSRectEdge) getCorrectMinimapDrawerSide;
 - (BOOL) shouldOpenMinimapDrawer:(NSString*)filename;
@@ -98,19 +104,11 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 }
 
 /*
- Find out whether soft wrap is enabled by looking at the applications main menu... any better way to find that out?
+ Find out whether soft wrap is enabled by looking at the applications main menu...
  */
 - (BOOL) isSoftWrapEnabled
 {
-	NSMenu* viewMenu = [[[NSApp mainMenu] itemWithTitle:@"View"] submenu];
-	for (NSMenuItem* item in [viewMenu itemArray])
-	{
-		if ([[item title] isEqualToString:@"Soft Wrap"])
-		{
-			return [item state];
-		}
-	}
-	return NO;
+	return [[[self minimap] textView] storedSoftWrapSetting];
 }
 
 /*
@@ -124,6 +122,14 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 			result = (MinimapView*)[drawer contentView];
 		}
 	return result;
+}
+
+- (void)updateTrailingSpace
+{
+	for (NSDrawer *drawer in [[self window] drawers])
+		if ([[drawer contentView] isKindOfClass:[MinimapView class]] )  {
+			[drawer setTrailingOffset:[self isSoftWrapEnabled] ? 40 : 56];
+		}
 }
 
 
@@ -184,13 +190,14 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 	[textshapeView setWindowController:self];
 	
 	NSString* filename = nil;
+	int trailingOffset = [self isSoftWrapEnabled] ? 40 : 56;
 	if ([[self className] isEqualToString:@"OakProjectController"]) {
-		[minimapDrawer setTrailingOffset:56];
+		[minimapDrawer setTrailingOffset:trailingOffset];
 		[minimapDrawer setLeadingOffset:24];
 		filename = [self filename];	
 	}
 	else if ([[self className] isEqualToString:@"OakDocumentController"]) {
-		[minimapDrawer setTrailingOffset:56];
+		[minimapDrawer setTrailingOffset:trailingOffset];
 		[minimapDrawer setLeadingOffset:0];
 		filename = [[[self textView] document] filename];
 	}
@@ -238,6 +245,12 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 			}
 		}
 	}
+}
+
+-(void)MM_PrefWindowWillClose:(id)arg1
+{
+	[self MM_PrefWindowWillClose:arg1];
+	[[[TextmateMinimap instance] lastWindowController] refreshMinimap];
 }
 
 #pragma mark private

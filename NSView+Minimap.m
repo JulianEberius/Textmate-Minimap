@@ -181,5 +181,4 @@
 	[self scheduleRefresh];
 }
 
-
 @end

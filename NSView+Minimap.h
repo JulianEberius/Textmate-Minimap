@@ -28,5 +28,4 @@
 - (void)MM_toggleLineNumbers:(id)sender;
 - (void)MM_toggleShowBookmarksInGutter:(id)sender;
 - (void)MM_toggleFoldingsEnabled:(id)sender;
-
 @end
