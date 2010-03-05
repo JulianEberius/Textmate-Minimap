@@ -5,7 +5,7 @@ A minimap plugin for TextMate.
 
 License: 
 MIT License (see LICENSE.txt)
-except for files that contain their own licenses (JRSwizzle and ShortcutRecorder)
+except for files that contain their own licenses (JRSwizzle, Sparkle and ShortcutRecorder)
 
 Screenshots and up to date info can be found at http://julianeberius.github.com/Textmate-Minimap/.
 
