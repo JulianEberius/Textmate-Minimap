@@ -21,10 +21,11 @@
 		048D06A9112171DE009F7865 /* NSScrollView+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D06A8112171DE009F7865 /* NSScrollView+Minimap.m */; };
 		04A843DB1136972E002743B0 /* textmate-minimap.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 04A843DA1136972E002743B0 /* textmate-minimap.tiff */; };
 		04A843DF11369759002743B0 /* NSWindowController+Preferences.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04A843DE11369759002743B0 /* NSWindowController+Preferences.mm */; };
-		04B9A452112AE40C0082EF25 /* AsyncDrawOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04B9A451112AE40C0082EF25 /* AsyncDrawOperation.mm */; };
 		04B9A499112AF27F0082EF25 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 04B9A497112AF27F0082EF25 /* LICENSE.txt */; };
 		04B9A49A112AF27F0082EF25 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 04B9A498112AF27F0082EF25 /* README */; };
 		04D1F7421136CF58008BF7DA /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04D1F7411136CF58008BF7DA /* Preferences.xib */; };
+		04DC1B7511536F6700F87F90 /* AsyncDrawOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DC1B7411536F6700F87F90 /* AsyncDrawOperation.m */; };
+		04DC1F521154DC5D00F87F90 /* BackgroundUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DC1F511154DC5D00F87F90 /* BackgroundUpdater.m */; };
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -66,11 +67,13 @@
 		04A843DA1136972E002743B0 /* textmate-minimap.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "textmate-minimap.tiff"; sourceTree = "<group>"; };
 		04A843DD11369759002743B0 /* NSWindowController+Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindowController+Preferences.h"; sourceTree = "<group>"; };
 		04A843DE11369759002743B0 /* NSWindowController+Preferences.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSWindowController+Preferences.mm"; sourceTree = "<group>"; };
-		04B9A450112AE40C0082EF25 /* AsyncDrawOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncDrawOperation.h; sourceTree = "<group>"; };
-		04B9A451112AE40C0082EF25 /* AsyncDrawOperation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AsyncDrawOperation.mm; sourceTree = "<group>"; };
 		04B9A497112AF27F0082EF25 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		04B9A498112AF27F0082EF25 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		04D1F7411136CF58008BF7DA /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
+		04DC1B7311536F6700F87F90 /* AsyncDrawOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncDrawOperation.h; sourceTree = "<group>"; };
+		04DC1B7411536F6700F87F90 /* AsyncDrawOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncDrawOperation.m; sourceTree = "<group>"; };
+		04DC1F501154DC5D00F87F90 /* BackgroundUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundUpdater.h; sourceTree = "<group>"; };
+		04DC1F511154DC5D00F87F90 /* BackgroundUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundUpdater.m; sourceTree = "<group>"; };
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
@@ -149,13 +152,15 @@
 		08FB77AFFE84173DC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				04B9A450112AE40C0082EF25 /* AsyncDrawOperation.h */,
-				04B9A451112AE40C0082EF25 /* AsyncDrawOperation.mm */,
 				048D06A0112171A8009F7865 /* Categories */,
 				048D064411216B1C009F7865 /* TextMateMinimap.h */,
 				048D064511216B1C009F7865 /* TextMateMinimap.m */,
 				048D065C11216C0F009F7865 /* MinimapView.h */,
 				048D065D11216C0F009F7865 /* MinimapView.m */,
+				04DC1B7311536F6700F87F90 /* AsyncDrawOperation.h */,
+				04DC1B7411536F6700F87F90 /* AsyncDrawOperation.m */,
+				04DC1F501154DC5D00F87F90 /* BackgroundUpdater.h */,
+				04DC1F511154DC5D00F87F90 /* BackgroundUpdater.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -283,8 +288,9 @@
 				048D06A3112171BE009F7865 /* NSWindowController+Minimap.m in Sources */,
 				048D06A6112171D3009F7865 /* NSWindow+Minimap.m in Sources */,
 				048D06A9112171DE009F7865 /* NSScrollView+Minimap.m in Sources */,
-				04B9A452112AE40C0082EF25 /* AsyncDrawOperation.mm in Sources */,
 				04A843DF11369759002743B0 /* NSWindowController+Preferences.mm in Sources */,
+				04DC1B7511536F6700F87F90 /* AsyncDrawOperation.m in Sources */,
+				04DC1F521154DC5D00F87F90 /* BackgroundUpdater.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,7 +370,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = TextmateMinimap_Prefix.pch;
-				GCC_VERSION = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				PRODUCT_NAME = TextmateMinimap;

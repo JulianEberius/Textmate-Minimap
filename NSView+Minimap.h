@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-
+#import "MinimapView.h"
 
 @interface NSView (MM_NSView)
 
@@ -16,6 +16,7 @@
 - (NSBitmapImageRep *) snapshotInRect:(NSRect)rect;
 - (NSImage *)snapshotByDrawing;
 - (NSImage *)snapshotByDrawingInRect:(NSRect)rect;
+- (NSImage *)emptySnapshotImageFor:(MinimapView*)minimapView;
 
 #pragma mark other_swizzled_events
 - (void)MM_selectTab:(id)sender;

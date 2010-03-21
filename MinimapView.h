@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "BackgroundUpdater.h"
 
 extern int const scaleDownThreshold;
 extern int const scaleDownTo;
@@ -17,9 +18,13 @@ extern int const scaleDownTo;
 
 	NSView* textView;
 	NSRange viewableRange;
-	NSImage* nextImage;
+	NSImage* theImage;
 	NSOperationQueue* queue;
+	NSTimer* timer;
+	NSLock* drawLock;
 	
+	BackgroundUpdater* updater;
+	NSRect visiblePartOfImage;
 	Boolean refreshAll;
 	float pixelPerLine;
 	float viewableRangeScale;
@@ -29,8 +34,10 @@ extern int const scaleDownTo;
 }
 #pragma mark public-properties
 @property(retain) NSWindowController* windowController;
-@property(readonly) int gutterSize;
 @property(readonly) NSView* textView;
+@property(readonly) NSImage* theImage;
+@property(retain) NSTimer* timer;
+@property(retain, readonly) NSLock* drawLock;
 
 #pragma mark init
 - (id)initWithTextView:(NSView*) textView;
@@ -38,7 +45,10 @@ extern int const scaleDownTo;
 #pragma mark public-api
 - (void)refreshDisplay;
 - (void)refreshViewableRange;
+- (int)gutterSize;
 - (void)updateGutterSize;
+- (void)setNewDocument;
+- (NSRect)getVisiblePartOfMinimap;
 
 #pragma mark drawOperation-api
 - (void)asyncDrawFinished:(NSImage*) bitmap;

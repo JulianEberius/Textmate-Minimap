@@ -76,6 +76,16 @@
 	return [snapshot autorelease];
 }
 
+- (NSImage *)emptySnapshotImageFor:(MinimapView*)minimapView
+{
+	int gutterSize = [minimapView gutterSize];
+	NSRect r = NSMakeRect(gutterSize, 0, [self bounds].size.width-gutterSize, [self bounds].size.height);
+	NSRect bounds = [minimapView bounds];
+	float scaleFactor = bounds.size.width / r.size.width;
+	int h = r.size.height*scaleFactor;
+	NSImage* image = [[NSImage alloc] initWithSize:NSMakeRect(0, 0, bounds.size.width, h).size];
+	return [image autorelease];
+}
 
 #pragma mark minimap
 /*
@@ -119,9 +129,11 @@
 #pragma mark other_swizzled_events
 - (void)MM_selectTab:(id)sender
 {
+	NSLog(@"kill!!!!!");
 	[[[TextmateMinimap instance] theLock] lock];
 	[self MM_selectTab:sender];
 	[[[TextmateMinimap instance] theLock] unlock];
+	[[self getMinimap] setNewDocument];
 	[self refreshMinimap];
 }
 
