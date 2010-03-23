@@ -16,4 +16,5 @@
 }
 - (id)initWithMinimapView:(MinimapView*)mv andOperationQueue:(NSOperationQueue*)opQueue;
 - (void)startRedrawInBackground;
+- (void)firstDraw;
 @end

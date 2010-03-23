@@ -15,15 +15,15 @@ extern int const scaleDownTo;
 @interface MinimapView : NSView {
 
 	NSWindowController* windowController;
-
 	NSView* textView;
 	NSRange viewableRange;
 	NSImage* theImage;
 	NSOperationQueue* queue;
 	NSTimer* timer;
 	NSLock* drawLock;
-	
 	BackgroundUpdater* updater;
+	
+	float visRectPosBeforeScrolling;
 	NSRect visiblePartOfImage;
 	Boolean refreshAll;
 	float pixelPerLine;
@@ -45,6 +45,7 @@ extern int const scaleDownTo;
 #pragma mark public-api
 - (void)refreshDisplay;
 - (void)refreshViewableRange;
+- (void)smallRefresh;
 - (int)gutterSize;
 - (void)updateGutterSize;
 - (void)setNewDocument;

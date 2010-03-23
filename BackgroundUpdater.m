@@ -33,34 +33,56 @@
 	NSImage* image = [minimapView theImage];
 	NSRect visRect = [minimapView getVisiblePartOfMinimap];
 	
-	int i;
-	for (i=visRect.origin.y+visRect.size.height;
-		 i<[image size].height;
-		 i=i+50) {
-		
-		int length = 50;
-		if ((i+length) > [image size].height) {
-			length = [image size].height - i;
+	int i = visRect.origin.y+visRect.size.height;
+	int t = visRect.origin.y;
+	BOOL goUp = TRUE;
+	BOOL goDown = TRUE;
+	while (goUp || goDown) {
+		if (goDown) {
+			int length = 50;
+			if ((i+length) > [image size].height) {
+				length = [image size].height - i;
+			}
+			
+			NSRect rectToDraw = NSMakeRect(visRect.origin.x, i-1, visRect.size.width, length+1);
+			AsyncDrawOperation* op = [[[AsyncDrawOperation alloc] initWithMinimapView:minimapView andMode:MM_BACKGROUND_DRAW] autorelease];
+			[op setPartToDraw:rectToDraw];
+			[operationQueue addOperation:op];
+			i=i+50;
+			if (i>[image size].height)
+				goDown = FALSE;
 		}
-		
-		NSRect rectToDraw = NSMakeRect(visRect.origin.x, i-1, visRect.size.width, length+1);
-		AsyncDrawOperation* op = [[[AsyncDrawOperation alloc] initWithMinimapView:minimapView andMode:MM_BACKGROUND_DRAW] autorelease];
-		[op setPartToDraw:rectToDraw];
-		[operationQueue addOperation:op];
+		if (goUp) {
+			int length = 50;
+			if ((t-length) < 0) {
+				length = t;
+			}
+			
+			NSRect rectToDraw = NSMakeRect(visRect.origin.x, t-length-1, visRect.size.width, length+1);
+			AsyncDrawOperation* op = [[[AsyncDrawOperation alloc] initWithMinimapView:minimapView andMode:MM_BACKGROUND_DRAW] autorelease];
+			[op setPartToDraw:rectToDraw];
+			[operationQueue addOperation:op];
+			t = t-50;
+			if (t<0)
+				goUp = FALSE;
+		}
 	}
-	for (i=visRect.origin.y;
-		 i>0;
-		 i=i-50) {
-		
-		int length = 50;
-		if ((i-length) < 0) {
-			length = i;
-		}
-		
-		NSRect rectToDraw = NSMakeRect(visRect.origin.x, i-length-1, visRect.size.width, length+1);
-		AsyncDrawOperation* op = [[[AsyncDrawOperation alloc] initWithMinimapView:minimapView andMode:MM_BACKGROUND_DRAW] autorelease];
-		[op setPartToDraw:rectToDraw];
-		[operationQueue addOperation:op];
+}
+
+- (void)firstDraw
+{
+	NSImage* image = [minimapView theImage];	
+	int i;
+	for (i=0;i<[image size].height;i=i+50) {
+			int length = 50;
+			if ((i+length) > [image size].height) {
+				length = [image size].height - i;
+			}
+			
+			NSRect rectToDraw = NSMakeRect(0, i-1, [image size].width, length+1);
+			AsyncDrawOperation* op = [[[AsyncDrawOperation alloc] initWithMinimapView:minimapView andMode:MM_BACKGROUND_DRAW] autorelease];
+			[op setPartToDraw:rectToDraw];
+			[operationQueue addOperation:op];
 	}
 }
 @end
