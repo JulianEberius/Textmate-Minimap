@@ -36,7 +36,7 @@
 @property(retain, readonly) NSImage* iconImage;
 @property(retain, readonly) NSView* preferencesView;
 @property(retain) NSTimer* timer;
-@property(retain, readonly) NSLock* theLock;
+@property(readonly) NSLock* theLock;
 
 + (TextmateMinimap*)instance;
 - (id)initWithPlugInController:(id <TMPlugInController>)aController;

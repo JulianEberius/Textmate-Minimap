@@ -59,6 +59,8 @@ static TextmateMinimap *sharedInstance = nil;
 		sparkleUpdater = [MMSUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
 		[sparkleUpdater resetUpdateCycle];
 		
+		theLock = [[[NSLock alloc] init] retain];
+		
 		[OakProjectController jr_swizzleMethod:@selector(windowDidLoad) withMethod:@selector(MM_windowDidLoad) error:NULL];
 		[OakProjectController jr_swizzleMethod:@selector(windowWillClose:) withMethod:@selector(MM_windowWillClose:) error:NULL];
 		[OakDocumentController jr_swizzleMethod:@selector(windowDidLoad) withMethod:@selector(MM_windowDidLoad) error:NULL];
@@ -194,6 +196,7 @@ static TextmateMinimap *sharedInstance = nil;
 		[timer release];
 		timer = NULL;
 	}
+	[theLock release];
 	[lastWindowController release];
 	[prefWindowController release];
 	[super dealloc];

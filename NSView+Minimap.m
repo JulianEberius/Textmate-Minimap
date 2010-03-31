@@ -137,6 +137,13 @@
 	[self refreshMinimap];
 }
 
+- (void)MM_mouseDown:(NSEvent *)theEvent
+{
+	[self MM_mouseUp:theEvent];
+	// [self scheduleRefresh];
+	[self refreshMinimap];
+}
+
 - (void)MM_mouseUp:(NSEvent *)theEvent
 {
 	[self MM_mouseUp:theEvent];

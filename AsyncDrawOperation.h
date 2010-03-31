@@ -11,17 +11,18 @@
 
 #define MM_COMPLETE_IMAGE 0
 #define MM_PARTIAL_IMAGE 1
-#define MM_BACKGROUND_DRAW 2
-
 
 @interface AsyncDrawOperation : NSOperation
 {
 	MinimapView* minimapView;
+	BackgroundUpdater* updater;
 	int mode;
 	NSColor* fillColor;
 	NSRect partToDraw;
 }
 
+// asyncdrawop has two different usage variants at the moment.. should be split into two classes
+// first usage variant
 - (id)initWithMinimapView:(MinimapView*)mv andMode:(int)mode;
-- (void)setPartToDraw:(NSRect)part;
+- (void)setPartToDraw:(NSRect)part; 
 @end

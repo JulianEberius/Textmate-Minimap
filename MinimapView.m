@@ -14,8 +14,8 @@
 #import "AsyncDrawOperation.h"
 #import "AsyncDrawOperation.h"
 
-int const scaleDownThreshold = 6;
-int const scaleDownTo = 6;
+int const scaleDownThreshold = 5;
+int const scaleDownTo = 5;
 
 @interface MinimapView (Private_MinimapView)
 - (void)updateViewableRange;
@@ -47,9 +47,10 @@ int const scaleDownTo = 6;
 		viewableRangeScale = 1.0;
 		gutterSize = -1;
 		visRectPosBeforeScrolling = -1;
-		textView = [tv retain];
+		textView = tv;
 		firstDraw = YES;
 		timer = NULL;
+		drawLock = [[[NSLock alloc] init] retain];
 		updater = [[BackgroundUpdater alloc] initWithMinimapView:self andOperationQueue:queue];
 	}
     return self;
@@ -59,11 +60,11 @@ int const scaleDownTo = 6;
 {
 	[queue cancelAllOperations];
 	[queue waitUntilAllOperationsAreFinished];
-	[textView release];
 	[windowController release];
 	[theImage release];
 	[updater release];
 	[queue release];
+	[drawLock release];
 	queue = nil;
 	[super dealloc];
 }
@@ -86,17 +87,19 @@ int const scaleDownTo = 6;
 	int numLines = [self getNumberOfLines];
 	float ppl = [self bounds].size.height / numLines;
 	float scaleUpThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"Minimap_scaleUpThreshold"];
-	
+	NSRect drawTo = [self bounds];
 	if (refreshAll) 
 	{
 		AsyncDrawOperation* op;
 		if (ppl < scaleUpThreshold)
 		{
+			minimapIsScrollable = YES;
 			NSRect rectToSnapshot = [self updateVisiblePartOfImage];
 			op = [[AsyncDrawOperation alloc] initWithMinimapView:self andMode:MM_PARTIAL_IMAGE];
 			[op setPartToDraw:rectToSnapshot];
 			refreshAll = NO;
 		} else {
+			minimapIsScrollable = NO;
 			op = [[AsyncDrawOperation alloc] initWithMinimapView:self andMode:MM_COMPLETE_IMAGE];
 		}
 		[queue cancelAllOperations];
@@ -108,15 +111,20 @@ int const scaleDownTo = 6;
 	if (ppl < scaleUpThreshold)
 	{
 		NSRect rectToSnapshot = [self getVisiblePartOfMinimap];
-		[theImage drawInRect:[self bounds] fromRect:rectToSnapshot operation:NSCompositeSourceOver fraction:1.0];
+		[theImage drawInRect:drawTo fromRect:rectToSnapshot operation:NSCompositeSourceOver fraction:1.0];
 	}
 	else
 	{
+		if (ppl > scaleDownThreshold) {
+			drawTo.size.height = numLines*scaleDownTo;
+			[[self currentBackgroundColor] set];
+			NSRectFill(NSMakeRect(drawTo.origin.x, drawTo.size.height, drawTo.size.width, [self bounds].size.height - drawTo.size.height));
+		}
 		[self setMinimapLinesStart:0];
 		[self setViewableRangeScaling:1.0];
-		[theImage drawInRect:[self bounds] fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.0];
+		[theImage drawInRect:drawTo fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.0];
 	}
-	[self drawVisRect:rect];
+	[self drawVisRect:drawTo];
 }
 
 - (NSRect)updateVisiblePartOfImage 
@@ -177,7 +185,7 @@ int const scaleDownTo = 6;
 	viewableRange = range;
 }
 
-- (void)drawVisRect:(NSRect)rect
+- (void)drawVisRect:(NSRect)drawTo
 {
 	// drawing the vis rect
 	[self updateViewableRange];
@@ -195,17 +203,18 @@ int const scaleDownTo = 6;
 		if (visRectPosBeforeScrolling != -1) {
 			float scrolledPixels = (visiblePartOfImage.origin.y - visRectPosBeforeScrolling);
 			visRectPos -= scrolledPixels*(bounds.size.height/visiblePartOfImage.size.height);
-			
 		}
 	}
 	else
 	{
 		visRectPos = (viewableRange.location*pixelPerLine);
 	}
+	
+	float drawToScaling = drawTo.size.height / bounds.size.height;
 	NSRect visibleHighlightRect = NSMakeRect(0,
-											 visRectPos,
-											 rect.size.width-1,
-											 visRectHeight);
+											 visRectPos*drawToScaling,
+											 drawTo.size.width-1,
+											 visRectHeight*drawToScaling);
 	
 	[NSGraphicsContext saveGraphicsState];
 	[[NSColor colorWithCalibratedRed:0.549 green:0.756 blue:1 alpha:0.9] set];
@@ -283,6 +292,7 @@ int const scaleDownTo = 6;
 - (void)refreshDisplay {
 	refreshAll = TRUE;
 	visRectPosBeforeScrolling = -1;
+	
 	[self setNeedsDisplayInRect:[self visibleRect]];
 }
 - (void)firstRefresh {
@@ -296,7 +306,6 @@ int const scaleDownTo = 6;
 	visRectPosBeforeScrolling = -1;
 	[self setNeedsDisplayInRect:[self visibleRect]];
 	
-	/*
 	NSTimer* old_timer = [self timer];
 	if (old_timer != NULL && [old_timer isValid]) {
 		[old_timer invalidate];
@@ -304,7 +313,6 @@ int const scaleDownTo = 6;
 	// do not refresh instantly, wait until scrolling finished
 	NSTimer* t = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(refreshDisplay) userInfo:nil repeats:NO];
 	[self setTimer:t];
-	 */
 }
 - (void)smallRefresh
 {
@@ -327,10 +335,10 @@ int const scaleDownTo = 6;
 }
 - (void)setNewDocument
 {
+	[queue setSuspended:NO];
 	[queue cancelAllOperations];
-	[queue waitUntilAllOperationsAreFinished];
-	[theImage release];
-	theImage = NULL;
+//	[theImage release];
+//	theImage = NULL;
 	firstDraw = YES;
 }
 
@@ -375,16 +383,14 @@ int const scaleDownTo = 6;
 - (void)asyncDrawFinished: (NSImage*) bitmap 
 {
 	[bitmap retain];
-	[[self drawLock] lock];
 	[theImage release];
 	theImage = bitmap;
-	[updater startRedrawInBackground];
-	[[self drawLock] lock];
+	if (minimapIsScrollable) {
+		[updater setDirtyExceptForVisiblePart];
+		[updater startRedrawInBackground];
+	}
 	
-	[self updateVisiblePartOfImage];
-	float ppl = [self bounds].size.height / [self getNumberOfLines];
-	float scaleUpThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"Minimap_scaleUpThreshold"];
-	if (ppl < scaleUpThreshold)
+	if (minimapIsScrollable)
 		pixelPerLine = [[NSUserDefaults standardUserDefaults] floatForKey:@"Minimap_scaleUpTo"];
 	else 
 		pixelPerLine = [self bounds].size.height / [self getNumberOfLines];

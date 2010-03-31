@@ -35,6 +35,14 @@
 	}
     return self;
 }
+- (id)initWithMinimapView:(MinimapView*)mv andMode:(int)md andUpdater:(BackgroundUpdater*)upd
+{
+	self = [self initWithMinimapView:mv andMode:md];
+	if (self) {
+		updater = upd;
+	}
+	return self;
+}
 
 - (void) dealloc
 {
@@ -58,9 +66,6 @@
 			break;
 		case MM_PARTIAL_IMAGE:
 			[self makePartialSnapshot];
-			break;
-		case MM_BACKGROUND_DRAW:
-			[self partialBackgroundDraw];
 			break;
 		default:
 			break;
@@ -111,45 +116,8 @@
 
 	if ([self checkCancelled]) 
 		return;
-	[minimapView performSelectorOnMainThread:@selector(asyncDrawFinished:) withObject:image waitUntilDone:FALSE];
+	[minimapView performSelectorOnMainThread:@selector(asyncDrawFinished:) withObject:image waitUntilDone:YES];
 
-	[[minimapView drawLock] unlock];
-}
-
-- (void)partialBackgroundDraw
-{
-	[[minimapView drawLock] lock];
-	NSImage* image = [minimapView theImage];
-	
-	if ([self checkCancelled]) 
-		return;
-	NSRect tvBounds = [[minimapView textView] bounds];
-	int gutterSize = [minimapView gutterSize]; 
-	float scaleFactor = tvBounds.size.height / [image size].height;
-	NSRect rectToRedraw = NSMakeRect(gutterSize, 
-									 partToDraw.origin.y*scaleFactor, 
-									 tvBounds.size.width - gutterSize,
-									 partToDraw.size.height*scaleFactor);
-	NSImage* drawnPart = [[minimapView textView] snapshotByDrawingInRect:rectToRedraw];
-	
-	if ([self checkCancelled]) 
-		return;
-	
-	[image lockFocus];
-		[drawnPart drawInRect:partToDraw
-					 fromRect:rectToRedraw 
-					operation:NSCompositeSourceOver fraction:1.0];
-	[image unlockFocus];
-
-//	NSRect visRect = [minimapView getVisiblePartOfMinimap];
-//	int p1 = partToDraw.origin.y;
-//	int p2 = partToDraw.origin.y+partToDraw.size.height;
-//	int l1 = visRect.origin.y;
-//	int l2 = visRect.origin.y+visRect.size.height;
-//	if	((p1>=l1 && p1<=l2) || (p2>=l1 && p2 <= l2)) {
-		[minimapView performSelectorOnMainThread:@selector(smallRefresh) withObject:NULL waitUntilDone:FALSE];
-
-//	}
 	[[minimapView drawLock] unlock];
 }
 
@@ -182,7 +150,9 @@
 	NSRect bounds = [minimapView bounds];
 	float scaleFactor = bounds.size.width / [croppedSnapshot size].width;
 	int h = croppedSnapshot.size.height*scaleFactor;
+	
 	NSImage* image = [[[NSImage alloc] initWithSize:NSMakeRect(0, 0, bounds.size.width, h).size] autorelease];
+	
 	if ([self checkCancelled]) 
 		return;
 	[self initializeFillColorFromTextView];
@@ -190,17 +160,14 @@
 	
 	[image setFlipped:YES];
 	[image lockFocus];
-		if (h < bounds.size.height) {
-				[fillColor set];
-				NSRectFill(bounds);
-		}
-		[croppedSnapshot drawInRect:NSMakeRect(0, 0, bounds.size.width, h)];
+		NSRect imgRect = NSMakeRect(0, 0, bounds.size.width, h);
+		[croppedSnapshot drawInRect:imgRect];
 	[image unlockFocus];
 	[image setFlipped:NO];
 	
 	if ([self checkCancelled]) 
 		return;
-	[minimapView performSelectorOnMainThread:@selector(asyncDrawFinished:) withObject:image waitUntilDone:FALSE];
+	[minimapView performSelectorOnMainThread:@selector(asyncDrawFinished:) withObject:image waitUntilDone:YES];
 	[[minimapView drawLock] unlock];
 }
 

@@ -13,8 +13,16 @@
 	MinimapView* minimapView;
 	NSOperationQueue* operationQueue;
 	NSMutableArray* queue;
+	
+	NSMutableArray* dirtyRegions;
 }
 - (id)initWithMinimapView:(MinimapView*)mv andOperationQueue:(NSOperationQueue*)opQueue;
 - (void)startRedrawInBackground;
-- (void)firstDraw;
+
+- (void)rangeWasRedrawn:(NSValue*)range;
+- (void)setCompleteImageDirty;
+- (void)setRangeDirty:(NSRange)range;
+- (void)addDirtyRegions:(NSArray*)regions; //array of NSRanges
+- (void)setCompleteImageDirty;
+- (void)setDirtyExceptForVisiblePart;
 @end

@@ -26,18 +26,19 @@ extern int const scaleDownTo;
 	float visRectPosBeforeScrolling;
 	NSRect visiblePartOfImage;
 	Boolean refreshAll;
+	Boolean minimapIsScrollable;
 	float pixelPerLine;
 	float viewableRangeScale;
 	int minimapLinesStart;
 	int gutterSize;
-	BOOL firstDraw;
+	Boolean firstDraw;
 }
 #pragma mark public-properties
 @property(retain) NSWindowController* windowController;
 @property(readonly) NSView* textView;
 @property(readonly) NSImage* theImage;
 @property(retain) NSTimer* timer;
-@property(retain, readonly) NSLock* drawLock;
+@property(readonly) NSLock* drawLock;
 
 #pragma mark init
 - (id)initWithTextView:(NSView*) textView;
