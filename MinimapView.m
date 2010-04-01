@@ -72,7 +72,7 @@ int const scaleDownTo = 5;
 #pragma mark drawing routines
 
 - (void)drawRect:(NSRect)rect
-{	
+{
 	if (firstDraw) {
 		[windowController updateTrailingSpace];
 		firstDraw = NO;
@@ -82,13 +82,14 @@ int const scaleDownTo = 5;
 		//Defer first drawing by small interval ... don't know a better way to wait till the tv is fully initialized
 		NSTimer* t = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(firstRefresh) userInfo:nil repeats:NO];
 		[self setTimer:t];
+		return;
 	}
-	
+
 	int numLines = [self getNumberOfLines];
 	float ppl = [self bounds].size.height / numLines;
 	float scaleUpThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"Minimap_scaleUpThreshold"];
 	NSRect drawTo = [self bounds];
-	if (refreshAll) 
+	if (refreshAll)
 	{
 		AsyncDrawOperation* op;
 		if (ppl < scaleUpThreshold)
@@ -127,26 +128,26 @@ int const scaleDownTo = 5;
 	[self drawVisRect:drawTo];
 }
 
-- (NSRect)updateVisiblePartOfImage 
+- (NSRect)updateVisiblePartOfImage
 {
 	NSRect bounds = [self bounds];
 	int numLines = [self getNumberOfLines];
 
-	NSSize imgSize = [theImage size];	
+	NSSize imgSize = [theImage size];
 	NSRect tvBounds		= [textView bounds];
 	int scaleUpTo = [[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_scaleUpTo"];
 	float visiblePercentage = bounds.size.height / (numLines*scaleUpTo);
 	[self setViewableRangeScaling:(1/visiblePercentage)];
-	
-	
+
+
 	NSScrollView* sv = (NSScrollView*)[[textView superview] superview];
 	float percentage = [[sv verticalScroller] floatValue];
-	
-	float scaleFactor = [theImage size].height / tvBounds.size.height;			
+
+	float scaleFactor = [theImage size].height / tvBounds.size.height;
 	float middle = (percentage*(tvBounds.size.height-[textView visibleRect].size.height) + [textView visibleRect].size.height/2);
 	float mysteriousHeight = ((visiblePercentage * tvBounds.size.height) - [textView visibleRect].size.height);
 	float begin = middle - (percentage*mysteriousHeight) - ([textView visibleRect].size.height/2);
-	
+
 	NSRect visRect = NSMakeRect(0,
 								   begin*scaleFactor,
 								   [theImage size].width,
@@ -209,13 +210,13 @@ int const scaleDownTo = 5;
 	{
 		visRectPos = (viewableRange.location*pixelPerLine);
 	}
-	
+
 	float drawToScaling = drawTo.size.height / bounds.size.height;
 	NSRect visibleHighlightRect = NSMakeRect(0,
 											 visRectPos*drawToScaling,
 											 drawTo.size.width-1,
 											 visRectHeight*drawToScaling);
-	
+
 	[NSGraphicsContext saveGraphicsState];
 	[[NSColor colorWithCalibratedRed:0.549 green:0.756 blue:1 alpha:0.9] set];
 	[NSBezierPath setDefaultLineWidth:1];
@@ -245,7 +246,7 @@ int const scaleDownTo = 5;
 				/* Ignore any other kind of event. */
 				break;
         }
-		
+
     };
     return;
 }
@@ -253,20 +254,20 @@ int const scaleDownTo = 5;
 - (void)scrollWheel:(NSEvent *)theEvent
 {
 	NSRect tvBounds	= [textView bounds];
-	float scaleFactor = [theImage size].height / tvBounds.size.height;			
-	
+	float scaleFactor = [theImage size].height / tvBounds.size.height;
+
 	NSRect newVisRect = visiblePartOfImage;
 	if (visRectPosBeforeScrolling == -1)
 		visRectPosBeforeScrolling = visiblePartOfImage.origin.y;
-	
+
 	float newBegin = (newVisRect.origin.y / scaleFactor) + ([theEvent deltaY]/scaleFactor)*(-5);
-	
+
 	if (newBegin < 0)
 		newBegin = 0;
 	float lowerBound = tvBounds.size.height-(newVisRect.size.height/scaleFactor);
 	if (newBegin > lowerBound)
 		newBegin = lowerBound;
-	
+
 	newVisRect.origin.y = newBegin*scaleFactor;
 	[self setMinimapLinesStart:(newBegin/tvBounds.size.height)*[self getNumberOfLines]];
 	visiblePartOfImage = newVisRect;
@@ -281,7 +282,7 @@ int const scaleDownTo = 5;
 {
 	return YES;
 }
-- (BOOL)isOpaque 
+- (BOOL)isOpaque
 {
     return YES;
 }
@@ -292,20 +293,21 @@ int const scaleDownTo = 5;
 - (void)refreshDisplay {
 	refreshAll = TRUE;
 	visRectPosBeforeScrolling = -1;
-	
+
 	[self setNeedsDisplayInRect:[self visibleRect]];
 }
 - (void)firstRefresh {
 	refreshAll = TRUE;
 	visRectPosBeforeScrolling = -1;
 	[self updateGutterSize];
+	[updater setDirtyExceptForVisiblePart];
 	[self setNeedsDisplayInRect:[self visibleRect]];}
 
 - (void)refreshViewableRange{
 	[self updateVisiblePartOfImage];
 	visRectPosBeforeScrolling = -1;
 	[self setNeedsDisplayInRect:[self visibleRect]];
-	
+
 	NSTimer* old_timer = [self timer];
 	if (old_timer != NULL && [old_timer isValid]) {
 		[old_timer invalidate];
@@ -370,31 +372,31 @@ int const scaleDownTo = 5;
 
 - (int)gutterSize
 {
-	// lazy initialization... 
+	// lazy initialization...
 	if (gutterSize == -1)
 	{
 		[self updateGutterSize];
-	} 
+	}
 	return gutterSize;
 }
 
 #pragma mark drawOperation-api
 
-- (void)asyncDrawFinished: (NSImage*) bitmap 
+- (void)asyncDrawFinished: (NSImage*) bitmap
 {
 	[bitmap retain];
 	[theImage release];
 	theImage = bitmap;
 	if (minimapIsScrollable) {
-		[updater setDirtyExceptForVisiblePart];
+
 		[updater startRedrawInBackground];
 	}
-	
+
 	if (minimapIsScrollable)
 		pixelPerLine = [[NSUserDefaults standardUserDefaults] floatForKey:@"Minimap_scaleUpTo"];
-	else 
+	else
 		pixelPerLine = [self bounds].size.height / [self getNumberOfLines];
-	
+
 	[self setNeedsDisplay:YES];
 }
 
@@ -409,7 +411,7 @@ int const scaleDownTo = 5;
 - (int)getNumberOfLines
 {
 	unsigned int lineHeight = [textView lineHeight];
- 
+
 	float h = [textView bounds].size.height;
 	int totalLines = round(h/lineHeight);
 	return totalLines;

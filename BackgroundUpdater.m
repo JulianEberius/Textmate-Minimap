@@ -33,9 +33,10 @@
 - (void)startRedrawInBackground
 {
 	NSRect visRect = [minimapView getVisiblePartOfMinimap];
+	[operationQueue cancelAllOperations];
 	[operationQueue setSuspended:YES];
 	for (NSValue* val in dirtyRegions) {
-		NSRange range = [val rangeValue]; 
+		NSRange range = [val rangeValue];
 		NSRect rectToDraw = NSMakeRect(visRect.origin.x, range.location-1, visRect.size.width, range.length+1);
 		AsyncBGDrawOperation* op = [[[AsyncBGDrawOperation alloc] initWithMinimapView:minimapView andUpdater:self] autorelease];
 		[op setPartToDraw:rectToDraw andRangeObject:(NSValue*)val];
@@ -53,7 +54,7 @@
 {
 	NSImage* image = [minimapView theImage];
 	NSRect visRect = [minimapView getVisiblePartOfMinimap];
-	
+
 	int i = visRect.origin.y+visRect.size.height;
 	int t = visRect.origin.y;
 	BOOL goUp = TRUE;
@@ -64,7 +65,7 @@
 			if ((i+length) > [image size].height) {
 				length = [image size].height - i;
 			}
-			NSRange range = NSMakeRange(i, length+1);			
+			NSRange range = NSMakeRange(i, length+1);
 			[self setRangeDirty:range];
 			i=i+50;
 			if (i>[image size].height)
@@ -87,7 +88,7 @@
 - (void)setRangeDirty:(NSRange)range
 {
 	NSValue* val = [NSValue valueWithRange:range];
-	for (NSValue* v in dirtyRegions) 
+	for (NSValue* v in dirtyRegions)
 		if ([v isEqualToValue:val]) {
 			return;
 		}
@@ -101,7 +102,7 @@
 
 - (void)setCompleteImageDirty
 {
-	NSImage* image = [minimapView theImage];	
+	NSImage* image = [minimapView theImage];
 	int i;
 	for (i=0;i<[image size].height;i=i+50) {
 		int length = 50;

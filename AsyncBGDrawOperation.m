@@ -47,9 +47,9 @@
 	partToDraw = part;
 	rangeObject = range;
 }
-- (void)main 
+- (void)main
 {
-	if ([self isCancelled]) 
+	if ([self isCancelled])
 		return;
 	[self partialBackgroundDraw];
 }
@@ -57,43 +57,42 @@
 - (void)partialBackgroundDraw
 {
 	[[minimapView drawLock] lock];
-	if ([self checkCancelled]) 
+	if ([self checkCancelled])
 		return;
 	NSImage* image = [minimapView theImage];
-	
+
 	NSRect tvBounds = [[minimapView textView] bounds];
-	int gutterSize = [minimapView gutterSize]; 
+	int gutterSize = [minimapView gutterSize];
 	float scaleFactor = tvBounds.size.height / [image size].height;
-	NSRect rectToRedraw = NSMakeRect(gutterSize, 
-									 partToDraw.origin.y*scaleFactor, 
+	NSRect rectToRedraw = NSMakeRect(gutterSize,
+									 partToDraw.origin.y*scaleFactor,
 									 tvBounds.size.width - gutterSize,
 									 partToDraw.size.height*scaleFactor);
 	NSImage* drawnPart = [[minimapView textView] snapshotByDrawingInRect:rectToRedraw];
-	
-	if ([self checkCancelled]) 
+
+	if ([self checkCancelled])
 		return;
-	
+
 	[image lockFocus];
 	[drawnPart drawInRect:partToDraw
-				 fromRect:rectToRedraw 
+				 fromRect:rectToRedraw
 				operation:NSCompositeSourceOver fraction:1.0];
 	[image unlockFocus];
-	
-	//	NSRect visRect = [minimapView getVisiblePartOfMinimap];
-	//	int p1 = partToDraw.origin.y;
-	//	int p2 = partToDraw.origin.y+partToDraw.size.height;
-	//	int l1 = visRect.origin.y;
-	//	int l2 = visRect.origin.y+visRect.size.height;
-	//	if	((p1>=l1 && p1<=l2) || (p2>=l1 && p2 <= l2)) {
-	if ([self checkCancelled]) 
+
+	if ([self checkCancelled])
 		return;
-	[minimapView performSelectorOnMainThread:@selector(smallRefresh) withObject:NULL waitUntilDone:NO];
-	
-	//	}
-	if ([self checkCancelled]) 
+	NSRect visRect = [minimapView getVisiblePartOfMinimap];
+	int p1 = partToDraw.origin.y;
+	int p2 = partToDraw.origin.y+partToDraw.size.height;
+	int l1 = visRect.origin.y;
+	int l2 = visRect.origin.y+visRect.size.height;
+	if	((p1>=l1 && p1<=l2) || (p2>=l1 && p2 <= l2)) {
+		[minimapView performSelectorOnMainThread:@selector(smallRefresh) withObject:NULL waitUntilDone:NO];
+	}
+	if ([self checkCancelled])
 		return;
 	[updater performSelectorOnMainThread:@selector(rangeWasRedrawn:) withObject:rangeObject waitUntilDone:YES];
-	
+
 	[[minimapView drawLock] unlock];
 }
 
@@ -101,7 +100,7 @@
 {
 	if ([self isCancelled]) {
 		[[minimapView drawLock] unlock];
-		return YES; 
+		return YES;
 	}
 	return NO;
 }
@@ -115,8 +114,8 @@
  */
 - (NSBitmapImageRep*)cropImageRep:(NSBitmapImageRep*)rep ToRect:(NSRect)rect {
 	CGImageRef cgImg = CGImageCreateWithImageInRect([rep CGImage], NSRectToCGRect(rect)); NSBitmapImageRep *result = [[NSBitmapImageRep alloc] initWithCGImage:cgImg];
-	
-	CGImageRelease(cgImg);          
+
+	CGImageRelease(cgImg);
 	return [result autorelease];
 }
 
