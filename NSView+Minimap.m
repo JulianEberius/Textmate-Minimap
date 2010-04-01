@@ -31,7 +31,7 @@
 		NSBitmapImageRep *imageRep = [self bitmapImageRepForCachingDisplayInRect:[self bounds]];
 		[self cacheDisplayInRect:[self bounds] toBitmapImageRep:imageRep];
 	[[[TextmateMinimap instance] theLock] unlock];
-	
+
 	return imageRep;
 }
 /*
@@ -42,8 +42,8 @@
 	[[[TextmateMinimap instance] theLock] lock];
 		NSBitmapImageRep *imageRep = [self bitmapImageRepForCachingDisplayInRect:[self bounds]];
 		[self cacheDisplayInRect:rect toBitmapImageRep:imageRep];
-	[[[TextmateMinimap instance] theLock] unlock];	
-	
+	[[[TextmateMinimap instance] theLock] unlock];
+
 	return imageRep;
 }
 /*
@@ -58,22 +58,33 @@
 		[self drawRect: [self frame]];
 		[snapshot unlockFocus];
 	[[[TextmateMinimap instance] theLock] unlock];
-	
+
 	return [snapshot autorelease];
 }
 /*
  Takes a snapshot of a part of the TextView, returning NSImage
  */
-- (NSImage *)snapshotByDrawingInRect:(NSRect)rect	
+- (NSImage *)snapshotByDrawingInRect:(NSRect)rect
 {
 	[[[TextmateMinimap instance] theLock] lock];
-		NSImage *snapshot = [[NSImage alloc] initWithSize:
-							   [self bounds].size];
-		[snapshot lockFocus];
-		[self drawRect: rect];
-		[snapshot unlockFocus];
+	NSImage *snapshot = [[NSImage alloc] initWithSize:
+						   rect.size];
+
+
+	// recursively draw the subview and sub-subviews
+	[snapshot lockFocus];
+	NSAffineTransform *transform = [NSAffineTransform transform];
+	[transform translateXBy:-rect.origin.x yBy:-rect.origin.y];
+	[transform concat];
+	[self drawRect:rect];
+	[transform invert];
+	[transform concat];
+	[snapshot unlockFocus];
+
+	// reset the transform to get back a clean graphic contexts for the rest of the drawing
+
 	[[[TextmateMinimap instance] theLock] unlock];
-	
+
 	return [snapshot autorelease];
 }
 
@@ -127,10 +138,6 @@
 #pragma mark other_swizzled_events
 - (void)MM_selectTab:(id)sender
 {
-<<<<<<< HEAD
-	
-=======
->>>>>>> newesttry
 	[[[TextmateMinimap instance] theLock] lock];
 	[[self getMinimap] setNewDocument];
 	[self MM_selectTab:sender];
@@ -165,7 +172,7 @@
 		int offset = [sender state] ? 56:40;
 		NSDrawer* drawer = [wc getMinimapDrawer];
 		MinimapView* mm = [wc getMinimapView];
-		
+
 		[drawer setTrailingOffset:offset];
 		[mm refreshDisplay];
 	}

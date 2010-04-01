@@ -75,7 +75,7 @@
 
 	[image lockFocus];
 	[drawnPart drawInRect:partToDraw
-				 fromRect:rectToRedraw
+				 fromRect:NSZeroRect
 				operation:NSCompositeSourceOver fraction:1.0];
 	[image unlockFocus];
 

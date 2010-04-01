@@ -21,13 +21,11 @@ extern int const scaleDownTo;
 	NSTimer* timer;
 	NSLock* drawLock;
 	BackgroundUpdater* updater;
-	
-<<<<<<< HEAD
+
+	float lastScrollPosition;
+
+	NSRange viewableRange;
 	float visRectPosBeforeScrolling;
-=======
-	float scrollDiffToTextView;
-	NSRange viewableRange;	
->>>>>>> newesttry
 	NSRect visiblePartOfImage;
 	Boolean refreshAll;
 	Boolean minimapIsScrollable;
@@ -50,11 +48,7 @@ extern int const scaleDownTo;
 #pragma mark public-api
 - (void)refreshDisplay;
 - (void)refreshViewableRange;
-<<<<<<< HEAD
 - (void)smallRefresh;
-=======
-- (void)minorRefresh;
->>>>>>> newesttry
 - (int)gutterSize;
 - (void)updateGutterSize;
 - (void)setNewDocument;

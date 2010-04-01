@@ -10,6 +10,7 @@
 #include "math.h"
 #import "MinimapView.h"
 #import "AsyncBGDrawOperation.h"
+#define REGION_LENGTH 200
 
 @implementation BackgroundUpdater
 
@@ -19,7 +20,7 @@
     if (self) {
 		minimapView = mv;
 		operationQueue = opQueue;
-		dirtyRegions = [[NSMutableArray arrayWithCapacity:[[minimapView theImage] size].height/50] retain];
+		dirtyRegions = [[NSMutableArray arrayWithCapacity:[[minimapView theImage] size].height/REGION_LENGTH] retain];
 	}
     return self;
 }
@@ -52,38 +53,33 @@
 
 - (void)setDirtyExceptForVisiblePart
 {
+	[dirtyRegions removeAllObjects];
 	NSImage* image = [minimapView theImage];
 	NSRect visRect = [minimapView getVisiblePartOfMinimap];
-<<<<<<< HEAD
-
-=======
-	
->>>>>>> newesttry
 	int i = visRect.origin.y+visRect.size.height;
 	int t = visRect.origin.y;
 	BOOL goUp = TRUE;
 	BOOL goDown = TRUE;
 	while (goUp || goDown) {
 		if (goDown) {
-			int length = 50;
+			int length = REGION_LENGTH;
 			if ((i+length) > [image size].height) {
 				length = [image size].height - i;
 			}
-<<<<<<< HEAD
 			NSRange range = NSMakeRange(i, length+1);
 			[self setRangeDirty:range];
-			i=i+50;
+			i=i+REGION_LENGTH;
 			if (i>[image size].height)
 				goDown = FALSE;
 		}
 		if (goUp) {
-			int length = 50;
+			int length = REGION_LENGTH;
 			if ((t-length) < 0) {
 				length = t;
 			}
-			NSRange range = NSMakeRange(t, length+1);
+			NSRange range = NSMakeRange(t-length+1, length+1);
 			[self setRangeDirty:range];
-			t = t-50;
+			t = t-REGION_LENGTH;
 			if (t<0)
 				goUp = FALSE;
 		}
@@ -93,10 +89,12 @@
 - (void)setRangeDirty:(NSRange)range
 {
 	NSValue* val = [NSValue valueWithRange:range];
+/*
 	for (NSValue* v in dirtyRegions)
 		if ([v isEqualToValue:val]) {
 			return;
 		}
+	*/
 	[dirtyRegions addObject:val];
 }
 
@@ -107,40 +105,16 @@
 
 - (void)setCompleteImageDirty
 {
+	[dirtyRegions removeAllObjects];
 	NSImage* image = [minimapView theImage];
 	int i;
-	for (i=0;i<[image size].height;i=i+50) {
-		int length = 50;
+	for (i=0;i<[image size].height;i=i+REGION_LENGTH) {
+		int length = REGION_LENGTH;
 		if ((i+length) > [image size].height) {
 			length = [image size].height - i;
 		}
 		NSRange range = NSMakeRange(i-1,length+1);
 		[dirtyRegions addObject:[NSValue valueWithRange:range]];
-=======
-			
-			NSRect rectToDraw = NSMakeRect(visRect.origin.x, i-1, visRect.size.width, length+1);
-			AsyncDrawOperation* op = [[[AsyncDrawOperation alloc] initWithMinimapView:minimapView andMode:MM_BACKGROUND_DRAW] autorelease];
-			[op setPartToDraw:rectToDraw];
-			[operationQueue addOperation:op];
-			i=i+50;
-			if (i>[image size].height)
-				goDown = FALSE;
-		}
-		if (goUp) {
-			int length = 50;
-			if ((t-length) < 0) {
-				length = t;
-			}
-			
-			NSRect rectToDraw = NSMakeRect(visRect.origin.x, t-length-1, visRect.size.width, length+1);
-			AsyncDrawOperation* op = [[[AsyncDrawOperation alloc] initWithMinimapView:minimapView andMode:MM_BACKGROUND_DRAW] autorelease];
-			[op setPartToDraw:rectToDraw];
-			[operationQueue addOperation:op];
-			t = t-50;
-			if (t<0)
-				goUp = FALSE;
-		}
->>>>>>> newesttry
 	}
 }
 @end
