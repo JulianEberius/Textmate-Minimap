@@ -17,8 +17,11 @@
 - (void)refreshMinimap;
 - (void)toggleMinimap;
 - (BOOL)isSoftWrapEnabled;
-- (MinimapView*) minimap;
+- (MinimapView*)getMinimapView;
+- (NSDrawer*)getMinimapDrawer;
 - (void)updateTrailingSpace;
+
+
 
 #pragma mark swizzled-methods
 - (void)MM_windowWillClose:(id)aNotification;

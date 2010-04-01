@@ -20,15 +20,11 @@
 {
 	[self MM_reflectScrolledClipView:clipView];
 	
-	id controller = [[self window] windowController];
-	if ([controller isKindOfClass:OakProjectController] || [controller isKindOfClass:OakDocumentController])
-		for (NSDrawer *drawer in [[self window] drawers])
-			if ([[drawer contentView] isKindOfClass:[MinimapView class]] )  {
-				MinimapView* textShapeView = (MinimapView*)[drawer contentView];
-				
-				//refreshViewableRange is a "small" refresh, reusing the image, and just repositioning the visibleRect
-				[textShapeView refreshViewableRange];
-			}
+	NSWindowController* controller = [[self window] windowController];
+	if ([controller isKindOfClass:OakProjectController] || [controller isKindOfClass:OakDocumentController]) {
+		MinimapView* textShapeView = [controller getMinimapView];
+		[textShapeView refreshViewableRange];
+	}
 	 
 }
 

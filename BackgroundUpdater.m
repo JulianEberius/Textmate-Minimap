@@ -54,7 +54,11 @@
 {
 	NSImage* image = [minimapView theImage];
 	NSRect visRect = [minimapView getVisiblePartOfMinimap];
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> newesttry
 	int i = visRect.origin.y+visRect.size.height;
 	int t = visRect.origin.y;
 	BOOL goUp = TRUE;
@@ -65,6 +69,7 @@
 			if ((i+length) > [image size].height) {
 				length = [image size].height - i;
 			}
+<<<<<<< HEAD
 			NSRange range = NSMakeRange(i, length+1);
 			[self setRangeDirty:range];
 			i=i+50;
@@ -111,6 +116,31 @@
 		}
 		NSRange range = NSMakeRange(i-1,length+1);
 		[dirtyRegions addObject:[NSValue valueWithRange:range]];
+=======
+			
+			NSRect rectToDraw = NSMakeRect(visRect.origin.x, i-1, visRect.size.width, length+1);
+			AsyncDrawOperation* op = [[[AsyncDrawOperation alloc] initWithMinimapView:minimapView andMode:MM_BACKGROUND_DRAW] autorelease];
+			[op setPartToDraw:rectToDraw];
+			[operationQueue addOperation:op];
+			i=i+50;
+			if (i>[image size].height)
+				goDown = FALSE;
+		}
+		if (goUp) {
+			int length = 50;
+			if ((t-length) < 0) {
+				length = t;
+			}
+			
+			NSRect rectToDraw = NSMakeRect(visRect.origin.x, t-length-1, visRect.size.width, length+1);
+			AsyncDrawOperation* op = [[[AsyncDrawOperation alloc] initWithMinimapView:minimapView andMode:MM_BACKGROUND_DRAW] autorelease];
+			[op setPartToDraw:rectToDraw];
+			[operationQueue addOperation:op];
+			t = t-50;
+			if (t<0)
+				goUp = FALSE;
+		}
+>>>>>>> newesttry
 	}
 }
 @end

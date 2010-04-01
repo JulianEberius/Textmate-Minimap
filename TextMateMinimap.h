@@ -21,8 +21,9 @@
 	NSMenu* windowMenu;
 	NSMenuItem* showMinimapMenuItem;
 	NSWindowController* prefWindowController;
-	
 	NSWindowController* lastWindowController;
+	
+	NSMutableDictionary* iVars;
 
 	IBOutlet NSView* preferencesView;
 	IBOutlet NSTextField* explanationText;
@@ -41,6 +42,10 @@
 + (TextmateMinimap*)instance;
 - (id)initWithPlugInController:(id <TMPlugInController>)aController;
 - (void)setMinimapMenuItem:(BOOL)flag;
+
+//  simulating new fields(ivars) for the objects get extended via categories
+- (NSMutableDictionary*)getIVarsFor:(id)sender;
+- (void)releaseIVarsFor:(id)sender;
 
 - (IBAction)update:(id)sender;
 - (IBAction)changeScaleValues:(id)sender;

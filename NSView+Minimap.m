@@ -9,6 +9,7 @@
 #import "NSView+Minimap.h"
 #import "MinimapView.h"
 #import "TextMate.h"
+#import "NSWindowController+Minimap.h"
 #import "TextmateMinimap.h"
 
 @interface NSView (Private_MM_NSView)
@@ -94,13 +95,10 @@
 - (MinimapView*) getMinimap
 {
 	NSWindowController* controller = [[self window] windowController];
-	if ([controller isKindOfClass:OakProjectController] || [controller isKindOfClass:OakDocumentController])
-		for (NSDrawer *drawer in [[self window] drawers])
-			if ([[drawer contentView] isKindOfClass:[MinimapView class]] )  {
-				
-				MinimapView* textShapeView = (MinimapView*)[drawer contentView];
-				return textShapeView;
-			}
+	if ([controller isKindOfClass:OakProjectController] || [controller isKindOfClass:OakDocumentController]) {
+		MinimapView* textShapeView = [controller getMinimapView];
+		return textShapeView;
+	}
 	return nil;
 }
 
@@ -129,7 +127,10 @@
 #pragma mark other_swizzled_events
 - (void)MM_selectTab:(id)sender
 {
+<<<<<<< HEAD
 	
+=======
+>>>>>>> newesttry
 	[[[TextmateMinimap instance] theLock] lock];
 	[[self getMinimap] setNewDocument];
 	[self MM_selectTab:sender];
@@ -160,13 +161,14 @@
 {
 	[self MM_toggleSoftWrap:sender];
 	NSWindowController* wc = [[self window] windowController];
-	if ([wc isKindOfClass:OakProjectController] || [wc isKindOfClass:OakDocumentController])
-		for (NSDrawer *drawer in [[wc window] drawers])
-			if ([[drawer contentView] isKindOfClass:[MinimapView class]] ) {
-				int offset = [sender state] ? 56:40;
-				[drawer setTrailingOffset:offset];
-				[(MinimapView*)[drawer contentView] refreshDisplay];
-			}
+	if ([wc isKindOfClass:OakProjectController] || [wc isKindOfClass:OakDocumentController]) {
+		int offset = [sender state] ? 56:40;
+		NSDrawer* drawer = [wc getMinimapDrawer];
+		MinimapView* mm = [wc getMinimapView];
+		
+		[drawer setTrailingOffset:offset];
+		[mm refreshDisplay];
+	}
 }
 
 - (void)MM_toggleShowSoftWrapInGutter:(id)sender

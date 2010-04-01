@@ -9,6 +9,7 @@
 #import "NSWindowController+Minimap.h"
 #import "MinimapView.h"
 #import "TextMate.h"
+#import "NSView+Minimap.h"
 #import "TextMateMinimap.h"
 #import "objc/runtime.h"
 #include "sys/xattr.h"
@@ -30,7 +31,7 @@
 
 @interface NSWindowController (Private_MM_NSWindowController)
 - (NSRectEdge) getCorrectMinimapDrawerSide;
-- (BOOL) shouldOpenMinimapDrawer:(NSString*)filename;
+- (BOOL)shouldOpenMinimapDrawer:(NSString*)filename;
 - (void)writeMinimapOpenStateToFileAttributes:(NSString*)filename;
 @end
 
@@ -43,12 +44,8 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
  */
 - (void)refreshMinimap 
 {
-	NSWindow* window = [self window];
-	for (NSDrawer *drawer in [window drawers])
-		if ([[drawer contentView] isKindOfClass:[MinimapView class]] )  {
-			MinimapView* textShapeView = (MinimapView*)[drawer contentView];
-			[textShapeView refreshDisplay];	
-		}
+	MinimapView* textShapeView = [self getMinimapView];
+	[textShapeView refreshDisplay];	
 }
 
 /*
@@ -70,21 +67,18 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
  */
 - (void)toggleMinimap
 {
-	NSWindow* window = [self window];
-	for (NSDrawer *drawer in [window drawers])
-		if ([[drawer contentView] isKindOfClass:[MinimapView class]] )  {
-			int state = [drawer state];
-			if (state == NSDrawerClosedState || state == NSDrawerClosingState) {
-				NSRectEdge edge = [self getCorrectMinimapDrawerSide];
-				[drawer openOnEdge:edge];
-				[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Minimap_lastDocumentHadMinimapOpen"];
-			}
-			else  {
-				[drawer close];
-				[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Minimap_lastDocumentHadMinimapOpen"];			
-			}
-		}
-			
+	NSDrawer* drawer = [self getMinimapDrawer];
+	
+	int state = [drawer state];
+	if (state == NSDrawerClosedState || state == NSDrawerClosingState) {
+		NSRectEdge edge = [self getCorrectMinimapDrawerSide];
+		[drawer openOnEdge:edge];
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Minimap_lastDocumentHadMinimapOpen"];
+	}
+	else  {
+		[drawer close];
+		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Minimap_lastDocumentHadMinimapOpen"];			
+	}
 }
 
 /*
@@ -92,15 +86,10 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
  */
 - (void)scrollToLine:(unsigned int)newLine
 {
-	NSWindow* window = [self window];
-	for (NSDrawer *drawer in [window drawers])
-		if ([[drawer contentView] isKindOfClass:[MinimapView class]] )  {
-			id textView = [self textView];
-			MinimapView* textShapeView = (MinimapView*)[drawer contentView];
-			
-			[textView goToLineNumber: [NSNumber numberWithInt:newLine]];
-			[textShapeView refreshDisplay];
-		}
+	id textView = [self textView];
+	MinimapView* textShapeView = [self getMinimapView];		
+	[textView goToLineNumber: [NSNumber numberWithInt:newLine]];
+	[textShapeView refreshDisplay];
 }
 
 /*
@@ -108,28 +97,22 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
  */
 - (BOOL) isSoftWrapEnabled
 {
-	return [[[self minimap] textView] storedSoftWrapSetting];
+	return [[[self getMinimapView] textView] storedSoftWrapSetting];
 }
 
 /*
  Get this window's minimap
  */
-- (MinimapView*) minimap
+- (MinimapView*) getMinimapView
 {
-	MinimapView* result = nil;
-	for (NSDrawer *drawer in [[self window] drawers])
-		if ([[drawer contentView] isKindOfClass:[MinimapView class]] )  {
-			result = (MinimapView*)[drawer contentView];
-		}
-	return result;
+	NSMutableDictionary* ivars = [[TextmateMinimap instance] getIVarsFor:self];
+	return (MinimapView*)[ivars objectForKey:@"minimap"];
 }
 
 - (void)updateTrailingSpace
 {
-	for (NSDrawer *drawer in [[self window] drawers])
-		if ([[drawer contentView] isKindOfClass:[MinimapView class]] )  {
-			[drawer setTrailingOffset:[self isSoftWrapEnabled] ? 40 : 56];
-		}
+	NSDrawer* drawer = [self getMinimapDrawer];
+	[drawer setTrailingOffset:[self isSoftWrapEnabled] ? 40 : 56];
 }
 
 
@@ -152,14 +135,12 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 		filename = [[[self textView] document] filename];
 	if (filename != nil)
 		[self writeMinimapOpenStateToFileAttributes:filename];
-	
-	for (NSDrawer *drawer in [[self window] drawers])
-		if ([[drawer contentView] isKindOfClass:[MinimapView class]] )  {
-			[drawer setContentView:nil];
-			[drawer setParentWindow:nil];
-		}
+
+	NSDrawer* drawer = [self getMinimapDrawer];
+	[drawer setContentView:nil];
+	[drawer setParentWindow:nil];
 	[[TextmateMinimap instance] setLastWindowController:nil];
-	
+	[[TextmateMinimap instance] releaseIVarsFor:self];
 	// call original
     [self MM_windowWillClose:aNotification];
 }
@@ -185,10 +166,7 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 	id minimapDrawer = [[NSDrawer alloc] initWithContentSize:contentSize preferredEdge:edge];
 	[minimapDrawer setParentWindow:window];
 	
-	// init textshapeview
-    MinimapView* textshapeView=  [[MinimapView alloc] initWithTextView:[self textView]];
-	[textshapeView setWindowController:self];
-	
+		
 	NSString* filename = nil;
 	int trailingOffset = [self isSoftWrapEnabled] ? 40 : 56;
 	if ([[self className] isEqualToString:@"OakProjectController"]) {
@@ -201,7 +179,14 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 		[minimapDrawer setLeadingOffset:0];
 		filename = [[[self textView] document] filename];
 	}
+		// init textshapeview
+    MinimapView* textshapeView = [[MinimapView alloc] initWithTextView:[self textView]];
+	[textshapeView setWindowController:self];
 	[minimapDrawer setContentView:textshapeView];
+
+	NSMutableDictionary* ivars = [[TextmateMinimap instance] getIVarsFor:self];
+	[ivars setObject:textshapeView forKey:@"minimap"];
+	[ivars setObject:minimapDrawer forKey:@"minimapDrawer"];
 	
 	BOOL shouldOpen = [self shouldOpenMinimapDrawer:filename];
 	if (shouldOpen)
@@ -224,12 +209,10 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 	if ([[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_minimapSide"] == MinimapAutoSide) {
 		// the following code is quite ugly... well it works for now :-) 
 		NSDrawer* projectDrawer = nil;
-		NSDrawer* minimapDrawer = nil;
+		NSDrawer* minimapDrawer = [self getMinimapDrawer];
 		for (NSDrawer *drawer in [[self window] drawers])
 			if (! [[drawer contentView] isKindOfClass:[MinimapView class]]) 
 				projectDrawer = drawer;
-			else if ([[drawer contentView] isKindOfClass:[MinimapView class]]) 
-				minimapDrawer = drawer;
 
 		if (projectDrawer != nil && minimapDrawer != nil) {
 			int projectDrawerState = [projectDrawer state];
@@ -253,11 +236,21 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 	[[[TextmateMinimap instance] lastWindowController] refreshMinimap];
 }
 
+
 #pragma mark private
 
 /*
  Private method: find out whether the minimap drawer should open, depending on state and preferences
  */
+
+
+
+- (NSDrawer*) getMinimapDrawer
+{
+	NSMutableDictionary* ivars = [[TextmateMinimap instance] getIVarsFor:self];
+	return (NSDrawer*)[ivars objectForKey:@"minimapDrawer"];
+}
+
 - (BOOL) shouldOpenMinimapDrawer:(NSString*)filename
 {
 	BOOL result = YES;
@@ -300,13 +293,11 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 - (void)writeMinimapOpenStateToFileAttributes:(NSString*)filename
 {
 	char value;
-	for (NSDrawer *drawer in [[self window] drawers])
-		if ([[drawer contentView] isKindOfClass:[MinimapView class]] )  {
-			if (([drawer state] == NSDrawerOpenState) || ([drawer state] == NSDrawerOpeningState)) 
-				value = 0x31; // xattr (on terminal) reads the extended file attributes as utf8 strings, this is the utf8 "1"
-			else
-				value = 0x30; // this is the "0"
-		}
+	NSDrawer* drawer = [self getMinimapDrawer];
+	if (([drawer state] == NSDrawerOpenState) || ([drawer state] == NSDrawerOpeningState)) 
+		value = 0x31; // xattr (on terminal) reads the extended file attributes as utf8 strings, this is the utf8 "1"
+	else
+		value = 0x30; // this is the "0"
 	setxattr([filename UTF8String], MINIMAP_STATE_ATTRIBUTE_UID, &value, 1, 0, 0);
 }
 
@@ -316,16 +307,13 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
  */
 - (void)reopenMinimapDrawer:(NSNotification *)notification
 {
-	for (NSDrawer *drawer in [[self window] drawers])
-		if ([[drawer contentView] isKindOfClass:[MinimapView class]]) 
-		{
-			if ([drawer edge] == NSMaxXEdge)
-				[drawer openOnEdge:NSMinXEdge];
-			else
-				[drawer openOnEdge:NSMaxXEdge];
-			
-			[[NSNotificationCenter defaultCenter] removeObserver:self name:NSDrawerDidCloseNotification object:drawer];
-		}
+	NSDrawer* drawer = [self getMinimapDrawer];
+	if ([drawer edge] == NSMaxXEdge)
+		[drawer openOnEdge:NSMinXEdge];
+	else
+		[drawer openOnEdge:NSMaxXEdge];
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSDrawerDidCloseNotification object:drawer];
 }
 
 /*
@@ -335,15 +323,11 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 {
 	int result;
 	NSRectEdge projectDrawerSide = NSMinXEdge;
+	NSDrawer* drawer = [self getMinimapDrawer];
 	switch ([[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_minimapSide"]) {
 		default:
 		case MinimapAutoSide:
-			for (NSDrawer *drawer in [[self window] drawers])
-			{
-				if (![[drawer contentView] isKindOfClass:[MinimapView class]])  {
-					projectDrawerSide = [drawer edge];
-				}
-			}
+			projectDrawerSide = [drawer edge];
 			if (projectDrawerSide == NSMaxXEdge) 
 				result = NSMinXEdge;
 			else 

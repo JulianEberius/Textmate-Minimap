@@ -120,7 +120,7 @@ static TextmateMinimap *sharedInstance = nil;
 		[OakPreferencesManager jr_swizzleMethod:@selector(toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:) withMethod:@selector(MM_toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:) error:NULL];
 		[OakPreferencesManager jr_swizzleMethod:@selector(selectToolbarItem:) withMethod:@selector(MM_selectToolbarItem:) error:NULL];
 		
-		
+		iVars = [[NSMutableDictionary dictionaryWithCapacity:10] retain];
 	}
 	return self;
 	
@@ -167,6 +167,24 @@ static TextmateMinimap *sharedInstance = nil;
 		[showMinimapMenuItem setTitle:@"Show Minimap"];
 }
 
+- (NSMutableDictionary*)getIVarsFor:(id)sender
+{
+	if (iVars == nil)
+		return nil;
+	id x = [iVars objectForKey:[NSNumber numberWithInt:[sender hash]]];
+	if (x == nil) {
+		NSMutableDictionary* iVarHolder = [NSMutableDictionary dictionaryWithCapacity:2];
+		[iVars setObject:iVarHolder forKey:[NSNumber numberWithInt:[sender hash]]];
+		return iVarHolder;
+	}
+	return (NSMutableDictionary*)x;
+}
+
+- (void)releaseIVarsFor:(id)sender
+{
+	[iVars removeObjectForKey:[NSNumber numberWithInt:[sender hash]]];
+}
+
 
 - (void) toggleMinimap:(id)sender
 {
@@ -199,6 +217,7 @@ static TextmateMinimap *sharedInstance = nil;
 	[theLock release];
 	[lastWindowController release];
 	[prefWindowController release];
+	[iVars release];
 	[super dealloc];
 }
 
@@ -226,7 +245,7 @@ static TextmateMinimap *sharedInstance = nil;
 	int height;
 	NSString* expStr;
 	if (lwc != nil) {
-		NSRect minimapBounds = [[lwc minimap] bounds];
+		NSRect minimapBounds = [[lwc getMinimapView] bounds];
 		height = floor(minimapBounds.size.height);
 		expStr = explanationString1;
 	}
@@ -247,7 +266,7 @@ static TextmateMinimap *sharedInstance = nil;
  	[scaleUpThresholdPixelField setStringValue:numberString];
 	
 	if (lwc != nil)
-		[[lwc minimap] refreshDisplay];
+		[[lwc getMinimapView] refreshDisplay];
 }
 
 - (IBAction)resetDefaultScaleValues:(id)sender
