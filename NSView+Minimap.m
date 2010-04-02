@@ -14,8 +14,9 @@
 
 @interface NSView (Private_MM_NSView)
 - (void)refreshMinimap;
+- (void)setDirtyAndRefreshMinimap;
 - (MinimapView*)getMinimap;
-- (void)scheduleRefresh;
+- (void)schedule:(SEL)selector;
 - (void)saveValue:(id)value toIvar:(NSString*)key;
 - (id)getIVar:(NSString*)key;
 - (float)getScrollbarValue;
@@ -121,14 +122,14 @@
  Makes sense for typing events: not every keystroke triggers a refresh. Instead, a short time after the last keystroke
  the last scheduled refresh is carried out
  */
-- (void)scheduleRefresh
+- (void)schedule:(SEL)selec
 {
   NSTimer* old_timer = [[TextmateMinimap instance] timer];
   if (old_timer != nil && [old_timer isValid]) {
     [old_timer invalidate];
   }
   // do not refresh instantly, wait for more typing..
-  NSTimer* timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(refreshMinimap) userInfo:nil repeats:NO];
+  NSTimer* timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:selec userInfo:nil repeats:NO];
   [[TextmateMinimap instance ] setTimer:timer];
 }
 
@@ -137,6 +138,12 @@
   [[self getMinimap] refreshDisplay];
 }
 
+- (void)setDirtyAndRefreshMinimap
+{
+  MinimapView* minimap = [self getMinimap];
+  [minimap setDirty];
+  [minimap refreshDisplay];
+}
 
 #pragma mark other_swizzled_events
 - (void)MM_selectTab:(id)sender
@@ -160,6 +167,7 @@
 
   // we update the complete minimap if the scrollbar moved during an operation
   // that's basically a guess though ("if the sceen moved, there was a big update")
+  // mainly, it prevents complete redraws on simple clicks...
   float scrollbarPos = [self getScrollbarValue];
   if (scrollbarPos != [(NSNumber*)[self getIVar:@"scrollbar_pos"] floatValue])
     [[self getMinimap] setDirty];
@@ -169,7 +177,7 @@
 
 - (void)MM_keyUp:(NSEvent *)theEvent
 {
-  [self scheduleRefresh];
+  [self schedule:@selector(setDirtyAndRefreshMinimap)];
 }
 
 - (void)MM_toggleSoftWrap:(id)sender
@@ -209,12 +217,12 @@
 - (void)MM_undo:(id)sender
 {
   [self MM_undo:sender];
-  [self scheduleRefresh];
+  [self schedule:@selector(refreshMinimap)];
 }
 - (void)MM_redo:(id)sender
 {
   [self MM_redo:sender];
-  [self scheduleRefresh];
+  [self schedule:@selector(refreshMinimap)];
 }
 
 - (void)saveValue:(id)value toIvar:(NSString*)key {
