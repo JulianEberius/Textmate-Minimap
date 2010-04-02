@@ -12,6 +12,7 @@ Screenshots and up to date info can be found at http://julianeberius.github.com/
 **Usage**
 ----------
 Hit ^~@m to Show/Hide the minimap (analogue to ^~@d for the project drawer), or use the menu item under "View". Click anywhere on the map to go to that line. 
+Update: you can now scroll the minimap independently of the textview, using the scroll wheel of your mouse when hovering over the minimap.
 
 Preferences can be found as an additional tab in TextMate's preferences. The individual options are explained in their respective tooltips.
 

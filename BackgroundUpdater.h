@@ -10,11 +10,11 @@
 @class MinimapView;
 
 @interface BackgroundUpdater : NSObject {
-	MinimapView* minimapView;
-	NSOperationQueue* operationQueue;
-	NSMutableArray* queue;
-	
-	NSMutableArray* dirtyRegions;
+  MinimapView* minimapView;
+  NSOperationQueue* operationQueue;
+  NSMutableArray* queue;
+  
+  NSMutableArray* dirtyRegions;
 }
 - (id)initWithMinimapView:(MinimapView*)mv andOperationQueue:(NSOperationQueue*)opQueue;
 - (void)startRedrawInBackground;

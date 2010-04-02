@@ -18,7 +18,7 @@
  */
 - (void)MM_setRepresentedFilename:(NSString*)aPath
 {
-	[self MM_setRepresentedFilename:aPath];
+  [self MM_setRepresentedFilename:aPath];
 }
 
 /*
@@ -26,8 +26,8 @@
  */
 - (void)MM_setDocumentEdited:(BOOL)flag
 {
-	[self MM_setDocumentEdited:flag];
-	[[self windowController] refreshMinimap];
+  [self MM_setDocumentEdited:flag];
+  [[self windowController] refreshMinimap];
 }
 /*
  Swizzled method: called when a window is brought to the front
@@ -36,22 +36,22 @@
  */
 - (void)MM_becomeMainWindow
 {
-	[self MM_becomeMainWindow];
-	NSWindowController* controller = [self windowController];
-	if ([controller isKindOfClass:OakProjectController] || [controller isKindOfClass:OakDocumentController]) {
-		NSDrawer* drawer = [controller getMinimapDrawer];
-		int state = [drawer state];
-		if (state == NSDrawerClosedState || state == NSDrawerClosingState) {
-			[[TextmateMinimap instance] setMinimapMenuItem:NO];
-			[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Minimap_lastDocumentHadMinimapOpen"];
-		}
-		else { 
-			[[TextmateMinimap instance] setMinimapMenuItem:YES];
-			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Minimap_lastDocumentHadMinimapOpen"];
-		}
-	}
-	[[TextmateMinimap instance] setLastWindowController:controller];
-	
+  [self MM_becomeMainWindow];
+  NSWindowController* controller = [self windowController];
+  if ([controller isKindOfClass:OakProjectController] || [controller isKindOfClass:OakDocumentController]) {
+    NSDrawer* drawer = [controller getMinimapDrawer];
+    int state = [drawer state];
+    if (state == NSDrawerClosedState || state == NSDrawerClosingState) {
+      [[TextmateMinimap instance] setMinimapMenuItem:NO];
+      [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Minimap_lastDocumentHadMinimapOpen"];
+    }
+    else { 
+      [[TextmateMinimap instance] setMinimapMenuItem:YES];
+      [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Minimap_lastDocumentHadMinimapOpen"];
+    }
+  }
+  [[TextmateMinimap instance] setLastWindowController:controller];
+  
 }
 
 @end

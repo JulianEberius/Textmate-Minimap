@@ -14,11 +14,11 @@
 
 @interface AsyncDrawOperation : NSOperation
 {
-	MinimapView* minimapView;
-	BackgroundUpdater* updater;
-	int mode;
-	NSColor* fillColor;
-	NSRect partToDraw;
+  MinimapView* minimapView;
+  BackgroundUpdater* updater;
+  int mode;
+  NSColor* fillColor;
+  NSRect partToDraw;
 }
 
 // asyncdrawop has two different usage variants at the moment.. should be split into two classes

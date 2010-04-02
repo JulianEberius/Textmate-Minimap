@@ -18,14 +18,14 @@
  */
 - (void) MM_reflectScrolledClipView:(NSClipView*)clipView
 {
-	[self MM_reflectScrolledClipView:clipView];
-	
-	NSWindowController* controller = [[self window] windowController];
-	if ([controller isKindOfClass:OakProjectController] || [controller isKindOfClass:OakDocumentController]) {
-		MinimapView* textShapeView = [controller getMinimapView];
-		[textShapeView refreshViewableRange];
-	}
-	 
+  [self MM_reflectScrolledClipView:clipView];
+  
+  NSWindowController* controller = [[self window] windowController];
+  if ([controller isKindOfClass:OakProjectController] || [controller isKindOfClass:OakDocumentController]) {
+    MinimapView* textShapeView = [controller getMinimapView];
+    [textShapeView refreshViewableRange];
+  }
+   
 }
 
 @end

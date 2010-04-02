@@ -21,8 +21,6 @@
 - (NSDrawer*)getMinimapDrawer;
 - (void)updateTrailingSpace;
 
-
-
 #pragma mark swizzled-methods
 - (void)MM_windowWillClose:(id)aNotification;
 - (void)MM_windowDidLoad;

@@ -12,15 +12,16 @@
 @interface NSView (MM_NSView)
 
 #pragma mark snapshot
-- (NSBitmapImageRep *) snapshot;
-- (NSBitmapImageRep *) snapshotInRect:(NSRect)rect;
-- (NSImage *)snapshotByDrawing;
-- (NSImage *)snapshotByDrawingInRect:(NSRect)rect;
-- (NSImage *)emptySnapshotImageFor:(MinimapView*)minimapView;
+- (NSBitmapImageRep*) snapshot;
+- (NSBitmapImageRep*) snapshotInRect:(NSRect)rect;
+- (NSImage*)snapshotByDrawing;
+- (NSImage*)snapshotByDrawingInRect:(NSRect)rect;
+- (NSImage*)emptySnapshotImageFor:(MinimapView*)minimapView;
 
 #pragma mark other_swizzled_events
 - (void)MM_selectTab:(id)sender;
 - (void)MM_keyUp:(NSEvent *)theEvent;
+- (void)MM_mouseDown:(NSEvent *)theEvent;
 - (void)MM_mouseUp:(NSEvent *)theEvent;
 - (void)MM_undo:(id)sender;
 - (void)MM_redo:(id)sender;

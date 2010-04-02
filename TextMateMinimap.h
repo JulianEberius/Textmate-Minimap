@@ -15,23 +15,23 @@
 @end
 
 @interface TextmateMinimap : NSObject {
-	NSImage* iconImage;
-	NSTimer* timer;
-	NSLock* theLock;
-	NSMenu* windowMenu;
-	NSMenuItem* showMinimapMenuItem;
-	NSWindowController* prefWindowController;
-	NSWindowController* lastWindowController;
-	
-	NSMutableDictionary* iVars;
+  NSImage* iconImage;
+  NSTimer* timer;
+  NSLock* theLock;
+  NSMenu* windowMenu;
+  NSMenuItem* showMinimapMenuItem;
+  NSWindowController* prefWindowController;
+  NSWindowController* lastWindowController;
+  
+  NSMutableDictionary* iVars;
 
-	IBOutlet NSView* preferencesView;
-	IBOutlet NSTextField* explanationText;
-	IBOutlet NSTextField* scaleUpThresholdPixelField;
-	IBOutlet NSTextField* scaleUpToPixelField;
-	IBOutlet SRRecorderControl* keyRecorder;
-	
-	MMSUUpdater* sparkleUpdater;
+  IBOutlet NSView* preferencesView;
+  IBOutlet NSTextField* explanationText;
+  IBOutlet NSTextField* scaleUpThresholdPixelField;
+  IBOutlet NSTextField* scaleUpToPixelField;
+  IBOutlet SRRecorderControl* keyRecorder;
+  
+  MMSUUpdater* sparkleUpdater;
 }
 @property(retain) NSWindowController* lastWindowController;
 @property(retain, readonly) NSImage* iconImage;
@@ -55,18 +55,18 @@
 
 
 enum MinimapSideModes {
-	MinimapLeftSide = 0,
-	MinimapRightSide = 1,
-	MinimapAutoSide = 2
+  MinimapLeftSide = 0,
+  MinimapRightSide = 1,
+  MinimapAutoSide = 2
 };
 enum MinimapNewDocumentModes {
-	MinimapInheritShow = 0,
-	MinimapAlwaysShow = 1,
-	MinimapNeverShow = 2
+  MinimapInheritShow = 0,
+  MinimapAlwaysShow = 1,
+  MinimapNeverShow = 2
 };
 enum MinimapOpenDocumentModes {
-	MinimapAsSaved = 0,
-	MinimapAsNewDocument = 1,
+  MinimapAsSaved = 0,
+  MinimapAsNewDocument = 1,
 };
 
 @end

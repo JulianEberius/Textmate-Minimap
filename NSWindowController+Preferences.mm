@@ -15,19 +15,19 @@
 
 float ToolbarHeightForWindow(NSWindow *window)
 {
-	NSToolbar *toolbar;
-	float toolbarHeight = 0.0;
-	NSRect windowFrame;
+  NSToolbar *toolbar;
+  float toolbarHeight = 0.0;
+  NSRect windowFrame;
 
-	toolbar = [window toolbar];
+  toolbar = [window toolbar];
 
-	if(toolbar && [toolbar isVisible])
-	{
-		windowFrame   = [NSWindow contentRectForFrameRect:[window frame] styleMask:[window styleMask]];
-		toolbarHeight = NSHeight(windowFrame) - NSHeight([[window contentView] frame]);
-	}
+  if(toolbar && [toolbar isVisible])
+  {
+    windowFrame   = [NSWindow contentRectForFrameRect:[window frame] styleMask:[window styleMask]];
+    toolbarHeight = NSHeight(windowFrame) - NSHeight([[window contentView] frame]);
+  }
 
-	return toolbarHeight;
+  return toolbarHeight;
 }
 
 static const NSString* MINIMAP_PREFERENCES_LABEL = @"Minimap";
@@ -35,45 +35,45 @@ static const NSString* MINIMAP_PREFERENCES_LABEL = @"Minimap";
 @implementation NSWindowController (MM_Preferences)
 - (NSArray*)MM_toolbarAllowedItemIdentifiers:(id)sender
 {
-	return [[self MM_toolbarAllowedItemIdentifiers:sender] arrayByAddingObject:MINIMAP_PREFERENCES_LABEL];
+  return [[self MM_toolbarAllowedItemIdentifiers:sender] arrayByAddingObject:MINIMAP_PREFERENCES_LABEL];
 }
 - (NSArray*)MM_toolbarDefaultItemIdentifiers:(id)sender
 {
-	return [[self MM_toolbarDefaultItemIdentifiers:sender] arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:MINIMAP_PREFERENCES_LABEL,nil]];
+  return [[self MM_toolbarDefaultItemIdentifiers:sender] arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:MINIMAP_PREFERENCES_LABEL,nil]];
 }
 - (NSArray*)MM_toolbarSelectableItemIdentifiers:(id)sender
 {
-	return [[self MM_toolbarSelectableItemIdentifiers:sender] arrayByAddingObject:MINIMAP_PREFERENCES_LABEL];
+  return [[self MM_toolbarSelectableItemIdentifiers:sender] arrayByAddingObject:MINIMAP_PREFERENCES_LABEL];
 }
 
 - (NSToolbarItem*)MM_toolbar:(NSToolbar*)toolbar itemForItemIdentifier:(NSString*)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
 {
-	NSToolbarItem *item = [self MM_toolbar:toolbar itemForItemIdentifier:itemIdentifier willBeInsertedIntoToolbar:flag];
-	if([itemIdentifier isEqualToString:MINIMAP_PREFERENCES_LABEL])
-		[item setImage:[[TextmateMinimap instance] iconImage]];
-	return item;
+  NSToolbarItem *item = [self MM_toolbar:toolbar itemForItemIdentifier:itemIdentifier willBeInsertedIntoToolbar:flag];
+  if([itemIdentifier isEqualToString:MINIMAP_PREFERENCES_LABEL])
+    [item setImage:[[TextmateMinimap instance] iconImage]];
+  return item;
 }
 
 - (void)MM_selectToolbarItem:(id)item
 {
-	if ([[item label] isEqualToString:MINIMAP_PREFERENCES_LABEL]) {
-		if ([[self valueForKey:@"selectedToolbarItem"] isEqualToString:[item label]]) return;
-		[[self window] setTitle:[item label]];
-		[self setValue:[item label] forKey:@"selectedToolbarItem"];
-		
-		NSSize prefsSize = [[[TextmateMinimap instance] preferencesView] frame].size;
-		NSRect frame = [[self window] frame];
-		prefsSize.width = [[self window] contentMinSize].width;
+  if ([[item label] isEqualToString:MINIMAP_PREFERENCES_LABEL]) {
+    if ([[self valueForKey:@"selectedToolbarItem"] isEqualToString:[item label]]) return;
+    [[self window] setTitle:[item label]];
+    [self setValue:[item label] forKey:@"selectedToolbarItem"];
+    
+    NSSize prefsSize = [[[TextmateMinimap instance] preferencesView] frame].size;
+    NSRect frame = [[self window] frame];
+    prefsSize.width = [[self window] contentMinSize].width;
 
-		[[self window] setContentView:[[TextmateMinimap instance] preferencesView]];
+    [[self window] setContentView:[[TextmateMinimap instance] preferencesView]];
 
-		float newHeight = prefsSize.height + ToolbarHeightForWindow([self window]) + 22;
-		frame.origin.y += frame.size.height - newHeight;
-		frame.size.height = newHeight;
-		frame.size.width = prefsSize.width;
-		[[self window] setFrame:frame display:YES animate:YES];
-	} else {
-		[self MM_selectToolbarItem:item];
-	}
+    float newHeight = prefsSize.height + ToolbarHeightForWindow([self window]) + 22;
+    frame.origin.y += frame.size.height - newHeight;
+    frame.size.height = newHeight;
+    frame.size.width = prefsSize.width;
+    [[self window] setFrame:frame display:YES animate:YES];
+  } else {
+    [self MM_selectToolbarItem:item];
+  }
 }
 @end

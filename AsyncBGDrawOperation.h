@@ -11,11 +11,11 @@
 
 @interface AsyncBGDrawOperation : NSOperation
 {
-	MinimapView* minimapView;
-	BackgroundUpdater* updater;
-	NSColor* fillColor;
-	NSValue* rangeObject;
-	NSRect partToDraw;
+  MinimapView* minimapView;
+  BackgroundUpdater* updater;
+  NSColor* fillColor;
+  NSValue* rangeObject;
+  NSRect partToDraw;
 }
 
 - (id)initWithMinimapView:(MinimapView*)mv andUpdater:(BackgroundUpdater*)updater;

@@ -38,283 +38,284 @@ static TextmateMinimap *sharedInstance = nil;
 
 + (TextmateMinimap*)instance
 {
-    @synchronized(self) {
-        if (sharedInstance == nil) {
-            [[self alloc] init];
-        }
+  @synchronized(self) {
+    if (sharedInstance == nil) {
+      [[self alloc] init];
     }
-    return sharedInstance;
+  }
+  return sharedInstance;
 }
 
 
 - (id)initWithPlugInController:(id <TMPlugInController>)aController
 {
-	if (self = [super init]) {
-		
-		[self installMenuItem];
-		
-		NSString* iconPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"textmate-minimap" ofType:@"tiff"];
-		iconImage = [[NSImage alloc] initByReferencingFile:iconPath];
-		
-		sparkleUpdater = [MMSUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
-		[sparkleUpdater resetUpdateCycle];
-		
-		theLock = [[[NSLock alloc] init] retain];
-		
-		[OakProjectController jr_swizzleMethod:@selector(windowDidLoad) withMethod:@selector(MM_windowDidLoad) error:NULL];
-		[OakProjectController jr_swizzleMethod:@selector(windowWillClose:) withMethod:@selector(MM_windowWillClose:) error:NULL];
-		[OakDocumentController jr_swizzleMethod:@selector(windowDidLoad) withMethod:@selector(MM_windowDidLoad) error:NULL];
-		[OakDocumentController jr_swizzleMethod:@selector(windowWillClose:) withMethod:@selector(MM_windowWillClose:) error:NULL];
-		[OakProjectController jr_swizzleMethod:@selector(toggleGroupsAndFilesDrawer:) withMethod:@selector(MM_toggleGroupsAndFilesDrawer:) error:NULL];
-		[OakWindow jr_swizzleMethod:@selector(setRepresentedFilename:) withMethod:@selector(MM_setRepresentedFilename:) error:NULL];
-		[OakWindow jr_swizzleMethod:@selector(setDocumentEdited:) withMethod:@selector(MM_setDocumentEdited:) error:NULL];
-		[OakWindow jr_swizzleMethod:@selector(becomeMainWindow) withMethod:@selector(MM_becomeMainWindow) error:NULL];
-		[NSScrollView jr_swizzleMethod:@selector(reflectScrolledClipView:) withMethod:@selector(MM_reflectScrolledClipView:) error:NULL];
-		[OakTextView jr_swizzleMethod:@selector(keyUp:) withMethod:@selector(MM_keyUp:) error:NULL];
-		[OakTextView jr_swizzleMethod:@selector(mouseUp:) withMethod:@selector(MM_mouseUp:) error:NULL];
-		[OakTextView jr_swizzleMethod:@selector(undo:) withMethod:@selector(MM_undo:) error:NULL];
-		[OakTextView jr_swizzleMethod:@selector(redo:) withMethod:@selector(MM_redo:) error:NULL];
-		[OakTextView jr_swizzleMethod:@selector(toggleSoftWrap:) withMethod:@selector(MM_toggleSoftWrap:) error:NULL];
-		[OakTextView jr_swizzleMethod:@selector(toggleShowSoftWrapInGutter:) withMethod:@selector(MM_toggleShowSoftWrapInGutter:) error:NULL];
-		[OakTextView jr_swizzleMethod:@selector(toggleLineNumbers:) withMethod:@selector(MM_toggleLineNumbers:) error:NULL];
-		[OakTextView jr_swizzleMethod:@selector(toggleShowBookmarksInGutter:) withMethod:@selector(MM_toggleShowBookmarksInGutter:) error:NULL];
-		[OakTextView jr_swizzleMethod:@selector(toggleFoldingsEnabled:) withMethod:@selector(MM_toggleFoldingsEnabled:) error:NULL];
-		[OakPreferencesManager jr_swizzleMethod:@selector(windowWillClose:) withMethod:@selector(MM_PrefWindowWillClose:) error:NULL];
-		[OakTabBar jr_swizzleMethod:@selector(selectTab:) withMethod:@selector(MM_selectTab:) error:NULL];
-		
-		//Prefs... this directly reuses a lot of code from Ciarán Walsh's ProjectPlus ( http://ciaranwal.sh/2008/08/05/textmate-plug-in-projectplus )
-		//Source: git://github.com/ciaran/projectplus.git
-		// settings userdefault defaults
-		[[NSUserDefaults standardUserDefaults] 
-		 registerDefaults:[NSDictionary 
-			dictionaryWithObjects:[NSArray arrayWithObjects:
-										[NSNumber numberWithFloat:2.0],
-										[NSNumber numberWithInt:4],
-										[NSNumber numberWithInt:46], //this is "m"
-										[NSNumber numberWithInt:NSControlKeyMask|NSAlternateKeyMask|NSCommandKeyMask],
-										[NSNumber numberWithInt:MinimapAutoSide],
-										[NSNumber numberWithInt:MinimapInheritShow],
-										[NSNumber numberWithInt:MinimapAsSaved],
-										[NSNumber numberWithBool:YES],
-										NULL
-									]
-						 forKeys:[NSArray arrayWithObjects:
-										@"Minimap_scaleUpThreshold",
-										@"Minimap_scaleUpTo",
-										@"Minimap_triggerMinimapKeyCode",
-										@"Minimap_triggerMinimapKeyFlags",
-										@"Minimap_minimapSide",
-										@"Minimap_newDocumentBehaviour",
-										@"Minimap_openDocumentBehaviour",
-										@"Minimap_lastDocumentHadMinimapOpen",
-										NULL
-									]]];
+  if (self = [super init]) {
 
-		NSString* nibPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"Preferences" ofType:@"nib"];
-		prefWindowController = [[NSWindowController alloc] initWithWindowNibPath:nibPath owner:self];
-		[prefWindowController showWindow:self];
+    [self installMenuItem];
 
-		[OakPreferencesManager jr_swizzleMethod:@selector(toolbarAllowedItemIdentifiers:) withMethod:@selector(MM_toolbarAllowedItemIdentifiers:) error:NULL];
-		[OakPreferencesManager jr_swizzleMethod:@selector(toolbarDefaultItemIdentifiers:) withMethod:@selector(MM_toolbarDefaultItemIdentifiers:) error:NULL];
-		[OakPreferencesManager jr_swizzleMethod:@selector(toolbarSelectableItemIdentifiers:) withMethod:@selector(MM_toolbarSelectableItemIdentifiers:) error:NULL];
-		[OakPreferencesManager jr_swizzleMethod:@selector(toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:) withMethod:@selector(MM_toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:) error:NULL];
-		[OakPreferencesManager jr_swizzleMethod:@selector(selectToolbarItem:) withMethod:@selector(MM_selectToolbarItem:) error:NULL];
-		
-		iVars = [[NSMutableDictionary dictionaryWithCapacity:10] retain];
-	}
-	return self;
-	
+    NSString* iconPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"textmate-minimap" ofType:@"tiff"];
+    iconImage = [[NSImage alloc] initByReferencingFile:iconPath];
+
+    sparkleUpdater = [MMSUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
+    [sparkleUpdater resetUpdateCycle];
+
+    theLock = [[[NSLock alloc] init] retain];
+
+    [OakProjectController jr_swizzleMethod:@selector(windowDidLoad) withMethod:@selector(MM_windowDidLoad) error:NULL];
+    [OakProjectController jr_swizzleMethod:@selector(windowWillClose:) withMethod:@selector(MM_windowWillClose:) error:NULL];
+    [OakDocumentController jr_swizzleMethod:@selector(windowDidLoad) withMethod:@selector(MM_windowDidLoad) error:NULL];
+    [OakDocumentController jr_swizzleMethod:@selector(windowWillClose:) withMethod:@selector(MM_windowWillClose:) error:NULL];
+    [OakProjectController jr_swizzleMethod:@selector(toggleGroupsAndFilesDrawer:) withMethod:@selector(MM_toggleGroupsAndFilesDrawer:) error:NULL];
+    [OakWindow jr_swizzleMethod:@selector(setRepresentedFilename:) withMethod:@selector(MM_setRepresentedFilename:) error:NULL];
+    [OakWindow jr_swizzleMethod:@selector(setDocumentEdited:) withMethod:@selector(MM_setDocumentEdited:) error:NULL];
+    [OakWindow jr_swizzleMethod:@selector(becomeMainWindow) withMethod:@selector(MM_becomeMainWindow) error:NULL];
+    [NSScrollView jr_swizzleMethod:@selector(reflectScrolledClipView:) withMethod:@selector(MM_reflectScrolledClipView:) error:NULL];
+    [OakTextView jr_swizzleMethod:@selector(keyUp:) withMethod:@selector(MM_keyUp:) error:NULL];
+    [OakTextView jr_swizzleMethod:@selector(mouseUp:) withMethod:@selector(MM_mouseUp:) error:NULL];
+    [OakTextView jr_swizzleMethod:@selector(mouseDown:) withMethod:@selector(MM_mouseDown:) error:NULL];
+    [OakTextView jr_swizzleMethod:@selector(undo:) withMethod:@selector(MM_undo:) error:NULL];
+    [OakTextView jr_swizzleMethod:@selector(redo:) withMethod:@selector(MM_redo:) error:NULL];
+    [OakTextView jr_swizzleMethod:@selector(toggleSoftWrap:) withMethod:@selector(MM_toggleSoftWrap:) error:NULL];
+    [OakTextView jr_swizzleMethod:@selector(toggleShowSoftWrapInGutter:) withMethod:@selector(MM_toggleShowSoftWrapInGutter:) error:NULL];
+    [OakTextView jr_swizzleMethod:@selector(toggleLineNumbers:) withMethod:@selector(MM_toggleLineNumbers:) error:NULL];
+    [OakTextView jr_swizzleMethod:@selector(toggleShowBookmarksInGutter:) withMethod:@selector(MM_toggleShowBookmarksInGutter:) error:NULL];
+    [OakTextView jr_swizzleMethod:@selector(toggleFoldingsEnabled:) withMethod:@selector(MM_toggleFoldingsEnabled:) error:NULL];
+    [OakPreferencesManager jr_swizzleMethod:@selector(windowWillClose:) withMethod:@selector(MM_PrefWindowWillClose:) error:NULL];
+    [OakTabBar jr_swizzleMethod:@selector(selectTab:) withMethod:@selector(MM_selectTab:) error:NULL];
+
+    //Prefs... this directly reuses a lot of code from Ciarán Walsh's ProjectPlus ( http://ciaranwal.sh/2008/08/05/textmate-plug-in-projectplus )
+    //Source: git://github.com/ciaran/projectplus.git
+    // settings userdefault defaults
+    [[NSUserDefaults standardUserDefaults]
+     registerDefaults:[NSDictionary
+      dictionaryWithObjects:[NSArray arrayWithObjects:
+                    [NSNumber numberWithFloat:2.0],
+                    [NSNumber numberWithInt:4],
+                    [NSNumber numberWithInt:46], //this is "m"
+                    [NSNumber numberWithInt:NSControlKeyMask|NSAlternateKeyMask|NSCommandKeyMask],
+                    [NSNumber numberWithInt:MinimapAutoSide],
+                    [NSNumber numberWithInt:MinimapInheritShow],
+                    [NSNumber numberWithInt:MinimapAsSaved],
+                    [NSNumber numberWithBool:YES],
+                    NULL
+                  ]
+             forKeys:[NSArray arrayWithObjects:
+                    @"Minimap_scaleUpThreshold",
+                    @"Minimap_scaleUpTo",
+                    @"Minimap_triggerMinimapKeyCode",
+                    @"Minimap_triggerMinimapKeyFlags",
+                    @"Minimap_minimapSide",
+                    @"Minimap_newDocumentBehaviour",
+                    @"Minimap_openDocumentBehaviour",
+                    @"Minimap_lastDocumentHadMinimapOpen",
+                    NULL
+                  ]]];
+
+    NSString* nibPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"Preferences" ofType:@"nib"];
+    prefWindowController = [[NSWindowController alloc] initWithWindowNibPath:nibPath owner:self];
+    [prefWindowController showWindow:self];
+
+    [OakPreferencesManager jr_swizzleMethod:@selector(toolbarAllowedItemIdentifiers:) withMethod:@selector(MM_toolbarAllowedItemIdentifiers:) error:NULL];
+    [OakPreferencesManager jr_swizzleMethod:@selector(toolbarDefaultItemIdentifiers:) withMethod:@selector(MM_toolbarDefaultItemIdentifiers:) error:NULL];
+    [OakPreferencesManager jr_swizzleMethod:@selector(toolbarSelectableItemIdentifiers:) withMethod:@selector(MM_toolbarSelectableItemIdentifiers:) error:NULL];
+    [OakPreferencesManager jr_swizzleMethod:@selector(toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:) withMethod:@selector(MM_toolbar:itemForItemIdentifier:willBeInsertedIntoToolbar:) error:NULL];
+    [OakPreferencesManager jr_swizzleMethod:@selector(selectToolbarItem:) withMethod:@selector(MM_selectToolbarItem:) error:NULL];
+
+    iVars = [[NSMutableDictionary dictionaryWithCapacity:10] retain];
+  }
+  return self;
+
 }
 
 - (void)installMenuItem
 {
-	if(windowMenu = [[[[NSApp mainMenu] itemWithTitle:@"View"] submenu] retain])
-	{
-		NSArray* items = [windowMenu itemArray];
-		
-		int index = 0;
-		for (NSMenuItem* item in items)
-		{
-			if ([[item title] isEqualToString:@"Show/Hide Project Drawer"])
-			{
-				index = [items indexOfObject:item]+1;
-			} 
-		}
-		showMinimapMenuItem = [[NSMenuItem alloc] initWithTitle:@"Hide Minimap" action:@selector(toggleMinimap:) keyEquivalent:@""];
-		[showMinimapMenuItem setKeyEquivalent:@"m"];
-		[showMinimapMenuItem setKeyEquivalentModifierMask:NSControlKeyMask|NSAlternateKeyMask|NSCommandKeyMask];
-		[showMinimapMenuItem setTarget:self];
-		[windowMenu insertItem:showMinimapMenuItem atIndex:index];
-	}
+  if(windowMenu = [[[[NSApp mainMenu] itemWithTitle:@"View"] submenu] retain])
+  {
+    NSArray* items = [windowMenu itemArray];
+
+    int index = 0;
+    for (NSMenuItem* item in items)
+    {
+      if ([[item title] isEqualToString:@"Show/Hide Project Drawer"])
+      {
+        index = [items indexOfObject:item]+1;
+      }
+    }
+    showMinimapMenuItem = [[NSMenuItem alloc] initWithTitle:@"Hide Minimap" action:@selector(toggleMinimap:) keyEquivalent:@""];
+    [showMinimapMenuItem setKeyEquivalent:@"m"];
+    [showMinimapMenuItem setKeyEquivalentModifierMask:NSControlKeyMask|NSAlternateKeyMask|NSCommandKeyMask];
+    [showMinimapMenuItem setTarget:self];
+    [windowMenu insertItem:showMinimapMenuItem atIndex:index];
+  }
 }
 
 - (void)uninstallMenuItem
 {
-	[windowMenu removeItem:showMinimapMenuItem];
-	
-	[showMinimapMenuItem release];
-	showMinimapMenuItem = nil;
-	
-	[windowMenu release];
-	windowMenu = nil;
+  [windowMenu removeItem:showMinimapMenuItem];
+
+  [showMinimapMenuItem release];
+  showMinimapMenuItem = nil;
+
+  [windowMenu release];
+  windowMenu = nil;
 }
 
 - (void)setMinimapMenuItem:(BOOL)flag
 {
-	if (flag)
-		[showMinimapMenuItem setTitle:@"Hide Minimap"];
-	else
-		[showMinimapMenuItem setTitle:@"Show Minimap"];
+  if (flag)
+    [showMinimapMenuItem setTitle:@"Hide Minimap"];
+  else
+    [showMinimapMenuItem setTitle:@"Show Minimap"];
 }
 
 - (NSMutableDictionary*)getIVarsFor:(id)sender
 {
-	if (iVars == nil)
-		return nil;
-	id x = [iVars objectForKey:[NSNumber numberWithInt:[sender hash]]];
-	if (x == nil) {
-		NSMutableDictionary* iVarHolder = [NSMutableDictionary dictionaryWithCapacity:2];
-		[iVars setObject:iVarHolder forKey:[NSNumber numberWithInt:[sender hash]]];
-		return iVarHolder;
-	}
-	return (NSMutableDictionary*)x;
+  if (iVars == nil)
+    return nil;
+  id x = [iVars objectForKey:[NSNumber numberWithInt:[sender hash]]];
+  if (x == nil) {
+    NSMutableDictionary* iVarHolder = [NSMutableDictionary dictionaryWithCapacity:2];
+    [iVars setObject:iVarHolder forKey:[NSNumber numberWithInt:[sender hash]]];
+    return iVarHolder;
+  }
+  return (NSMutableDictionary*)x;
 }
 
 - (void)releaseIVarsFor:(id)sender
 {
-	[iVars removeObjectForKey:[NSNumber numberWithInt:[sender hash]]];
+  [iVars removeObjectForKey:[NSNumber numberWithInt:[sender hash]]];
 }
 
 
 - (void) toggleMinimap:(id)sender
 {
-	NSWindowController* wc = [[NSApp mainWindow] windowController];
-	
-	
-	if ([wc isKindOfClass:OakProjectController] || [wc isKindOfClass:OakDocumentController])
-	{
-		//change menu item
-		if ([[(NSMenuItem*)sender title] isEqualToString:@"Show Minimap"])
-			[self setMinimapMenuItem:YES];
-		else
-			[self setMinimapMenuItem:NO];
-		
-		// move drawer
-		[wc toggleMinimap];
-	}
+  NSWindowController* wc = [[NSApp mainWindow] windowController];
+
+
+  if ([wc isKindOfClass:OakProjectController] || [wc isKindOfClass:OakDocumentController])
+  {
+    //change menu item
+    if ([[(NSMenuItem*)sender title] isEqualToString:@"Show Minimap"])
+      [self setMinimapMenuItem:YES];
+    else
+      [self setMinimapMenuItem:NO];
+
+    // move drawer
+    [wc toggleMinimap];
+  }
 }
-		 
+
 - (void)dealloc
 {
-	[self uninstallMenuItem];
-	[sharedInstance release];
-	sharedInstance = nil;
-	if (timer)
-	{
-		[timer release];
-		timer = NULL;
-	}
-	[theLock release];
-	[lastWindowController release];
-	[prefWindowController release];
-	[iVars release];
-	[super dealloc];
+  [self uninstallMenuItem];
+  [sharedInstance release];
+  sharedInstance = nil;
+  if (timer)
+  {
+    [timer release];
+    timer = NULL;
+  }
+  [theLock release];
+  [lastWindowController release];
+  [prefWindowController release];
+  [iVars release];
+  [super dealloc];
 }
 
 #pragma mark prefs
 
 - (void)awakeFromNib
 {
-	[self changeScaleValues:nil];
-	[keyRecorder setKeyCombo:SRMakeKeyCombo(
-		[[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_triggerMinimapKeyCode"],
-		[[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_triggerMinimapKeyFlags"])];
+  [self changeScaleValues:nil];
+  [keyRecorder setKeyCombo:SRMakeKeyCombo(
+  [[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_triggerMinimapKeyCode"],
+  [[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_triggerMinimapKeyFlags"])];
 }
 
 - (IBAction)update:(id)sender
 {
-	[sparkleUpdater checkForUpdates:nil];
+  [sparkleUpdater checkForUpdates:nil];
 }
 
 - (IBAction)changeScaleValues:(id)sender
 {
-	float scaleUpThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"Minimap_scaleUpThreshold"];
-	int scaleUpTo = [[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_scaleUpTo"];
-	
-	NSWindowController* lwc = [self lastWindowController];
-	int height;
-	NSString* expStr;
-	if (lwc != nil) {
-		NSRect minimapBounds = [[lwc getMinimapView] bounds];
-		height = floor(minimapBounds.size.height);
-		expStr = explanationString1;
-	}
-	else {
-		height = 500;
-		expStr = explanationString2;
-	}
-	int lines = floor(height / scaleUpThreshold);
-	
-	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-	[formatter setMaximumFractionDigits:2];
-	[formatter setRoundingMode: NSNumberFormatterRoundDown];
-	NSString* numberString = [formatter stringFromNumber:[NSNumber numberWithFloat:scaleUpThreshold]];
-	[formatter release];
-	
-	[explanationText setStringValue:[NSString stringWithFormat:expStr, height, lines, scaleUpTo]];
-	[scaleUpToPixelField setStringValue:[NSString stringWithFormat:@"%i",scaleUpTo]];
- 	[scaleUpThresholdPixelField setStringValue:numberString];
-	
-	if (lwc != nil)
-		[[lwc getMinimapView] refreshDisplay];
+  float scaleUpThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"Minimap_scaleUpThreshold"];
+  int scaleUpTo = [[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_scaleUpTo"];
+
+  NSWindowController* lwc = [self lastWindowController];
+  int height;
+  NSString* expStr;
+  if (lwc != nil) {
+    NSRect minimapBounds = [[lwc getMinimapView] bounds];
+    height = floor(minimapBounds.size.height);
+    expStr = explanationString1;
+  }
+  else {
+    height = 500;
+    expStr = explanationString2;
+  }
+  int lines = floor(height / scaleUpThreshold);
+
+  NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+  [formatter setMaximumFractionDigits:2];
+  [formatter setRoundingMode: NSNumberFormatterRoundDown];
+  NSString* numberString = [formatter stringFromNumber:[NSNumber numberWithFloat:scaleUpThreshold]];
+  [formatter release];
+
+  [explanationText setStringValue:[NSString stringWithFormat:expStr, height, lines, scaleUpTo]];
+  [scaleUpToPixelField setStringValue:[NSString stringWithFormat:@"%i",scaleUpTo]];
+  [scaleUpThresholdPixelField setStringValue:numberString];
+
+  if (lwc != nil)
+    [[lwc getMinimapView] refreshDisplay];
 }
 
 - (IBAction)resetDefaultScaleValues:(id)sender
 {
-	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setFloat:2.0 forKey:@"Minimap_scaleUpThreshold"];
-	[defaults setInteger:4 forKey:@"Minimap_scaleUpTo"];
-	[self changeScaleValues:nil];
+  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setFloat:2.0 forKey:@"Minimap_scaleUpThreshold"];
+  [defaults setInteger:4 forKey:@"Minimap_scaleUpTo"];
+  [self changeScaleValues:nil];
 }
 
 - (IBAction)changeMinimapSide:(id)sender
 {
-	int newMode = [(NSMatrix*)sender selectedRow];
-	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setInteger:newMode forKey:@"Minimap_minimapSide"];
+  int newMode = [(NSMatrix*)sender selectedRow];
+  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setInteger:newMode forKey:@"Minimap_minimapSide"];
 }
 
 - (MMSUUpdater *)updater {
-    return [MMSUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];;
+  return [MMSUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];;
 }
 
 - (BOOL)shortcutRecorder:(SRRecorderControl *)aRecorder isKeyCode:(NSInteger)keyCode andFlagsTaken:(NSUInteger)flags reason:(NSString **)aReason
 {
-	return NO;
+  return NO;
 }
 
 - (void)shortcutRecorder:(SRRecorderControl *)aRecorder keyComboDidChange:(KeyCombo)newKeyCombo
 {
-	if (newKeyCombo.code != -1)
-	{
-		[showMinimapMenuItem setKeyEquivalent:[SRStringForKeyCode(newKeyCombo.code) lowercaseString]];
-		[showMinimapMenuItem setKeyEquivalentModifierMask:newKeyCombo.flags];
-	}
-	else
-	{
-		[showMinimapMenuItem setKeyEquivalent:@""];
-		[showMinimapMenuItem setKeyEquivalentModifierMask:0];
-	}
-	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setInteger:newKeyCombo.code forKey:@"Minimap_triggerMinimapKeyCode"];
-	[defaults setInteger:newKeyCombo.flags forKey:@"Minimap_triggerMinimapKeyFlags"];
+  if (newKeyCombo.code != -1)
+  {
+    [showMinimapMenuItem setKeyEquivalent:[SRStringForKeyCode(newKeyCombo.code) lowercaseString]];
+    [showMinimapMenuItem setKeyEquivalentModifierMask:newKeyCombo.flags];
+  }
+  else
+  {
+    [showMinimapMenuItem setKeyEquivalent:@""];
+    [showMinimapMenuItem setKeyEquivalentModifierMask:0];
+  }
+  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setInteger:newKeyCombo.code forKey:@"Minimap_triggerMinimapKeyCode"];
+  [defaults setInteger:newKeyCombo.flags forKey:@"Minimap_triggerMinimapKeyFlags"];
 }
 
 - (void)tabView:(NSTabView *)tabView willSelectTabViewItem:(NSTabViewItem *)tabViewItem
 {
-	if ([[tabViewItem identifier] isEqualToString:@"FineTuning"] ) {
-		[self changeScaleValues:nil];
-	}
+  if ([[tabViewItem identifier] isEqualToString:@"FineTuning"] ) {
+    [self changeScaleValues:nil];
+  }
 }
 
 #pragma mark singleton
@@ -332,27 +333,27 @@ static TextmateMinimap *sharedInstance = nil;
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    return self;
+  return self;
 }
 
 - (id)retain
 {
-    return self;
+  return self;
 }
 
 - (NSUInteger)retainCount
 {
-    return UINT_MAX;  //denotes an object that cannot be released
+  return UINT_MAX;  //denotes an object that cannot be released
 }
 
 - (void)release
 {
-    //do nothing
+  //do nothing
 }
 
 - (id)autorelease
 {
-    return self;
+  return self;
 }
 
 @end
