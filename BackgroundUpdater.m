@@ -33,7 +33,6 @@
 
 - (void)startRedrawInBackground
 {
-  NSLog(@"starting bg-draw....");
   NSRect visRect = [minimapView visiblePartOfTextView];
   [operationQueue cancelAllOperations];
   [operationQueue setSuspended:YES];

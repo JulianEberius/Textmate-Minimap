@@ -105,6 +105,7 @@ int const scaleDownTo = 5;
     }
     [queue cancelAllOperations];
     [queue addOperation:op];
+    NSLog(@"adding op!");
     [op release];
     requestRedraw = NO;
     return;
@@ -332,13 +333,15 @@ int const scaleDownTo = 5;
   visRectPosBeforeScrolling = -1;
   [self setNeedsDisplayInRect:[self visibleRect]];
 
-  NSTimer* old_timer = [self timer];
-  if (old_timer != NULL && [old_timer isValid]) {
-    [old_timer invalidate];
+  if (minimapIsScrollable) {
+    NSTimer* old_timer = [self timer];
+    if (old_timer != NULL && [old_timer isValid]) {
+      [old_timer invalidate];
+    }
+    // do not refresh instantly, wait until scrolling finished
+    NSTimer* t = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(refresh) userInfo:nil repeats:NO];
+    [self setTimer:t];
   }
-  // do not refresh instantly, wait until scrolling finished
-  NSTimer* t = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(refresh) userInfo:nil repeats:NO];
-  [self setTimer:t];
 }
 
 
