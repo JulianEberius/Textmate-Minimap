@@ -7,7 +7,8 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "MinimapView.h"
+@class MinimapView;
+@class BackgroundUpdater;
 
 @interface AsyncBGDrawOperation : NSOperation
 {

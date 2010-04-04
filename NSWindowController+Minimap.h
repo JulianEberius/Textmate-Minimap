@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "MinimapView.h"
+@class MinimapView;
 
 @interface  NSWindowController (MM_NSWindowController)
 	

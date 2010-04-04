@@ -5,6 +5,13 @@
 //  Created by Julian Eberius on 09.02.10.
 //  Copyright 2010 Julian Eberius. All rights reserved.
 //
+// Central singleton representing the plugin itself.
+//
+// - installs menu item, swizzles a lot of TM's methods to integrate the minimap
+// - contains a central lock used to prevent some race conditions between the drawing of TM and the plugin
+// - contains the fake ivars for TM objects (they get extended via categories, which does not allow to add real ivars)
+// - allows to toggle the minimap, and setting of the menu item label
+// - initializes and deals with the preference additions
 
 #import <Cocoa/Cocoa.h>
 #import "ShortcutRecorder/SRRecorderControl.h"

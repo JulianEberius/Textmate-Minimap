@@ -30,7 +30,7 @@ float ToolbarHeightForWindow(NSWindow *window)
   return toolbarHeight;
 }
 
-static const NSString* MINIMAP_PREFERENCES_LABEL = @"Minimap";
+static NSString* MINIMAP_PREFERENCES_LABEL = @"Minimap";
 
 @implementation NSWindowController (MM_Preferences)
 - (NSArray*)MM_toolbarAllowedItemIdentifiers:(id)sender

@@ -33,8 +33,8 @@
 
 - (void)startRedrawInBackground
 {
-  NSLog(@"starting bg....");
-  NSRect visRect = [minimapView getVisiblePartOfMinimap];
+  NSLog(@"starting bg-draw....");
+  NSRect visRect = [minimapView visiblePartOfTextView];
   [operationQueue cancelAllOperations];
   [operationQueue setSuspended:YES];
   for (NSValue* val in dirtyRegions) {
@@ -56,7 +56,7 @@
 {
   [dirtyRegions removeAllObjects];
   NSImage* image = [minimapView theImage];
-  NSRect visRect = [minimapView getVisiblePartOfMinimap];
+  NSRect visRect = [minimapView visiblePartOfTextView];
   int i = visRect.origin.y+visRect.size.height;
   int t = visRect.origin.y;
   BOOL goUp = TRUE;

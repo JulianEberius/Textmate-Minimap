@@ -33,6 +33,7 @@
 - (NSRectEdge) getCorrectMinimapDrawerSide;
 - (BOOL)shouldOpenMinimapDrawer:(NSString*)filename;
 - (void)writeMinimapOpenStateToFileAttributes:(NSString*)filename;
+- (NSRectEdge)getPreferableWindowSide;
 @end
 
 const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
@@ -45,7 +46,7 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 - (void)refreshMinimap
 {
   MinimapView* textShapeView = [self getMinimapView];
-  [textShapeView refreshDisplay];
+  [textShapeView refresh];
 }
 
 /*
@@ -87,7 +88,7 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
   id textView = [self textView];
   MinimapView* textShapeView = [self getMinimapView];
   [textView goToLineNumber: [NSNumber numberWithInt:newLine]];
-  [textShapeView refreshDisplay];
+  [textShapeView refresh];
 }
 
 /*
@@ -113,10 +114,7 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
   [drawer setTrailingOffset:[self isSoftWrapEnabled] ? 40 : 56];
 }
 
-
-
 #pragma mark swizzled_methods
-
 /*
  Swizzled method: on close
  - release  minimapDrawer
@@ -314,10 +312,12 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 - (NSRectEdge) getCorrectMinimapDrawerSide
 {
   int result;
-  NSRectEdge projectDrawerSide = NSMinXEdge;
+  NSRectEdge projectDrawerSide = NSMaxXEdge;
   Boolean projectDrawerIsOpen = NO;
+  Boolean projectDrawerWasFound = NO;
   for (NSDrawer *drawer in [[self window] drawers])
     if (! [[drawer contentView] isKindOfClass:[MinimapView class]]) {
+      projectDrawerWasFound = YES;
       projectDrawerSide = [drawer edge];
       projectDrawerIsOpen = ([drawer state] == NSDrawerOpeningState) 
                         || ([drawer state] == NSDrawerOpenState);
@@ -325,12 +325,18 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
   switch ([[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_minimapSide"]) {
     default:
     case MinimapAutoSide:
-      if (projectDrawerSide == NSMaxXEdge)
-        if (projectDrawerIsOpen) result = NSMinXEdge;
-        else result = NSMaxXEdge;
-      else
-        if (projectDrawerIsOpen) result = NSMaxXEdge;
-        else result = NSMinXEdge;
+      if (projectDrawerWasFound) {
+        if (projectDrawerSide == NSMaxXEdge)
+          if (projectDrawerIsOpen) result = NSMinXEdge;
+          else result = NSMaxXEdge;
+        else
+          if (projectDrawerIsOpen) result = NSMaxXEdge;
+          else result = NSMinXEdge;
+      }
+      // there is no project drawer we can use for orientation, let's find a side ourselves!
+      else {
+        result = [self getPreferableWindowSide];
+      }
       break;
 
     case MinimapLeftSide:
@@ -342,6 +348,21 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
       break;
   }
 
+  return result;
+}
+
+/*
+  private method: finds the side of the window with more space to the screen's edge
+*/
+- (NSRectEdge)getPreferableWindowSide 
+{
+  NSRectEdge result = NSMaxXEdge;
+  
+  NSWindow* window = [self window];
+  NSRect windowFrame = [window frame];
+  if ((windowFrame.origin.x) > ([[window screen] frame].size.width - (windowFrame.origin.x+windowFrame.size.width)))
+    result = NSMinXEdge;
+    
   return result;
 }
 

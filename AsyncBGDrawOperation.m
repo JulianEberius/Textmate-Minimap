@@ -8,6 +8,7 @@
 
 #import "AsyncBGDrawOperation.h"
 #import "NSView+Minimap.h"
+#import "MinimapView.h"
 
 @interface NSView (TextMate_OakTextView_Only)
 - (id)currentStyleSheet;
@@ -81,13 +82,13 @@
 
   if ([self checkCancelled])
     return;
-  NSRect visRect = [minimapView getVisiblePartOfMinimap];
+  NSRect visRect = [minimapView visiblePartOfTextView];
   int p1 = partToDraw.origin.y;
   int p2 = partToDraw.origin.y+partToDraw.size.height;
   int l1 = visRect.origin.y;
   int l2 = visRect.origin.y+visRect.size.height;
   if  ((p1>=l1 && p1<=l2) || (p2>=l1 && p2 <= l2)) {
-    [minimapView performSelectorOnMainThread:@selector(smallRefresh) withObject:NULL waitUntilDone:NO];
+    [minimapView performSelectorOnMainThread:@selector(repaint) withObject:NULL waitUntilDone:NO];
   }
   if ([self checkCancelled])
     return;

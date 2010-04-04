@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "MinimapView.h"
+@class MinimapView;
 
 @interface NSView (MM_NSView)
 
@@ -20,7 +20,7 @@
 
 #pragma mark other_swizzled_events
 - (void)MM_selectTab:(id)sender;
-- (void)MM_keyUp:(NSEvent *)theEvent;
+- (void)MM_keyDown:(NSEvent *)theEvent;
 - (void)MM_mouseDown:(NSEvent *)theEvent;
 - (void)MM_mouseUp:(NSEvent *)theEvent;
 - (void)MM_undo:(id)sender;
@@ -30,4 +30,5 @@
 - (void)MM_toggleLineNumbers:(id)sender;
 - (void)MM_toggleShowBookmarksInGutter:(id)sender;
 - (void)MM_toggleFoldingsEnabled:(id)sender;
+- (void)MM_dealloc;
 @end

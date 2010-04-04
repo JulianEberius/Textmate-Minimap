@@ -7,7 +7,8 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "MinimapView.h"
+@class MinimapView;
+@class BackgroundUpdater;
 
 #define MM_COMPLETE_IMAGE 0
 #define MM_PARTIAL_IMAGE 1

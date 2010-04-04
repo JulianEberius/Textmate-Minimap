@@ -20,7 +20,7 @@
 		048D06A6112171D3009F7865 /* NSWindow+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D06A5112171D3009F7865 /* NSWindow+Minimap.m */; };
 		048D06A9112171DE009F7865 /* NSScrollView+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D06A8112171DE009F7865 /* NSScrollView+Minimap.m */; };
 		04A843DB1136972E002743B0 /* textmate-minimap.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 04A843DA1136972E002743B0 /* textmate-minimap.tiff */; };
-		04A843DF11369759002743B0 /* NSWindowController+Preferences.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04A843DE11369759002743B0 /* NSWindowController+Preferences.mm */; };
+		04A843DF11369759002743B0 /* NSWindowController+Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A843DE11369759002743B0 /* NSWindowController+Preferences.m */; };
 		04AEA8EA115930A700E337C5 /* AsyncBGDrawOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AEA8E9115930A700E337C5 /* AsyncBGDrawOperation.m */; };
 		04B9A499112AF27F0082EF25 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 04B9A497112AF27F0082EF25 /* LICENSE.txt */; };
 		04B9A49A112AF27F0082EF25 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 04B9A498112AF27F0082EF25 /* README */; };
@@ -68,7 +68,7 @@
 		048D06A8112171DE009F7865 /* NSScrollView+Minimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScrollView+Minimap.m"; sourceTree = "<group>"; };
 		04A843DA1136972E002743B0 /* textmate-minimap.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "textmate-minimap.tiff"; sourceTree = "<group>"; };
 		04A843DD11369759002743B0 /* NSWindowController+Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindowController+Preferences.h"; sourceTree = "<group>"; };
-		04A843DE11369759002743B0 /* NSWindowController+Preferences.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSWindowController+Preferences.mm"; sourceTree = "<group>"; };
+		04A843DE11369759002743B0 /* NSWindowController+Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindowController+Preferences.m"; sourceTree = "<group>"; };
 		04AEA8E9115930A700E337C5 /* AsyncBGDrawOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncBGDrawOperation.m; sourceTree = "<group>"; };
 		04B9A497112AF27F0082EF25 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		04B9A498112AF27F0082EF25 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
@@ -104,7 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				04A843DD11369759002743B0 /* NSWindowController+Preferences.h */,
-				04A843DE11369759002743B0 /* NSWindowController+Preferences.mm */,
+				04A843DE11369759002743B0 /* NSWindowController+Preferences.m */,
 				048D067B11216DDE009F7865 /* NSView+Minimap.h */,
 				048D067C11216DDE009F7865 /* NSView+Minimap.m */,
 				048D06A1112171BE009F7865 /* NSWindowController+Minimap.h */,
@@ -293,7 +293,7 @@
 				048D06A3112171BE009F7865 /* NSWindowController+Minimap.m in Sources */,
 				048D06A6112171D3009F7865 /* NSWindow+Minimap.m in Sources */,
 				048D06A9112171DE009F7865 /* NSScrollView+Minimap.m in Sources */,
-				04A843DF11369759002743B0 /* NSWindowController+Preferences.mm in Sources */,
+				04A843DF11369759002743B0 /* NSWindowController+Preferences.m in Sources */,
 				04DC1B7511536F6700F87F90 /* AsyncDrawOperation.m in Sources */,
 				04DC1F521154DC5D00F87F90 /* BackgroundUpdater.m in Sources */,
 				04AEA8EA115930A700E337C5 /* AsyncBGDrawOperation.m in Sources */,

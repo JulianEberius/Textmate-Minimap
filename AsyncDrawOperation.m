@@ -8,6 +8,7 @@
 
 #import "AsyncDrawOperation.h"
 #import "NSView+Minimap.h"
+#import "MinimapView.h"
 
 @interface NSView (TextMate_OakTextView_Only)
 - (id)currentStyleSheet;

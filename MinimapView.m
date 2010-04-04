@@ -10,6 +10,7 @@
 #import "NSView+Minimap.h"
 #import "NSWindowController+Minimap.h"
 #import "TextMate.h"
+#import "BackgroundUpdater.h"
 #import "TextmateMinimap.h"
 #import "AsyncDrawOperation.h"
 #import "AsyncDrawOperation.h"
@@ -20,12 +21,13 @@ int const scaleDownTo = 5;
 @interface MinimapView (Private_MinimapView)
 - (void)updateViewableRange;
 - (void)drawVisRect:(NSRect)rect;
-- (NSRect)updateVisiblePartOfImage;
+- (void)updateVisiblePartOfTextView;
 - (NSColor*)currentBackgroundColor;
 - (void)fillWithBackground;
 - (void)firstRefresh;
 @end
 
+// stuff implemented by the TextMate textview
 @interface NSView (MM_NSView_OnlyByOakTextView)
 - (unsigned int)lineHeight;
 - (id)currentStyleSheet;
@@ -33,34 +35,34 @@ int const scaleDownTo = 5;
 
 @implementation MinimapView
 
-@synthesize windowController, textView, theImage, timer, drawLock;
+@synthesize windowController, textView, theImage, timer, drawLock, 
+    viewableRangeScaling, dirty, minimapLinesStart, gutterSize, visiblePartOfTextView;
 
 #pragma mark init
-
 - (id)initWithTextView:(NSView*) tv
 {
-    self = [super init];
-    if (self) {
+  self = [super init];
+  if (self) {
     queue = [[NSOperationQueue alloc] init];
     [queue setMaxConcurrentOperationCount:1];
-    refreshAll = NO;
-    viewableRangeScale = 1.0;
+    
     gutterSize = -1;
     visRectPosBeforeScrolling = -1;
-    textView = tv;
     firstDraw = YES;
-    timer = NULL;
-    drawLock = [[[NSLock alloc] init] retain];
+    
+    [self setViewableRangeScaling:1.0];
+    drawLock = [[NSLock alloc] init];
+    textView = tv;
     updater = [[BackgroundUpdater alloc] initWithMinimapView:self andOperationQueue:queue];
   }
-    return self;
+  return self;
 }
 
 - (void)dealloc
 {
   [queue cancelAllOperations];
   [queue waitUntilAllOperationsAreFinished];
-  [windowController release];
+  
   [theImage release];
   [updater release];
   [queue release];
@@ -70,7 +72,6 @@ int const scaleDownTo = 5;
 }
 
 #pragma mark drawing routines
-
 - (void)drawRect:(NSRect)rect
 {
   if (firstDraw) {
@@ -84,20 +85,20 @@ int const scaleDownTo = 5;
     return;
   }
 
-  int numLines = [self getNumberOfLines];
+  int numLines = [self numberOfLines];
   float ppl = [self bounds].size.height / numLines;
   float scaleUpThreshold = [[NSUserDefaults standardUserDefaults] floatForKey:@"Minimap_scaleUpThreshold"];
   NSRect drawTo = [self bounds];
-  if (refreshAll)
+  if (requestRedraw)
   {
     AsyncDrawOperation* op;
     if (ppl < scaleUpThreshold)
     {
       minimapIsScrollable = YES;
-      NSRect rectToSnapshot = [self updateVisiblePartOfImage];
+      [self updateVisiblePartOfTextView];
       op = [[AsyncDrawOperation alloc] initWithMinimapView:self andMode:MM_PARTIAL_IMAGE];
-      [op setPartToDraw:rectToSnapshot];
-      refreshAll = NO;
+      [op setPartToDraw:visiblePartOfTextView];
+      requestRedraw = NO;
     } else {
       minimapIsScrollable = NO;
       op = [[AsyncDrawOperation alloc] initWithMinimapView:self andMode:MM_COMPLETE_IMAGE];
@@ -105,12 +106,12 @@ int const scaleDownTo = 5;
     [queue cancelAllOperations];
     [queue addOperation:op];
     [op release];
-    refreshAll = NO;
+    requestRedraw = NO;
     return;
   }
   if (ppl < scaleUpThreshold)
   {
-    NSRect rectToSnapshot = [self getVisiblePartOfMinimap];
+    NSRect rectToSnapshot = visiblePartOfTextView;
     [theImage drawInRect:drawTo fromRect:rectToSnapshot operation:NSCompositeSourceOver fraction:1.0];
   }
   else
@@ -118,7 +119,8 @@ int const scaleDownTo = 5;
     if (ppl > scaleDownThreshold) {
       drawTo.size.height = numLines*scaleDownTo;
       [[self currentBackgroundColor] set];
-      NSRectFill(NSMakeRect(drawTo.origin.x, drawTo.size.height, drawTo.size.width, [self bounds].size.height - drawTo.size.height));
+      NSRectFill(NSMakeRect(drawTo.origin.x, drawTo.size.height, 
+              drawTo.size.width, [self bounds].size.height - drawTo.size.height));
     }
     [self setMinimapLinesStart:0];
     [self setViewableRangeScaling:1.0];
@@ -127,10 +129,10 @@ int const scaleDownTo = 5;
   [self drawVisRect:drawTo];
 }
 
-- (NSRect)updateVisiblePartOfImage
+- (void)updateVisiblePartOfTextView
 {
   NSRect bounds = [self visibleRect];
-  int numLines = [self getNumberOfLines];
+  int numLines = [self numberOfLines];
 
   NSSize imgSize = [theImage size];
   NSRect tvBounds   = [textView bounds];
@@ -152,12 +154,8 @@ int const scaleDownTo = 5;
                    [theImage size].width,
                    (visiblePercentage * imgSize.height));
   [self setMinimapLinesStart:(begin/tvBounds.size.height)*numLines];
-  visiblePartOfImage = visRect;
-  return visRect;
-}
-- (NSRect)getVisiblePartOfMinimap
-{
-  return visiblePartOfImage;
+  
+  visiblePartOfTextView = visRect;
 }
 
 - (void)updateViewableRange
@@ -165,14 +163,14 @@ int const scaleDownTo = 5;
   NSScrollView* sv = (NSScrollView*)[[textView superview] superview];
   float proportion = [[sv verticalScroller] knobProportion];
   float percentage = [[sv verticalScroller] floatValue];
-  int numLines = [self getNumberOfLines];
+  int numLines = [self numberOfLines];
   int numVisLines = round(numLines * proportion);
   int middleLine = round(percentage*(numLines-numVisLines)+numVisLines/2);
   NSRange range = NSMakeRange(round(middleLine-(numVisLines/2)), numVisLines);
 
-  if (range.location+range.length > [self getNumberOfLines])
+  if (range.location+range.length > [self numberOfLines])
   {
-    range.location = [self getNumberOfLines]-range.length;
+    range.location = [self numberOfLines]-range.length;
   }
 
   // find out whether a vertical scroller is displayed... strangely [sv hasVeticalScroller] always returns YES
@@ -192,7 +190,7 @@ int const scaleDownTo = 5;
   NSRect bounds = [self bounds];
   float visRectHeight = viewableRange.length * pixelPerLine;
   float visRectPos;
-  if (viewableRangeScale != 1.0)
+  if ([self viewableRangeScaling] != 1.0)
   {
     float rectProportion = visRectHeight / bounds.size.height;
     NSScrollView* sv = (NSScrollView*)[[textView superview] superview];
@@ -201,8 +199,8 @@ int const scaleDownTo = 5;
     float mysteriousHeight = (rectProportion * bounds.size.height) - visRectHeight;
     visRectPos = middle - (percentage*mysteriousHeight) - (visRectHeight/2);
     if (visRectPosBeforeScrolling != -1) {
-      float scrolledPixels = (visiblePartOfImage.origin.y - visRectPosBeforeScrolling);
-      visRectPos -= scrolledPixels*(bounds.size.height/visiblePartOfImage.size.height);
+      float scrolledPixels = (visiblePartOfTextView.origin.y - visRectPosBeforeScrolling);
+      visRectPos -= scrolledPixels*(bounds.size.height/visiblePartOfTextView.size.height);
     }
   }
   else
@@ -223,6 +221,7 @@ int const scaleDownTo = 5;
   [NSGraphicsContext restoreGraphicsState];
 }
 
+#pragma mark overridden-methods
 - (void)mouseDown:(NSEvent *)theEvent
 {
     BOOL keepOn = YES;
@@ -256,9 +255,9 @@ int const scaleDownTo = 5;
     NSRect tvBounds = [textView bounds];
     float scaleFactor = [theImage size].height / tvBounds.size.height;
 
-    NSRect newVisRect = visiblePartOfImage;
+    NSRect newVisRect = visiblePartOfTextView;
     if (visRectPosBeforeScrolling == -1)
-      visRectPosBeforeScrolling = visiblePartOfImage.origin.y;
+      visRectPosBeforeScrolling = visiblePartOfTextView.origin.y;
 
     float newBegin = (newVisRect.origin.y / scaleFactor) + ([theEvent deltaY]/scaleFactor)*(-5);
 
@@ -269,16 +268,16 @@ int const scaleDownTo = 5;
       newBegin = lowerBound;
 
     newVisRect.origin.y = newBegin*scaleFactor;
-    [self setMinimapLinesStart:(newBegin/tvBounds.size.height)*[self getNumberOfLines]];
-    visiblePartOfImage = newVisRect;
+    [self setMinimapLinesStart:(newBegin/tvBounds.size.height)*[self numberOfLines]];
+    visiblePartOfTextView = newVisRect;
     [self setNeedsDisplay:YES];
   }
 }
 
 - (void) viewDidEndLiveResize
 {
-  [self refreshDisplay];
-  isDirty = YES;
+  [self refresh];
+  [self setDirty:YES];
 }
 - (BOOL)isFlipped
 {
@@ -292,22 +291,44 @@ int const scaleDownTo = 5;
 
 #pragma mark public API
 
-- (void)refreshDisplay {
-  refreshAll = TRUE;
+/*
+ Repaint, and also request a redraw of theImage
+ */
+- (void)refresh {
+  requestRedraw = YES;
   visRectPosBeforeScrolling = -1;
 
   [self setNeedsDisplayInRect:[self visibleRect]];
 }
+
+/*
+ Repaints the existing Image to the minimap-view(no drawing operation is scheduled)
+ */
+- (void)repaint
+{
+  [self setNeedsDisplayInRect:[self visibleRect]];
+}
+
+/*
+ Called when the minimap is initialized for a document, similar to refresh, more initialization
+ */
 - (void)firstRefresh {
-  refreshAll = TRUE;
-  isDirty = YES;
+  requestRedraw = YES;
   visRectPosBeforeScrolling = -1;
+  
+  [self setDirty:YES];
   [self updateGutterSize];
   [updater setDirtyExceptForVisiblePart];
-  [self setNeedsDisplayInRect:[self visibleRect]];}
+  
+  [self setNeedsDisplayInRect:[self visibleRect]];
+}
 
-- (void)refreshViewableRange{
-  [self updateVisiblePartOfImage];
+/*
+ Called whenever the textview scrolls. Scrolls the minimap using the existing image
+ of the whole document. no redrawing -> fluent scrolling
+ */
+- (void)reactToScrollingTextView {
+  [self updateVisiblePartOfTextView];
   visRectPosBeforeScrolling = -1;
   [self setNeedsDisplayInRect:[self visibleRect]];
 
@@ -316,13 +337,11 @@ int const scaleDownTo = 5;
     [old_timer invalidate];
   }
   // do not refresh instantly, wait until scrolling finished
-  NSTimer* t = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(refreshDisplay) userInfo:nil repeats:NO];
+  NSTimer* t = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(refresh) userInfo:nil repeats:NO];
   [self setTimer:t];
 }
-- (void)smallRefresh
-{
-  [self setNeedsDisplayInRect:[self visibleRect]];
-}
+
+
 
 - (void)updateGutterSize
 {
@@ -377,49 +396,26 @@ int const scaleDownTo = 5;
   return [NSColor colorWithCalibratedRed:red green:green blue:blue alpha:alpha];
 }
 
-- (int)gutterSize
-{
-  // lazy initialization...
-  if (gutterSize == -1)
-  {
-    [self updateGutterSize];
-  }
-  return gutterSize;
-}
-
-- (void)setDirty {
-  isDirty = YES;
-}
-
-#pragma mark drawOperation-api
-
 - (void)asyncDrawFinished: (NSImage*) bitmap
 {
-  [bitmap retain];
   [theImage release];
-  theImage = bitmap;
-  if (minimapIsScrollable && isDirty) {
+  theImage = [bitmap retain];
+
+  if (minimapIsScrollable && [self dirty]) {
     [updater setDirtyExceptForVisiblePart];
     [updater startRedrawInBackground];
-    isDirty = NO;
+    [self setDirty:NO];
   }
 
   if (minimapIsScrollable)
     pixelPerLine = [[NSUserDefaults standardUserDefaults] floatForKey:@"Minimap_scaleUpTo"];
   else
-    pixelPerLine = [self bounds].size.height / [self getNumberOfLines];
+    pixelPerLine = [self bounds].size.height / [self numberOfLines];
+
   [self setNeedsDisplay:YES];
 }
 
-- (void)setViewableRangeScaling:(float)scale
-{
-  viewableRangeScale = scale;
-}
-- (void)setMinimapLinesStart:(int)start
-{
-  minimapLinesStart = start;
-}
-- (int)getNumberOfLines
+- (int)numberOfLines
 {
   unsigned int lineHeight = [textView lineHeight];
 

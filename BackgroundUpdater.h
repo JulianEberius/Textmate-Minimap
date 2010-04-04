@@ -12,7 +12,6 @@
 @interface BackgroundUpdater : NSObject {
   MinimapView* minimapView;
   NSOperationQueue* operationQueue;
-  NSMutableArray* queue;
   
   NSMutableArray* dirtyRegions;
 }

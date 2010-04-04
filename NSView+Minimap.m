@@ -15,6 +15,7 @@
 @interface NSView (Private_MM_NSView)
 - (void)refreshMinimap;
 - (void)setDirtyAndRefreshMinimap;
+- (void)setDirtyIfMovedAndRefreshMinimap;
 - (MinimapView*)getMinimap;
 - (void)schedule:(SEL)selector;
 - (void)saveValue:(id)value toIvar:(NSString*)key;
@@ -135,14 +136,24 @@
 
 - (void)refreshMinimap
 {
-  [[self getMinimap] refreshDisplay];
+  [[self getMinimap] refresh];
 }
 
 - (void)setDirtyAndRefreshMinimap
 {
   MinimapView* minimap = [self getMinimap];
-  [minimap setDirty];
-  [minimap refreshDisplay];
+  [minimap setDirty:YES];
+  [minimap refresh];
+}
+
+- (void)setDirtyIfMovedAndRefreshMinimap
+{
+  MinimapView* minimap = [self getMinimap];
+  if ([(NSNumber*)[self getIVar:@"numLines_changed"] boolValue]) {
+    [minimap setDirty:YES];
+    [self saveValue:[NSNumber numberWithBool:NO] toIvar:@"numLines_changed"];
+  }
+  [minimap refresh];
 }
 
 #pragma mark other_swizzled_events
@@ -170,14 +181,21 @@
   // mainly, it prevents complete redraws on simple clicks...
   float scrollbarPos = [self getScrollbarValue];
   if (scrollbarPos != [(NSNumber*)[self getIVar:@"scrollbar_pos"] floatValue])
-    [[self getMinimap] setDirty];
+    [[self getMinimap] setDirty:YES];
 
   [self refreshMinimap];
 }
 
-- (void)MM_keyUp:(NSEvent *)theEvent
+- (void)MM_keyDown:(NSEvent *)theEvent
 {
-  [self schedule:@selector(setDirtyAndRefreshMinimap)];
+  MinimapView* minimap = [self getMinimap];
+  int old_value = [minimap numberOfLines];
+  [self MM_keyDown:theEvent];
+  if (old_value != [minimap numberOfLines]) {
+    [self saveValue:[NSNumber numberWithBool:YES] toIvar:@"numLines_changed"];
+  }
+    
+  [self schedule:@selector(setDirtyIfMovedAndRefreshMinimap)];
 }
 
 - (void)MM_toggleSoftWrap:(id)sender
@@ -190,7 +208,7 @@
     MinimapView* mm = [wc getMinimapView];
 
     [drawer setTrailingOffset:offset];
-    [mm refreshDisplay];
+    [mm refresh];
   }
 }
 
@@ -225,6 +243,7 @@
   [self schedule:@selector(refreshMinimap)];
 }
 
+#pragma mark ivars
 - (void)saveValue:(id)value toIvar:(NSString*)key {
   NSMutableDictionary* ivars = [[TextmateMinimap instance] getIVarsFor:self];
   [ivars setObject:value forKey:key];
@@ -235,6 +254,12 @@
   return [ivars objectForKey:key];
 }
 
+- (void)MM_dealloc {
+  [[TextmateMinimap instance] releaseIVarsFor:self];
+  [self MM_dealloc];
+}
+
+#pragma mark misc
 - (float)getScrollbarValue {
   NSScrollView* sv = (NSScrollView*)[[self superview] superview];
   float scrollbarPos = [[sv verticalScroller] floatValue];
