@@ -23,7 +23,7 @@
 		04A843DF11369759002743B0 /* NSWindowController+Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A843DE11369759002743B0 /* NSWindowController+Preferences.m */; };
 		04AEA8EA115930A700E337C5 /* AsyncBGDrawOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AEA8E9115930A700E337C5 /* AsyncBGDrawOperation.m */; };
 		04B9A499112AF27F0082EF25 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 04B9A497112AF27F0082EF25 /* LICENSE.txt */; };
-		04B9A49A112AF27F0082EF25 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 04B9A498112AF27F0082EF25 /* README */; };
+		04CC435C116A7CA600FC40F4 /* README.markdown in Resources */ = {isa = PBXBuildFile; fileRef = 04CC435B116A7CA600FC40F4 /* README.markdown */; };
 		04D1F7421136CF58008BF7DA /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04D1F7411136CF58008BF7DA /* Preferences.xib */; };
 		04DC1B7511536F6700F87F90 /* AsyncDrawOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DC1B7411536F6700F87F90 /* AsyncDrawOperation.m */; };
 		04DC1F521154DC5D00F87F90 /* BackgroundUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DC1F511154DC5D00F87F90 /* BackgroundUpdater.m */; };
@@ -71,7 +71,7 @@
 		04A843DE11369759002743B0 /* NSWindowController+Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindowController+Preferences.m"; sourceTree = "<group>"; };
 		04AEA8E9115930A700E337C5 /* AsyncBGDrawOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncBGDrawOperation.m; sourceTree = "<group>"; };
 		04B9A497112AF27F0082EF25 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
-		04B9A498112AF27F0082EF25 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		04CC435B116A7CA600FC40F4 /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
 		04D1F7411136CF58008BF7DA /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		04DC1B7311536F6700F87F90 /* AsyncDrawOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncDrawOperation.h; sourceTree = "<group>"; };
 		04DC1B7411536F6700F87F90 /* AsyncDrawOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncDrawOperation.m; sourceTree = "<group>"; };
@@ -130,8 +130,8 @@
 		089C166AFE841209C02AAC07 /* Clock */ = {
 			isa = PBXGroup;
 			children = (
+				04CC435B116A7CA600FC40F4 /* README.markdown */,
 				04B9A497112AF27F0082EF25 /* LICENSE.txt */,
-				04B9A498112AF27F0082EF25 /* README */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 				04A843D91136972E002743B0 /* resources */,
@@ -256,10 +256,10 @@
 			files = (
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
 				04B9A499112AF27F0082EF25 /* LICENSE.txt in Resources */,
-				04B9A49A112AF27F0082EF25 /* README in Resources */,
 				04A843DB1136972E002743B0 /* textmate-minimap.tiff in Resources */,
 				04D1F7421136CF58008BF7DA /* Preferences.xib in Resources */,
 				0445E2C2113B545800461711 /* dsa_pub.pem in Resources */,
+				04CC435C116A7CA600FC40F4 /* README.markdown in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

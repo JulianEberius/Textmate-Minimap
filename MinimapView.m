@@ -63,11 +63,15 @@ int const scaleDownTo = 5;
   [queue cancelAllOperations];
   [queue waitUntilAllOperationsAreFinished];
   
-  [theImage release];
+  if (theImage != nil)
+    [theImage release];
+  
   [updater release];
   [queue release];
   [drawLock release];
   queue = nil;
+  [windowController release];
+  [timer release];
   [super dealloc];
 }
 
