@@ -63,15 +63,11 @@ int const scaleDownTo = 5;
   [queue cancelAllOperations];
   [queue waitUntilAllOperationsAreFinished];
   
-  if (theImage != nil)
-    [theImage release];
-  
+  [theImage release];
   [updater release];
   [queue release];
   [drawLock release];
   queue = nil;
-  [windowController release];
-  [timer release];
   [super dealloc];
 }
 
@@ -372,8 +368,8 @@ int const scaleDownTo = 5;
 {
   [queue setSuspended:NO];
   [queue cancelAllOperations];
-//  [theImage release];
-//  theImage = NULL;
+  [theImage release];
+  theImage = NULL;
   firstDraw = YES;
 }
 
@@ -406,6 +402,7 @@ int const scaleDownTo = 5;
 - (void)asyncDrawFinished: (NSImage*) bitmap
 {
   [theImage release];
+  theImage = nil;
   theImage = [bitmap retain];
 
   if (minimapIsScrollable && [self dirty]) {

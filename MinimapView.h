@@ -42,7 +42,7 @@ extern int const scaleDownTo;
 @property(assign) NSWindowController* windowController;
 @property(readonly) int gutterSize;
 @property(readonly) NSRect visiblePartOfTextView;
-@property(readonly) NSView* textView;
+@property(readonly, assign) NSView* textView;
 @property(readonly, retain) NSImage* theImage;
 @property(readonly, retain) NSLock* drawLock;
 @property(retain) NSTimer* timer;
