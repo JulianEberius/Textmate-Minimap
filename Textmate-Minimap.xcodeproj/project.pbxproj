@@ -13,6 +13,8 @@
 		044AB04E113D2CA900304627 /* MMSparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 044AB048113D2CA500304627 /* MMSparkle.framework */; };
 		045379821138180E0019F7BF /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045379811138180E0019F7BF /* ShortcutRecorder.framework */; };
 		04537B7F113828CB0019F7BF /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 045379811138180E0019F7BF /* ShortcutRecorder.framework */; };
+		047AC57B11748F74003BDF6F /* MMCWTMSplitView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 047AC57711748F74003BDF6F /* MMCWTMSplitView.mm */; };
+		047AC57C11748F74003BDF6F /* MMKFSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 047AC57911748F74003BDF6F /* MMKFSplitView.m */; };
 		048D064611216B1C009F7865 /* TextMateMinimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D064511216B1C009F7865 /* TextMateMinimap.m */; };
 		048D065E11216C0F009F7865 /* MinimapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D065D11216C0F009F7865 /* MinimapView.m */; };
 		048D067D11216DDE009F7865 /* NSView+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D067C11216DDE009F7865 /* NSView+Minimap.m */; };
@@ -54,6 +56,10 @@
 		044AB048113D2CA500304627 /* MMSparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MMSparkle.framework; path = Frameworks/MMSparkle.framework; sourceTree = "<group>"; };
 		0451552D11244E160097261D /* TextMateMinimap_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMateMinimap_Prefix.pch; sourceTree = "<group>"; };
 		045379811138180E0019F7BF /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ShortcutRecorder.framework; path = Frameworks/ShortcutRecorder.framework; sourceTree = "<group>"; };
+		047AC57611748F74003BDF6F /* MMCWTMSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMCWTMSplitView.h; sourceTree = "<group>"; };
+		047AC57711748F74003BDF6F /* MMCWTMSplitView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MMCWTMSplitView.mm; sourceTree = "<group>"; };
+		047AC57811748F74003BDF6F /* MMKFSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMKFSplitView.h; sourceTree = "<group>"; };
+		047AC57911748F74003BDF6F /* MMKFSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMKFSplitView.m; sourceTree = "<group>"; };
 		048D064411216B1C009F7865 /* TextMateMinimap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMateMinimap.h; sourceTree = "<group>"; };
 		048D064511216B1C009F7865 /* TextMateMinimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextMateMinimap.m; sourceTree = "<group>"; };
 		048D065C11216C0F009F7865 /* MinimapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MinimapView.h; sourceTree = "<group>"; };
@@ -100,6 +106,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		047AC57511748F5F003BDF6F /* sidebar */ = {
+			isa = PBXGroup;
+			children = (
+				047AC57611748F74003BDF6F /* MMCWTMSplitView.h */,
+				047AC57711748F74003BDF6F /* MMCWTMSplitView.mm */,
+				047AC57811748F74003BDF6F /* MMKFSplitView.h */,
+				047AC57911748F74003BDF6F /* MMKFSplitView.m */,
+			);
+			name = sidebar;
+			sourceTree = "<group>";
+		};
 		048D06A0112171A8009F7865 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
@@ -155,6 +172,7 @@
 		08FB77AFFE84173DC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				047AC57511748F5F003BDF6F /* sidebar */,
 				048D06A0112171A8009F7865 /* Categories */,
 				048D064411216B1C009F7865 /* TextMateMinimap.h */,
 				048D064511216B1C009F7865 /* TextMateMinimap.m */,
@@ -297,6 +315,8 @@
 				04DC1B7511536F6700F87F90 /* AsyncDrawOperation.m in Sources */,
 				04DC1F521154DC5D00F87F90 /* BackgroundUpdater.m in Sources */,
 				04AEA8EA115930A700E337C5 /* AsyncBGDrawOperation.m in Sources */,
+				047AC57B11748F74003BDF6F /* MMCWTMSplitView.mm in Sources */,
+				047AC57C11748F74003BDF6F /* MMKFSplitView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

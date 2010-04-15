@@ -202,7 +202,8 @@
 {
   [self MM_toggleSoftWrap:sender];
   NSWindowController* wc = [[self window] windowController];
-  if ([wc isKindOfClass:OakProjectController] || [wc isKindOfClass:OakDocumentController]) {
+  if ([wc isInSidepaneMode]
+      && [wc isKindOfClass:OakProjectController] || [wc isKindOfClass:OakDocumentController]) {
     int offset = [sender state] ? 56:40;
     NSDrawer* drawer = [wc getMinimapDrawer];
     MinimapView* mm = [wc getMinimapView];

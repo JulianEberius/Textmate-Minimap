@@ -39,19 +39,11 @@
   [self MM_becomeMainWindow];
   NSWindowController* controller = [self windowController];
   if ([controller isKindOfClass:OakProjectController] || [controller isKindOfClass:OakDocumentController]) {
-    NSDrawer* drawer = [controller getMinimapDrawer];
-    int state = [drawer state];
-    if (state == NSDrawerClosedState || state == NSDrawerClosingState) {
-      [[TextmateMinimap instance] setMinimapMenuItem:NO];
-      [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Minimap_lastDocumentHadMinimapOpen"];
-    }
-    else { 
-      [[TextmateMinimap instance] setMinimapMenuItem:YES];
-      [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Minimap_lastDocumentHadMinimapOpen"];
-    }
+    BOOL isOpen = [controller minimapContainerIsOpen];
+    [[TextmateMinimap instance] setMinimapMenuItem:isOpen];
+    [[NSUserDefaults standardUserDefaults] setBool:isOpen forKey:@"Minimap_lastDocumentHadMinimapOpen"];
   }
   [[TextmateMinimap instance] setLastWindowController:controller];
-  
 }
 
 @end

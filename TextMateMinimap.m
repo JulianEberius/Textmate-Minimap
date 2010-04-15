@@ -23,6 +23,7 @@
 #import "objc/runtime.h"
 #import "ShortcutRecorder/SRRecorderControl.h"
 #import "ShortcutRecorder/SRCommon.h"
+#import "MMCWTMSplitView.h"
 
 
 @interface TextmateMinimap (Private_TextMateMinimap)
@@ -97,6 +98,16 @@ static TextmateMinimap *sharedInstance = nil;
     [OakTextView jr_swizzleMethod:@selector(toggleFoldingsEnabled:) withMethod:@selector(MM_toggleFoldingsEnabled:) error:NULL];
     [OakTextView jr_swizzleMethod:@selector(dealloc) withMethod:@selector(MM_dealloc) error:NULL];
     [OakTabBar jr_swizzleMethod:@selector(selectTab:) withMethod:@selector(MM_selectTab:) error:NULL];
+    
+    /*
+    if (NSClassFromString(@"CWTMSplitView") != nil) {
+      NSLog(@"projectplus loaded");
+      [NSClassFromString(@"CWTMSplitView") jr_swizzleMethod:@selector(drawerView) withMethod:@selector(MM_drawerView) error:NULL];
+      [NSClassFromString(@"CWTMSplitView") jr_swizzleMethod:@selector(documentView) withMethod:@selector(MM_documentView) error:NULL];
+    } else {
+      NSLog(@"projectplus NOT loaded");
+    }
+*/
 
     // Prefs... this directly reuses a lot of code from Ciarán Walsh's ProjectPlus
     // http://ciaranwal.sh/2008/08/05/textmate-plug-in-projectplus
@@ -114,6 +125,7 @@ static TextmateMinimap *sharedInstance = nil;
                     [NSNumber numberWithInt:MinimapInheritShow],
                     [NSNumber numberWithInt:MinimapAsSaved],
                     [NSNumber numberWithBool:YES],
+                    [NSNumber numberWithBool:NO],
                     NULL
                   ]
              forKeys:[NSArray arrayWithObjects:
@@ -125,6 +137,7 @@ static TextmateMinimap *sharedInstance = nil;
                     @"Minimap_newDocumentBehaviour",
                     @"Minimap_openDocumentBehaviour",
                     @"Minimap_lastDocumentHadMinimapOpen",
+                    @"Minimap_showInSidepane",
                     NULL
                   ]]];
 
@@ -341,6 +354,36 @@ static TextmateMinimap *sharedInstance = nil;
   if ([[tabViewItem identifier] isEqualToString:@"FineTuning"] ) {
     [self changeScaleValues:nil];
   }
+}
+
+#pragma mark splitview-delegate
+- (float)splitView:(MMCWTMSplitView*)splitview constrainMinCoordinate:(float)proposedMin ofSubviewAt:(int)offset
+{
+	return (proposedMin + [splitview minLeftWidth]);
+}
+
+- (float)splitView:(MMCWTMSplitView*)splitview constrainMaxCoordinate:(float)proposedMax ofSubviewAt:(int)offset
+{
+	return (proposedMax - [splitview minRightWidth]);
+}
+
+- (void)splitView:(id)sender resizeSubviewsWithOldSize:(NSSize)oldSize
+{
+	if(![sender isKindOfClass:[MMCWTMSplitView class]])
+		return;
+	float newHeight = [sender frame].size.height;
+	float newWidth  = [sender frame].size.width - [[sender drawerView] frame].size.width - [sender dividerThickness];
+  
+	NSRect newFrame = [[sender drawerView] frame];
+	newFrame.size.height = newHeight;
+	[[sender drawerView] setFrame:newFrame];
+  
+	newFrame = [[sender documentView] frame];
+	newFrame.size.width = newWidth;
+	newFrame.size.height = newHeight;
+	[[sender documentView] setFrame:newFrame];
+	
+	[sender adjustSubviews];
 }
 
 #pragma mark singleton

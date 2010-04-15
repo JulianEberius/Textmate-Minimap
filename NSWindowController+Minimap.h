@@ -17,9 +17,12 @@
 - (void)refreshMinimap;
 - (void)toggleMinimap;
 - (BOOL)isSoftWrapEnabled;
+- (BOOL)isInSidepaneMode;
 - (MinimapView*)getMinimapView;
 - (NSDrawer*)getMinimapDrawer;
 - (void)updateTrailingSpace;
+- (BOOL)minimapContainerIsOpen;
+- (void)setMinimapContainerIsOpen:(BOOL)open;
 
 #pragma mark swizzled-methods
 - (void)MM_windowWillClose:(id)aNotification;

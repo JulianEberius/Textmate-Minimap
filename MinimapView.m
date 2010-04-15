@@ -332,7 +332,7 @@ int const scaleDownTo = 5;
   [self updateVisiblePartOfTextView];
   visRectPosBeforeScrolling = -1;
   [self setNeedsDisplayInRect:[self visibleRect]];
-
+/*
   if (minimapIsScrollable) {
     NSTimer* old_timer = [self timer];
     if (old_timer != NULL && [old_timer isValid]) {
@@ -342,6 +342,7 @@ int const scaleDownTo = 5;
     NSTimer* t = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(refresh) userInfo:nil repeats:NO];
     [self setTimer:t];
   }
+*/
 }
 
 
