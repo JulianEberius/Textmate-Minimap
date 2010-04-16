@@ -3,7 +3,7 @@
 //  Textmate-Minimap
 //
 //  Created by Julian Eberius on 19.03.10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  Copyright 2010 Julian Eberius. All rights reserved.
 //
 
 #import "AsyncDrawOperation.h"

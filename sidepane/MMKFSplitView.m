@@ -186,7 +186,7 @@ static BOOL kfScaleUInts(unsigned *integers, int numInts, unsigned targetTotal)
     NSImage *isVerticalImage, *isNotVerticalImage;
 
     if (isVerticalImage = [NSImage imageNamed:@"NSTruthHorizontalResizeCursor"]); // standard Jaguar NSSplitView resize cursor
-    else if  (isVerticalImage = [NSImage imageNamed:@"NSTruthHResizeCursor"]);
+    else isVerticalImage = [NSImage imageNamed:@"NSTruthHResizeCursor"];
 
     if (isVerticalImage)
     {
@@ -195,7 +195,7 @@ static BOOL kfScaleUInts(unsigned *integers, int numInts, unsigned targetTotal)
     }
 
     if (isNotVerticalImage = [NSImage imageNamed:@"NSTruthVerticalResizeCursor"]); // standard Jaguar NSSplitView resize cursor
-    else if  (isNotVerticalImage = [NSImage imageNamed:@"NSTruthVResizeCursor"]);
+    else isNotVerticalImage = [NSImage imageNamed:@"NSTruthVResizeCursor"];
 
     if (isNotVerticalImage)
     {

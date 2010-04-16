@@ -1,3 +1,5 @@
+// Code inherited from Ciarán Walsh's ProjectPlus ( http://ciaranwal.sh/2008/08/05/textmate-plug-in-projectplus )
+
 #import "MMKFSplitView.h"
 @class CWTMSplitView;
 

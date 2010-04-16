@@ -41,10 +41,11 @@
 - (void)adaptWindowSize;
 @end
 
+// id for saving extended file attributes
 const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 
 @implementation NSWindowController (MM_NSWindowController)
-
+#pragma mark public-methods
 /*
  Request a redraw of the minimap
  */
@@ -84,35 +85,6 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
     [[self getMinimapView] reactToScrollingTextView];
 }
 
-- (void)adaptWindowSize
-{
-  if (![self isInSidepaneMode]) {
-    // assemble a bunch of widths and positions
-    NSRect screenFrame = [[[self window] screen] frame];
-    int fullWidth = 0;
-    
-    fullWidth += [[self getMinimapView] frame].size.width+11;
-    NSRect windowFrame = [[self window] frame];
-    fullWidth += windowFrame.size.width;
-    for (NSDrawer *drawer in [[self window] drawers])
-      if (! [[drawer contentView] isKindOfClass:[MinimapView class]])
-        if ([drawer state] == NSDrawerOpenState || [drawer state] == NSDrawerOpeningState)
-          fullWidth += [[drawer contentView] frame].size.width+11;
-    
-    if (fullWidth > screenFrame.size.width) {
-      //we need to scale the window...
-      int diff = fullWidth - screenFrame.size.width;
-      NSRect newWindowFrame;
-      if ([self getCorrectMinimapDrawerSide] == NSMaxXEdge)
-        newWindowFrame = NSMakeRect(windowFrame.origin.x, windowFrame.origin.y,
-                                  windowFrame.size.width-diff, windowFrame.size.height);
-      else
-        newWindowFrame = NSMakeRect(windowFrame.origin.x+diff, windowFrame.origin.y,
-                                  windowFrame.size.width-diff, windowFrame.size.height);
-      [[self window] setFrame:newWindowFrame display:YES animate:YES];
-    }
-  }
-}
 
 /*
  Call TextMate's gotoLine function
@@ -126,20 +98,11 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 }
 
 /*
- Find out whether soft wrap is enabled by looking at the applications main menu...
+ Find out whether soft wrap is enabled
  */
-- (BOOL) isSoftWrapEnabled
+- (BOOL)isSoftWrapEnabled
 {
   return [[[self getMinimapView] textView] storedSoftWrapSetting];
-}
-
-/*
- Get this window's minimap
- */
-- (MinimapView*) getMinimapView
-{
-  NSMutableDictionary* ivars = [[TextmateMinimap instance] getIVarsFor:self];
-  return (MinimapView*)[ivars objectForKey:@"minimap"];
 }
 
 - (void)updateTrailingSpace
@@ -183,7 +146,10 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
  - create a drawer for the minimap and set it's side
  - OR create sidepane
  - set the correct offsets for the minimap (different for document and project controller)
+ - OR but the splitviews in the correct order
  - store references and mode in "iVars"
+ 
+ Sorry this got quite long, but at least it's documented ;-)
  */
 - (void)MM_windowDidLoad
 {
@@ -194,15 +160,18 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
   [[TextmateMinimap instance] setLastWindowController:self];
   NSWindow* window=[self window];
   NSSize contentSize = NSMakeSize(160, [window frame].size.height);
-  NSRectEdge edge = [self getCorrectMinimapDrawerSide];
   // init textshapeview
   MinimapView* textshapeView = [[MinimapView alloc] initWithTextView:[self textView]];
   [textshapeView setWindowController:self];
   NSMutableDictionary* ivars = [[TextmateMinimap instance] getIVarsFor:self];
   NSString* filename = nil;
   
-  
+  ////////////////
+  // SIDEPANE-MODE
+  ////////////////
   if ([defaults boolForKey:@"Minimap_showInSidepane"]) {
+    [ivars setObject:[NSNumber numberWithBool:YES]  forKey:@"minimapSidepaneModeOn"];
+    NSRectEdge edge = [self getCorrectMinimapDrawerSide];
     NSView* documentView = [[window contentView] retain];
     MMCWTMSplitView* splitView;
     // check whether projectplus or missingdrawer is present
@@ -280,13 +249,18 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
     [self setMinimapContainerIsOpen:shouldOpen];
       
     [[NSUserDefaults standardUserDefaults] setBool:shouldOpen forKey:@"Minimap_lastDocumentHadMinimapOpen"];
-    [ivars setObject:[NSNumber numberWithBool:YES]  forKey:@"minimapSidepaneModeOn"];
+    
     [ivars setObject:splitView  forKey:@"minimapSplitView"];
     [splitView release];
     [documentView release];
   }
+  //////////////
+  //DRAWER MODE
+  //////////////
   else {
+    NSRectEdge edge = [self getCorrectMinimapDrawerSide];
     id minimapDrawer = [[NSDrawer alloc] initWithContentSize:contentSize preferredEdge:edge];
+    
     [minimapDrawer setParentWindow:window];
     [minimapDrawer setContentView:textshapeView];
     
@@ -312,65 +286,6 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
   
   [ivars setObject:textshapeView forKey:@"minimap"];
   [textshapeView release];
-}
-
-- (BOOL)minimapContainerIsOpen {
-  if ([self isInSidepaneMode]) {
-    return ![self sidepaneIsClosed];
-  } 
-  else {
-    NSDrawer* drawer = [self getMinimapDrawer];
-    int state = [drawer state];
-    return ((state == NSDrawerOpeningState) || (state == NSDrawerOpenState));
-  }
-}
-
-- (void)setMinimapContainerIsOpen:(BOOL)open {
-  if (!open) {
-    if ([self isInSidepaneMode]) {
-      [self setSidepaneIsClosed:!open];
-    } 
-    else {
-        [[self getMinimapDrawer] close];
-    }  
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Minimap_lastDocumentHadMinimapOpen"];
-  }
-  else {
-    if ([self isInSidepaneMode]) {
-      [self setSidepaneIsClosed:!open];
-    } 
-    else {
-        NSRectEdge edge = [self getCorrectMinimapDrawerSide];
-        [[self getMinimapDrawer] openOnEdge:edge];
-    }
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Minimap_lastDocumentHadMinimapOpen"];
-  }
-}
-
-- (BOOL)isInSidepaneMode {
-  NSMutableDictionary* ivars = [[TextmateMinimap instance] getIVarsFor:self];
-  return [[ivars objectForKey:@"minimapSidepaneModeOn"] boolValue];
-}
-
-/*
-  do not call directly! use minimapContainerIsOpen
-  */
-- (BOOL)sidepaneIsClosed
-{
-  NSMutableDictionary* ivars = [[TextmateMinimap instance] getIVarsFor:self];
-  MMCWTMSplitView* splitView = (MMCWTMSplitView*)[ivars objectForKey:@"minimapSplitView"];
-  return [splitView isSubviewCollapsed:[splitView drawerView]];
-}
-
-/*
-  do not call directly! use setMinimapContainerIsOpen
-  */
-- (void)setSidepaneIsClosed:(BOOL)closed
-{
-  NSMutableDictionary* ivars = [[TextmateMinimap instance] getIVarsFor:self];
-  MMCWTMSplitView* splitView = (MMCWTMSplitView*)[ivars objectForKey:@"minimapSplitView"];
-  [splitView setSubview:[splitView drawerView] isCollapsed:closed];
-  [splitView resizeSubviewsWithOldSize:[splitView bounds].size];
 }
 
 /*
@@ -430,12 +345,130 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 
 #pragma mark private
 
+/*
+  private: will change the windows size if the minimap is open(ed) and would not fit on the screen
+  */
+- (void)adaptWindowSize
+{
+  if (![self isInSidepaneMode]) {
+    // assemble a bunch of widths and positions
+    NSRect screenFrame = [[[self window] screen] frame];
+    int fullWidth = 0;
+    
+    fullWidth += [[self getMinimapView] frame].size.width+11;
+    NSRect windowFrame = [[self window] frame];
+    fullWidth += windowFrame.size.width;
+    for (NSDrawer *drawer in [[self window] drawers])
+      if (! [[drawer contentView] isKindOfClass:[MinimapView class]])
+        if ([drawer state] == NSDrawerOpenState || [drawer state] == NSDrawerOpeningState)
+          fullWidth += [[drawer contentView] frame].size.width+11;
+    
+    if (fullWidth > screenFrame.size.width) {
+      //we need to scale the window...
+      int diff = fullWidth - screenFrame.size.width;
+      NSRect newWindowFrame;
+      if ([self getCorrectMinimapDrawerSide] == NSMaxXEdge)
+        newWindowFrame = NSMakeRect(windowFrame.origin.x, windowFrame.origin.y,
+                                  windowFrame.size.width-diff, windowFrame.size.height);
+      else
+        newWindowFrame = NSMakeRect(windowFrame.origin.x+diff, windowFrame.origin.y,
+                                  windowFrame.size.width-diff, windowFrame.size.height);
+      [[self window] setFrame:newWindowFrame display:YES animate:YES];
+    }
+  }
+}
+
+
+/*
+  Finds out whether the minimap container is open or closed. This abstracts the opened and closed methods
+  for the sidepane and the minimap, calling whichever variant is activated.
+*/
+- (BOOL)minimapContainerIsOpen {
+  if ([self isInSidepaneMode]) {
+    return ![self sidepaneIsClosed];
+  } 
+  else {
+    NSDrawer* drawer = [self getMinimapDrawer];
+    int state = [drawer state];
+    return ((state == NSDrawerOpeningState) || (state == NSDrawerOpenState));
+  }
+}
+
+/*
+  Set whether the minimap container is open or closed. This abstracts the open and close methods
+  for the sidepane and the minimap, calling whichever variant is activated.
+*/
+- (void)setMinimapContainerIsOpen:(BOOL)open {
+  if (!open) {
+    if ([self isInSidepaneMode]) {
+      [self setSidepaneIsClosed:!open];
+    } 
+    else {
+        [[self getMinimapDrawer] close];
+    }  
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Minimap_lastDocumentHadMinimapOpen"];
+  }
+  else {
+    if ([self isInSidepaneMode]) {
+      [self setSidepaneIsClosed:!open];
+    } 
+    else {
+        NSRectEdge edge = [self getCorrectMinimapDrawerSide];
+        [[self getMinimapDrawer] openOnEdge:edge];
+    }
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Minimap_lastDocumentHadMinimapOpen"];
+  }
+}
+
+- (BOOL)isInSidepaneMode {
+  NSMutableDictionary* ivars = [[TextmateMinimap instance] getIVarsFor:self];
+  return [[ivars objectForKey:@"minimapSidepaneModeOn"] boolValue];
+}
+
+/*
+  do not call directly! use minimapContainerIsOpen
+  */
+- (BOOL)sidepaneIsClosed
+{
+  NSMutableDictionary* ivars = [[TextmateMinimap instance] getIVarsFor:self];
+  MMCWTMSplitView* splitView = (MMCWTMSplitView*)[ivars objectForKey:@"minimapSplitView"];
+  return [splitView isSubviewCollapsed:[splitView drawerView]];
+}
+
+/*
+  do not call directly! use setMinimapContainerIsOpen
+  */
+- (void)setSidepaneIsClosed:(BOOL)closed
+{
+  NSMutableDictionary* ivars = [[TextmateMinimap instance] getIVarsFor:self];
+  MMCWTMSplitView* splitView = (MMCWTMSplitView*)[ivars objectForKey:@"minimapSplitView"];
+  [splitView setSubview:[splitView drawerView] isCollapsed:closed];
+  [splitView resizeSubviewsWithOldSize:[splitView bounds].size];
+}
+
+/*
+ Get this window's minimap
+ */
+- (MinimapView*) getMinimapView
+{
+  NSMutableDictionary* ivars = [[TextmateMinimap instance] getIVarsFor:self];
+  return (MinimapView*)[ivars objectForKey:@"minimap"];
+}
+
+/*
+  Get the NSDrawer the Minimap is in. Can return nil if there is no drawer (e.g. if sidepane mode enabled)
+*/
 - (NSDrawer*) getMinimapDrawer
 {
   NSMutableDictionary* ivars = [[TextmateMinimap instance] getIVarsFor:self];
   return (NSDrawer*)[ivars objectForKey:@"minimapDrawer"];
 }
 
+/*
+  Finds out whether the minimap should be opened by looking at the following criteria:
+  - the open/new document prefs the user has set
+  - the file attribtues that were set for the doc or the project
+*/
 - (BOOL) shouldOpenMinimapDrawer:(NSString*)filename
 {
   BOOL result = YES;
@@ -520,6 +553,13 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
   switch ([[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_minimapSide"]) {
     default:
     case MinimapAutoSide:
+      // in sidepane mode, the correct side is always right... except for the ProjectPlus on Right case
+      if ([self isInSidepaneMode]) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ProjectPlus Sidebar on Right"])
+          return NSMinXEdge;
+        return NSMaxXEdge;
+      }
+      
       if (projectDrawerWasFound) {
         if (projectDrawerSide == NSMaxXEdge)
           if (projectDrawerIsOpen) result = NSMinXEdge;
@@ -528,7 +568,7 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
           if (projectDrawerIsOpen) result = NSMaxXEdge;
           else result = NSMinXEdge;
       }
-      // there is no project drawer we can use for orientation, let's find a side ourselves!
+      // there is no project drawer we can use for orientation...
       else {
         result = [self getPreferableWindowSide];
       }
@@ -537,7 +577,6 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
     case MinimapLeftSide:
       result = NSMinXEdge;
       break;
-
     case MinimapRightSide:
       result = NSMaxXEdge;
       break;
@@ -552,7 +591,7 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 - (NSRectEdge)getPreferableWindowSide 
 {
   NSRectEdge result = NSMaxXEdge;
-  
+  // the preferable side is where more screen space is left
   NSWindow* window = [self window];
   NSRect windowFrame = [window frame];
   if ((windowFrame.origin.x) > ([[window screen] frame].size.width - (windowFrame.origin.x+windowFrame.size.width)))

@@ -1,3 +1,5 @@
+// Code inherited from Ciarán Walsh's ProjectPlus ( http://ciaranwal.sh/2008/08/05/textmate-plug-in-projectplus )
+
 #import "MMCWTMSplitView.h"
 
 @implementation MMCWTMSplitView
@@ -38,9 +40,9 @@
 	[super drawDividerInRect:rect];
 }
 
-- (float)dividerThickness
+- (CGFloat)dividerThickness
 {
-    return 8;
+    return 8.0;
 }
 
 - (BOOL)sideBarOnRight;
