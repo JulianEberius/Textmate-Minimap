@@ -19,6 +19,7 @@ extern int const scaleDownTo;
   NSImage* theImage;
   NSOperationQueue* queue;
   NSTimer* timer;
+  NSTimer* firstDrawTimer;
   NSLock* drawLock;
   BackgroundUpdater* updater;
 

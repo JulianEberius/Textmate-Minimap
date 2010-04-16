@@ -81,7 +81,12 @@ int const scaleDownTo = 5;
     [self fillWithBackground];
     [self setNeedsDisplay:NO];
     //Defer first drawing by small interval ... don't know a better way to wait till the tv is fully initialized
-    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(firstRefresh) userInfo:nil repeats:NO];
+    if (firstDrawTimer != nil && [firstDrawTimer isValid]) {
+      [firstDrawTimer invalidate];
+      firstDrawTimer = nil;
+    }
+    firstDrawTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self 
+                               selector:@selector(firstRefresh) userInfo:nil repeats:NO];
     return;
   }
 
@@ -314,6 +319,7 @@ int const scaleDownTo = 5;
  Called when the minimap is initialized for a document, similar to refresh, more initialization
  */
 - (void)firstRefresh {
+  firstDrawTimer = nil;
   requestRedraw = YES;
   visRectPosBeforeScrolling = -1;
   
@@ -372,6 +378,10 @@ int const scaleDownTo = 5;
   [theImage release];
   theImage = NULL;
   firstDraw = YES;
+  if (firstDrawTimer != nil && [firstDrawTimer isValid]) {
+    [firstDrawTimer invalidate];
+    firstDrawTimer = nil;
+  }
 }
 
 - (void)fillWithBackground
