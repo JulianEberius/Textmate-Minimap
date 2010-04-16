@@ -245,12 +245,12 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
     else if ([[self className] isEqualToString:@"OakDocumentController"]) {
       filename = [[[self textView] document] filename];
     }
+    [ivars setObject:splitView forKey:@"minimapSplitView"];
     BOOL shouldOpen = [self shouldOpenMinimapDrawer:filename];
     [self setMinimapContainerIsOpen:shouldOpen];
       
     [[NSUserDefaults standardUserDefaults] setBool:shouldOpen forKey:@"Minimap_lastDocumentHadMinimapOpen"];
     
-    [ivars setObject:splitView  forKey:@"minimapSplitView"];
     [splitView release];
     [documentView release];
   }
@@ -511,8 +511,7 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 - (void)writeMinimapOpenStateToFileAttributes:(NSString*)filename
 {
   char value;
-  NSDrawer* drawer = [self getMinimapDrawer];
-  if (([drawer state] == NSDrawerOpenState) || ([drawer state] == NSDrawerOpeningState))
+  if ([self minimapContainerIsOpen])
     value = 0x31; // xattr (on terminal) reads the extended file attributes as utf8 strings, this is the utf8 "1"
   else
     value = 0x30; // this is the "0"

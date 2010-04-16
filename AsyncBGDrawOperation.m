@@ -114,7 +114,8 @@
  Copy&Pasted from the interwebs for cropping NSBitmapImageReps (used for cropping the gutter from the TextView Snapshots)
  */
 - (NSBitmapImageRep*)cropImageRep:(NSBitmapImageRep*)rep ToRect:(NSRect)rect {
-  CGImageRef cgImg = CGImageCreateWithImageInRect([rep CGImage], NSRectToCGRect(rect)); NSBitmapImageRep *result = [[NSBitmapImageRep alloc] initWithCGImage:cgImg];
+  CGImageRef cgImg = CGImageCreateWithImageInRect([rep CGImage], NSRectToCGRect(rect)); 
+  NSBitmapImageRep *result = [[NSBitmapImageRep alloc] initWithCGImage:cgImg];
 
   CGImageRelease(cgImg);
   return [result autorelease];
@@ -123,7 +124,8 @@
 - (void)initializeFillColorFromTextView
 {
   id stylesheet = [[minimapView textView] currentStyleSheet];
-  NSDictionary* firstEntry = [(NSArray*)stylesheet objectAtIndex:0]; // the first entry seems to always contain the main settings
+  // the first entry seems to always contain the main settings
+  NSDictionary* firstEntry = [(NSArray*)stylesheet objectAtIndex:0]; 
   NSString* bgColor = [[firstEntry objectForKey:@"settings"] objectForKey:@"background"];
   unsigned aValue = strtoul([[bgColor substringWithRange:NSMakeRange(1, 6)] UTF8String], NULL, 16);
   CGFloat red = ((CGFloat)((aValue & 0xFF0000) >> 16)) / 255.0f;
