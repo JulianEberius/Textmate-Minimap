@@ -178,6 +178,12 @@
 		vrLoc = 320;
 	};
 	047AC57611748F74003BDF6F /* MMCWTMSplitView.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = MMCWTMSplitView.h;
+		path = "/Users/ebi/dev/Textmate-Minimap/MMCWTMSplitView.h";
+		sourceTree = "<absolute>";
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {965, 345}}";
 			sepNavSelRange = "{428, 0}";
@@ -185,6 +191,12 @@
 		};
 	};
 	047AC57711748F74003BDF6F /* MMCWTMSplitView.mm */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.cpp.objcpp;
+		name = MMCWTMSplitView.mm;
+		path = "/Users/ebi/dev/Textmate-Minimap/MMCWTMSplitView.mm";
+		sourceTree = "<absolute>";
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {891, 1260}}";
 			sepNavSelRange = "{2215, 0}";
@@ -192,6 +204,12 @@
 		};
 	};
 	047AC57811748F74003BDF6F /* MMKFSplitView.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = MMKFSplitView.h;
+		path = "/Users/ebi/dev/Textmate-Minimap/MMKFSplitView.h";
+		sourceTree = "<absolute>";
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1010, 1065}}";
 			sepNavSelRange = "{1875, 0}";
@@ -200,6 +218,12 @@
 		};
 	};
 	047AC57911748F74003BDF6F /* MMKFSplitView.m */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.objc;
+		name = MMKFSplitView.m;
+		path = "/Users/ebi/dev/Textmate-Minimap/MMKFSplitView.m";
+		sourceTree = "<absolute>";
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1010, 17625}}";
 			sepNavSelRange = "{33214, 0}";
@@ -263,9 +287,9 @@
 	};
 	048D064511216B1C009F7865 /* TextMateMinimap.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1010, 5775}}";
+			sepNavIntBoundsRect = "{{0, 0}, {978, 5310}}";
 			sepNavSelRange = "{5164, 51}";
-			sepNavVisRange = "{2107, 3759}";
+			sepNavVisRange = "{0, 1035}";
 			sepNavWindowFrame = "{{286, 9}, {994, 769}}";
 		};
 	};
@@ -279,13 +303,19 @@
 	};
 	048D065D11216C0F009F7865 /* MinimapView.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {838, 6405}}";
+			sepNavIntBoundsRect = "{{0, 0}, {911, 6690}}";
 			sepNavSelRange = "{2811, 0}";
-			sepNavVisRange = "{2725, 564}";
+			sepNavVisRange = "{0, 1095}";
 			sepNavWindowFrame = "{{107, 9}, {994, 769}}";
 		};
 	};
 	048D067B11216DDE009F7865 /* NSView+Minimap.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = "NSView+Minimap.h";
+		path = "/Users/ebi/dev/Textmate-Minimap/NSView+Minimap.h";
+		sourceTree = "<absolute>";
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1010, 749}}";
 			sepNavSelRange = "{509, 32}";
@@ -294,6 +324,12 @@
 		};
 	};
 	048D067C11216DDE009F7865 /* NSView+Minimap.m */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.objc;
+		name = "NSView+Minimap.m";
+		path = "/Users/ebi/dev/Textmate-Minimap/NSView+Minimap.m";
+		sourceTree = "<absolute>";
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1010, 4020}}";
 			sepNavSelRange = "{4385, 0}";
@@ -301,15 +337,13 @@
 			sepNavWindowFrame = "{{15, 104}, {994, 769}}";
 		};
 	};
-	048D06A1112171BE009F7865 /* NSWindowController+Minimap.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {838, 495}}";
-			sepNavSelRange = "{373, 7}";
-			sepNavVisRange = "{158, 404}";
-			sepNavWindowFrame = "{{38, 83}, {994, 769}}";
-		};
-	};
 	048D06A2112171BE009F7865 /* NSWindowController+Minimap.m */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.objc;
+		name = "NSWindowController+Minimap.m";
+		path = "/Users/ebi/dev/Textmate-Minimap/NSWindowController+Minimap.m";
+		sourceTree = "<absolute>";
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1010, 7680}}";
 			sepNavSelRange = "{6630, 0}";
@@ -317,22 +351,13 @@
 			sepNavWindowFrame = "{{38, 83}, {994, 769}}";
 		};
 	};
-	048D06A4112171D3009F7865 /* NSWindow+Minimap.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1054, 724}}";
-			sepNavSelRange = "{409, 0}";
-			sepNavVisRange = "{0, 457}";
-		};
-	};
-	048D06A5112171D3009F7865 /* NSWindow+Minimap.m */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {838, 870}}";
-			sepNavSelRange = "{699, 7}";
-			sepNavVisRange = "{460, 472}";
-			sepNavWindowFrame = "{{15, 104}, {994, 769}}";
-		};
-	};
 	048D06A7112171DE009F7865 /* NSScrollView+Minimap.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = "NSScrollView+Minimap.h";
+		path = "/Users/ebi/dev/Textmate-Minimap/NSScrollView+Minimap.h";
+		sourceTree = "<absolute>";
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1054, 724}}";
 			sepNavSelRange = "{0, 0}";
@@ -340,6 +365,12 @@
 		};
 	};
 	048D06A8112171DE009F7865 /* NSScrollView+Minimap.m */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.objc;
+		name = "NSScrollView+Minimap.m";
+		path = "/Users/ebi/dev/Textmate-Minimap/NSScrollView+Minimap.m";
+		sourceTree = "<absolute>";
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1054, 726}}";
 			sepNavSelRange = "{824, 24}";
@@ -522,6 +553,12 @@
 		vrLoc = 1726;
 	};
 	04A843DD11369759002743B0 /* NSWindowController+Preferences.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = "NSWindowController+Preferences.h";
+		path = "/Users/ebi/dev/Textmate-Minimap/NSWindowController+Preferences.h";
+		sourceTree = "<absolute>";
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1054, 724}}";
 			sepNavSelRange = "{762, 0}";
@@ -529,6 +566,12 @@
 		};
 	};
 	04A843DE11369759002743B0 /* NSWindowController+Preferences.m */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.objc;
+		name = "NSWindowController+Preferences.m";
+		path = "/Users/ebi/dev/Textmate-Minimap/NSWindowController+Preferences.m";
+		sourceTree = "<absolute>";
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1027, 1185}}";
 			sepNavSelRange = "{1179, 0}";
@@ -543,7 +586,7 @@
 		argumentStrings = (
 		);
 		autoAttachOnCrash = 1;
-		breakpointsEnabled = 1;
+		breakpointsEnabled = 0;
 		configStateDict = {
 			"PBXLSLaunchAction-0" = {
 				PBXLSLaunchAction = 0;
@@ -671,6 +714,26 @@
 		rType = 0;
 		vrLen = 733;
 		vrLoc = 1482;
+	};
+	04C7F694117862EB00A3A4DD /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 048D065D11216C0F009F7865 /* MinimapView.m */;
+		name = "MinimapView.m: 103";
+		rLen = 0;
+		rLoc = 2811;
+		rType = 0;
+		vrLen = 1095;
+		vrLoc = 0;
+	};
+	04C7F695117862EB00A3A4DD /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 048D064511216B1C009F7865 /* TextMateMinimap.m */;
+		name = "TextMateMinimap.m: 101";
+		rLen = 51;
+		rLoc = 5164;
+		rType = 0;
+		vrLen = 1035;
+		vrLoc = 0;
 	};
 	04CA0FA711204A6D006869D1 /* NSView.h */ = {
 		isa = PBXFileReference;
@@ -877,7 +940,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					713,
+					733,
 					20,
 					48,
 					43,
@@ -923,7 +986,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					836,
+					693,
 					60,
 					20,
 					48,
@@ -940,8 +1003,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 293097471;
-			PBXWorkspaceStateSaveDate = 293097471;
+			PBXPerProjectTemplateStateSaveDate = 293102211;
+			PBXWorkspaceStateSaveDate = 293102211;
 		};
 		perUserProjectItems = {
 			0417C08D113AB43B007BB23C = 0417C08D113AB43B007BB23C /* PBXTextBookmark */;
@@ -975,8 +1038,10 @@
 			04B46002113BE9CE00BD8E0D = 04B46002113BE9CE00BD8E0D /* PlistBookmark */;
 			04B78CEB11258866009189AC = 04B78CEB11258866009189AC /* PBXTextBookmark */;
 			04B78ECE1125AAB5009189AC = 04B78ECE1125AAB5009189AC /* PBXTextBookmark */;
-			04C7F63C11784FFE00A3A4DD /* PBXTextBookmark */ = 04C7F63C11784FFE00A3A4DD /* PBXTextBookmark */;
-			04C7F6521178501700A3A4DD /* PBXTextBookmark */ = 04C7F6521178501700A3A4DD /* PBXTextBookmark */;
+			04C7F63C11784FFE00A3A4DD = 04C7F63C11784FFE00A3A4DD /* PBXTextBookmark */;
+			04C7F6521178501700A3A4DD = 04C7F6521178501700A3A4DD /* PBXTextBookmark */;
+			04C7F694117862EB00A3A4DD /* PBXTextBookmark */ = 04C7F694117862EB00A3A4DD /* PBXTextBookmark */;
+			04C7F695117862EB00A3A4DD /* PBXTextBookmark */ = 04C7F695117862EB00A3A4DD /* PBXTextBookmark */;
 			04CA0FC111204A89006869D1 = 04CA0FC111204A89006869D1 /* PBXTextBookmark */;
 			04E3B674117707B9001A899A = 04E3B674117707B9001A899A /* PBXTextBookmark */;
 			04E3B6A41177263C001A899A = 04E3B6A41177263C001A899A /* PBXTextBookmark */;

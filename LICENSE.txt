@@ -25,6 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 EXTERNAL LICENSES
 =================
 
-This project uses code from other open source projects (JRSwizzle, ShortcutRecorder, Sparkle) which include licenses of their own.
+This project uses code from other open source projects (JRSwizzle, ShortcutRecorder, Sparkle, KFSplitView)
+ which include licenses of their own.
 
 

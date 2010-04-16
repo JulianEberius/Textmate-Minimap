@@ -13,18 +13,18 @@
 		044AB04E113D2CA900304627 /* MMSparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 044AB048113D2CA500304627 /* MMSparkle.framework */; };
 		045379821138180E0019F7BF /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045379811138180E0019F7BF /* ShortcutRecorder.framework */; };
 		04537B7F113828CB0019F7BF /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 045379811138180E0019F7BF /* ShortcutRecorder.framework */; };
-		047AC57B11748F74003BDF6F /* MMCWTMSplitView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 047AC57711748F74003BDF6F /* MMCWTMSplitView.mm */; };
-		047AC57C11748F74003BDF6F /* MMKFSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 047AC57911748F74003BDF6F /* MMKFSplitView.m */; };
 		048D064611216B1C009F7865 /* TextMateMinimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D064511216B1C009F7865 /* TextMateMinimap.m */; };
 		048D065E11216C0F009F7865 /* MinimapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D065D11216C0F009F7865 /* MinimapView.m */; };
-		048D067D11216DDE009F7865 /* NSView+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D067C11216DDE009F7865 /* NSView+Minimap.m */; };
-		048D06A3112171BE009F7865 /* NSWindowController+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D06A2112171BE009F7865 /* NSWindowController+Minimap.m */; };
-		048D06A6112171D3009F7865 /* NSWindow+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D06A5112171D3009F7865 /* NSWindow+Minimap.m */; };
-		048D06A9112171DE009F7865 /* NSScrollView+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D06A8112171DE009F7865 /* NSScrollView+Minimap.m */; };
 		04A843DB1136972E002743B0 /* textmate-minimap.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 04A843DA1136972E002743B0 /* textmate-minimap.tiff */; };
-		04A843DF11369759002743B0 /* NSWindowController+Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A843DE11369759002743B0 /* NSWindowController+Preferences.m */; };
 		04AEA8EA115930A700E337C5 /* AsyncBGDrawOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AEA8E9115930A700E337C5 /* AsyncBGDrawOperation.m */; };
 		04B9A499112AF27F0082EF25 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 04B9A497112AF27F0082EF25 /* LICENSE.txt */; };
+		04C7F6791178629900A3A4DD /* MMCWTMSplitView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04C7F6761178629900A3A4DD /* MMCWTMSplitView.mm */; };
+		04C7F67A1178629900A3A4DD /* MMKFSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C7F6781178629900A3A4DD /* MMKFSplitView.m */; };
+		04C7F685117862A400A3A4DD /* NSScrollView+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C7F67C117862A400A3A4DD /* NSScrollView+Minimap.m */; };
+		04C7F686117862A400A3A4DD /* NSView+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C7F67E117862A400A3A4DD /* NSView+Minimap.m */; };
+		04C7F687117862A400A3A4DD /* NSWindow+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C7F680117862A400A3A4DD /* NSWindow+Minimap.m */; };
+		04C7F688117862A400A3A4DD /* NSWindowController+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C7F682117862A400A3A4DD /* NSWindowController+Minimap.m */; };
+		04C7F689117862A400A3A4DD /* NSWindowController+Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C7F684117862A400A3A4DD /* NSWindowController+Preferences.m */; };
 		04CC435C116A7CA600FC40F4 /* README.markdown in Resources */ = {isa = PBXBuildFile; fileRef = 04CC435B116A7CA600FC40F4 /* README.markdown */; };
 		04D1F7421136CF58008BF7DA /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04D1F7411136CF58008BF7DA /* Preferences.xib */; };
 		04DC1B7511536F6700F87F90 /* AsyncDrawOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DC1B7411536F6700F87F90 /* AsyncDrawOperation.m */; };
@@ -56,27 +56,27 @@
 		044AB048113D2CA500304627 /* MMSparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MMSparkle.framework; path = Frameworks/MMSparkle.framework; sourceTree = "<group>"; };
 		0451552D11244E160097261D /* TextMateMinimap_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMateMinimap_Prefix.pch; sourceTree = "<group>"; };
 		045379811138180E0019F7BF /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ShortcutRecorder.framework; path = Frameworks/ShortcutRecorder.framework; sourceTree = "<group>"; };
-		047AC57611748F74003BDF6F /* MMCWTMSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMCWTMSplitView.h; sourceTree = "<group>"; };
-		047AC57711748F74003BDF6F /* MMCWTMSplitView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MMCWTMSplitView.mm; sourceTree = "<group>"; };
-		047AC57811748F74003BDF6F /* MMKFSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMKFSplitView.h; sourceTree = "<group>"; };
-		047AC57911748F74003BDF6F /* MMKFSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMKFSplitView.m; sourceTree = "<group>"; };
 		048D064411216B1C009F7865 /* TextMateMinimap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMateMinimap.h; sourceTree = "<group>"; };
 		048D064511216B1C009F7865 /* TextMateMinimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextMateMinimap.m; sourceTree = "<group>"; };
 		048D065C11216C0F009F7865 /* MinimapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MinimapView.h; sourceTree = "<group>"; };
 		048D065D11216C0F009F7865 /* MinimapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MinimapView.m; sourceTree = "<group>"; };
-		048D067B11216DDE009F7865 /* NSView+Minimap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+Minimap.h"; sourceTree = "<group>"; };
-		048D067C11216DDE009F7865 /* NSView+Minimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+Minimap.m"; sourceTree = "<group>"; };
-		048D06A1112171BE009F7865 /* NSWindowController+Minimap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindowController+Minimap.h"; sourceTree = "<group>"; };
-		048D06A2112171BE009F7865 /* NSWindowController+Minimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindowController+Minimap.m"; sourceTree = "<group>"; };
-		048D06A4112171D3009F7865 /* NSWindow+Minimap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindow+Minimap.h"; sourceTree = "<group>"; };
-		048D06A5112171D3009F7865 /* NSWindow+Minimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindow+Minimap.m"; sourceTree = "<group>"; };
-		048D06A7112171DE009F7865 /* NSScrollView+Minimap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScrollView+Minimap.h"; sourceTree = "<group>"; };
-		048D06A8112171DE009F7865 /* NSScrollView+Minimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScrollView+Minimap.m"; sourceTree = "<group>"; };
 		04A843DA1136972E002743B0 /* textmate-minimap.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "textmate-minimap.tiff"; sourceTree = "<group>"; };
-		04A843DD11369759002743B0 /* NSWindowController+Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindowController+Preferences.h"; sourceTree = "<group>"; };
-		04A843DE11369759002743B0 /* NSWindowController+Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindowController+Preferences.m"; sourceTree = "<group>"; };
 		04AEA8E9115930A700E337C5 /* AsyncBGDrawOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncBGDrawOperation.m; sourceTree = "<group>"; };
 		04B9A497112AF27F0082EF25 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		04C7F6751178629900A3A4DD /* MMCWTMSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCWTMSplitView.h; path = sidepane/MMCWTMSplitView.h; sourceTree = "<group>"; };
+		04C7F6761178629900A3A4DD /* MMCWTMSplitView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MMCWTMSplitView.mm; path = sidepane/MMCWTMSplitView.mm; sourceTree = "<group>"; };
+		04C7F6771178629900A3A4DD /* MMKFSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMKFSplitView.h; path = sidepane/MMKFSplitView.h; sourceTree = "<group>"; };
+		04C7F6781178629900A3A4DD /* MMKFSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMKFSplitView.m; path = sidepane/MMKFSplitView.m; sourceTree = "<group>"; };
+		04C7F67B117862A400A3A4DD /* NSScrollView+Minimap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSScrollView+Minimap.h"; path = "categories/NSScrollView+Minimap.h"; sourceTree = "<group>"; };
+		04C7F67C117862A400A3A4DD /* NSScrollView+Minimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSScrollView+Minimap.m"; path = "categories/NSScrollView+Minimap.m"; sourceTree = "<group>"; };
+		04C7F67D117862A400A3A4DD /* NSView+Minimap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSView+Minimap.h"; path = "categories/NSView+Minimap.h"; sourceTree = "<group>"; };
+		04C7F67E117862A400A3A4DD /* NSView+Minimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSView+Minimap.m"; path = "categories/NSView+Minimap.m"; sourceTree = "<group>"; };
+		04C7F67F117862A400A3A4DD /* NSWindow+Minimap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSWindow+Minimap.h"; path = "categories/NSWindow+Minimap.h"; sourceTree = "<group>"; };
+		04C7F680117862A400A3A4DD /* NSWindow+Minimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSWindow+Minimap.m"; path = "categories/NSWindow+Minimap.m"; sourceTree = "<group>"; };
+		04C7F681117862A400A3A4DD /* NSWindowController+Minimap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSWindowController+Minimap.h"; path = "categories/NSWindowController+Minimap.h"; sourceTree = "<group>"; };
+		04C7F682117862A400A3A4DD /* NSWindowController+Minimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSWindowController+Minimap.m"; path = "categories/NSWindowController+Minimap.m"; sourceTree = "<group>"; };
+		04C7F683117862A400A3A4DD /* NSWindowController+Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSWindowController+Preferences.h"; path = "categories/NSWindowController+Preferences.h"; sourceTree = "<group>"; };
+		04C7F684117862A400A3A4DD /* NSWindowController+Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSWindowController+Preferences.m"; path = "categories/NSWindowController+Preferences.m"; sourceTree = "<group>"; };
 		04CC435B116A7CA600FC40F4 /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
 		04D1F7411136CF58008BF7DA /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		04DC1B7311536F6700F87F90 /* AsyncDrawOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncDrawOperation.h; sourceTree = "<group>"; };
@@ -109,29 +109,29 @@
 		047AC57511748F5F003BDF6F /* sidebar */ = {
 			isa = PBXGroup;
 			children = (
-				047AC57611748F74003BDF6F /* MMCWTMSplitView.h */,
-				047AC57711748F74003BDF6F /* MMCWTMSplitView.mm */,
-				047AC57811748F74003BDF6F /* MMKFSplitView.h */,
-				047AC57911748F74003BDF6F /* MMKFSplitView.m */,
+				04C7F6751178629900A3A4DD /* MMCWTMSplitView.h */,
+				04C7F6761178629900A3A4DD /* MMCWTMSplitView.mm */,
+				04C7F6771178629900A3A4DD /* MMKFSplitView.h */,
+				04C7F6781178629900A3A4DD /* MMKFSplitView.m */,
 			);
 			name = sidebar;
 			sourceTree = "<group>";
 		};
-		048D06A0112171A8009F7865 /* Categories */ = {
+		048D06A0112171A8009F7865 /* categories */ = {
 			isa = PBXGroup;
 			children = (
-				04A843DD11369759002743B0 /* NSWindowController+Preferences.h */,
-				04A843DE11369759002743B0 /* NSWindowController+Preferences.m */,
-				048D067B11216DDE009F7865 /* NSView+Minimap.h */,
-				048D067C11216DDE009F7865 /* NSView+Minimap.m */,
-				048D06A1112171BE009F7865 /* NSWindowController+Minimap.h */,
-				048D06A2112171BE009F7865 /* NSWindowController+Minimap.m */,
-				048D06A4112171D3009F7865 /* NSWindow+Minimap.h */,
-				048D06A5112171D3009F7865 /* NSWindow+Minimap.m */,
-				048D06A7112171DE009F7865 /* NSScrollView+Minimap.h */,
-				048D06A8112171DE009F7865 /* NSScrollView+Minimap.m */,
+				04C7F67B117862A400A3A4DD /* NSScrollView+Minimap.h */,
+				04C7F67C117862A400A3A4DD /* NSScrollView+Minimap.m */,
+				04C7F67D117862A400A3A4DD /* NSView+Minimap.h */,
+				04C7F67E117862A400A3A4DD /* NSView+Minimap.m */,
+				04C7F67F117862A400A3A4DD /* NSWindow+Minimap.h */,
+				04C7F680117862A400A3A4DD /* NSWindow+Minimap.m */,
+				04C7F681117862A400A3A4DD /* NSWindowController+Minimap.h */,
+				04C7F682117862A400A3A4DD /* NSWindowController+Minimap.m */,
+				04C7F683117862A400A3A4DD /* NSWindowController+Preferences.h */,
+				04C7F684117862A400A3A4DD /* NSWindowController+Preferences.m */,
 			);
-			name = Categories;
+			name = categories;
 			sourceTree = "<group>";
 		};
 		04A843D91136972E002743B0 /* resources */ = {
@@ -173,7 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				047AC57511748F5F003BDF6F /* sidebar */,
-				048D06A0112171A8009F7865 /* Categories */,
+				048D06A0112171A8009F7865 /* categories */,
 				048D064411216B1C009F7865 /* TextMateMinimap.h */,
 				048D064511216B1C009F7865 /* TextMateMinimap.m */,
 				048D065C11216C0F009F7865 /* MinimapView.h */,
@@ -307,16 +307,16 @@
 				0429C0FF111EFFDA0062C5AE /* JRSwizzle.m in Sources */,
 				048D064611216B1C009F7865 /* TextMateMinimap.m in Sources */,
 				048D065E11216C0F009F7865 /* MinimapView.m in Sources */,
-				048D067D11216DDE009F7865 /* NSView+Minimap.m in Sources */,
-				048D06A3112171BE009F7865 /* NSWindowController+Minimap.m in Sources */,
-				048D06A6112171D3009F7865 /* NSWindow+Minimap.m in Sources */,
-				048D06A9112171DE009F7865 /* NSScrollView+Minimap.m in Sources */,
-				04A843DF11369759002743B0 /* NSWindowController+Preferences.m in Sources */,
 				04DC1B7511536F6700F87F90 /* AsyncDrawOperation.m in Sources */,
 				04DC1F521154DC5D00F87F90 /* BackgroundUpdater.m in Sources */,
 				04AEA8EA115930A700E337C5 /* AsyncBGDrawOperation.m in Sources */,
-				047AC57B11748F74003BDF6F /* MMCWTMSplitView.mm in Sources */,
-				047AC57C11748F74003BDF6F /* MMKFSplitView.m in Sources */,
+				04C7F6791178629900A3A4DD /* MMCWTMSplitView.mm in Sources */,
+				04C7F67A1178629900A3A4DD /* MMKFSplitView.m in Sources */,
+				04C7F685117862A400A3A4DD /* NSScrollView+Minimap.m in Sources */,
+				04C7F686117862A400A3A4DD /* NSView+Minimap.m in Sources */,
+				04C7F687117862A400A3A4DD /* NSWindow+Minimap.m in Sources */,
+				04C7F688117862A400A3A4DD /* NSWindowController+Minimap.m in Sources */,
+				04C7F689117862A400A3A4DD /* NSWindowController+Preferences.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
