@@ -5,11 +5,19 @@
       <link>http://localhost/dev/appcast.xml</link>
       <description>Most recent versions of Textmate-Minimap with links to updates.</description>
       <language>en</language>
+          <item>
+             <title>Version 0.7</title>
+                         <sparkle:releaseNotesLink>
+                             http://julianeberius.github.com/Textmate-Minimap/0.70.html
+                         </sparkle:releaseNotesLink>
+             <pubDate>Fr, 16 Apr 2010 13:00:00 +0000</pubDate>
+             <enclosure url="http://github.com/downloads/JulianEberius/Textmate-Minimap/TextmateMinimap-0.7.zip" sparkle:version="0.70" sparkle:shortVersionString="0.7" length="509607" type="application/octet-stream" sparkle:dsaSignature="MC0CFQDGpui85wH91sVMD0IkYCRe9pInJgIUaP1iUwsXfhnuUoz0Awy08zGf7+8=" />
+          </item>
          <item>
             <title>Version 0.61</title>
-						<sparkle:releaseNotesLink>
-							http://julianeberius.github.com/Textmate-Minimap/0.61.html
-						</sparkle:releaseNotesLink>
+                        <sparkle:releaseNotesLink>
+                            http://julianeberius.github.com/Textmate-Minimap/0.61.html
+                        </sparkle:releaseNotesLink>
             <pubDate>Mon, 02 Mar 2010 15:00:00 +0000</pubDate>
             <enclosure url="http://github.com/downloads/JulianEberius/Textmate-Minimap/TextmateMinimap-0.61.zip" sparkle:version="0.61" length="448071" type="application/octet-stream" sparkle:dsaSignature="MC0CFHGJZdFMBqYsA32qu+EtJM3YspzkAhUAkZeyFwmyhgGY9eGiv1qw9THZrRY=" />
          </item>
