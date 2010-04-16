@@ -63,7 +63,6 @@ static TextmateMinimap *sharedInstance = nil;
 - (id)initWithPlugInController:(id <TMPlugInController>)aController
 {
   if (self = [super init]) {
-
     [self installMenuItem];
     
     NSString* iconPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"textmate-minimap" ofType:@"tiff"];
@@ -99,16 +98,6 @@ static TextmateMinimap *sharedInstance = nil;
     [OakTextView jr_swizzleMethod:@selector(dealloc) withMethod:@selector(MM_dealloc) error:NULL];
     [OakTabBar jr_swizzleMethod:@selector(selectTab:) withMethod:@selector(MM_selectTab:) error:NULL];
     
-    /*
-    if (NSClassFromString(@"CWTMSplitView") != nil) {
-      NSLog(@"projectplus loaded");
-      [NSClassFromString(@"CWTMSplitView") jr_swizzleMethod:@selector(drawerView) withMethod:@selector(MM_drawerView) error:NULL];
-      [NSClassFromString(@"CWTMSplitView") jr_swizzleMethod:@selector(documentView) withMethod:@selector(MM_documentView) error:NULL];
-    } else {
-      NSLog(@"projectplus NOT loaded");
-    }
-*/
-
     // Prefs... this directly reuses a lot of code from Ciarán Walsh's ProjectPlus
     // http://ciaranwal.sh/2008/08/05/textmate-plug-in-projectplus
     // Source: git://github.com/ciaran/projectplus.git

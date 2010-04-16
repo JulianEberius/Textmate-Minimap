@@ -38,6 +38,7 @@
 - (BOOL)isInSidepaneMode;
 - (BOOL)sidepaneIsClosed;
 - (void)setSidepaneIsClosed:(BOOL)closed;
+- (void)adaptWindowSize;
 @end
 
 const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
@@ -70,10 +71,47 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
  */
 - (void)toggleMinimap
 {
+  
   if ([self minimapContainerIsOpen])
     [self setMinimapContainerIsOpen:NO];
-  else
+  else {
+    //if not in sidepane mode, do the "push the window away"-trick that the project drawer does
+    [self adaptWindowSize];
     [self setMinimapContainerIsOpen:YES];
+  }
+  // ok, this is not scrolling, but the reaction is the same
+  if ([self isInSidepaneMode])
+    [[self getMinimapView] reactToScrollingTextView];
+}
+
+- (void)adaptWindowSize
+{
+  if (![self isInSidepaneMode]) {
+    // assemble a bunch of widths and positions
+    NSRect screenFrame = [[[self window] screen] frame];
+    int fullWidth = 0;
+    
+    fullWidth += [[self getMinimapView] frame].size.width+11;
+    NSRect windowFrame = [[self window] frame];
+    fullWidth += windowFrame.size.width;
+    for (NSDrawer *drawer in [[self window] drawers])
+      if (! [[drawer contentView] isKindOfClass:[MinimapView class]])
+        if ([drawer state] == NSDrawerOpenState || [drawer state] == NSDrawerOpeningState)
+          fullWidth += [[drawer contentView] frame].size.width+11;
+    
+    if (fullWidth > screenFrame.size.width) {
+      //we need to scale the window...
+      int diff = fullWidth - screenFrame.size.width;
+      NSRect newWindowFrame;
+      if ([self getCorrectMinimapDrawerSide] == NSMaxXEdge)
+        newWindowFrame = NSMakeRect(windowFrame.origin.x, windowFrame.origin.y,
+                                  windowFrame.size.width-diff, windowFrame.size.height);
+      else
+        newWindowFrame = NSMakeRect(windowFrame.origin.x+diff, windowFrame.origin.y,
+                                  windowFrame.size.width-diff, windowFrame.size.height);
+      [[self window] setFrame:newWindowFrame display:YES animate:YES];
+    }
+  }
 }
 
 /*
@@ -171,7 +209,8 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
     // if so, but our splitview into their splitview, not to confuse their implementation
     // (which sadly does [window contentView] to find it's own splitView)
     if (NSClassFromString(@"CWTMSplitView") != nil 
-        && [[NSUserDefaults standardUserDefaults] boolForKey:@"ProjectPlus Sidebar Enabled"]) {
+        && [[NSUserDefaults standardUserDefaults] boolForKey:@"ProjectPlus Sidebar Enabled"]
+        && [self isKindOfClass:OakProjectController]) {
       
       NSView* preExistingSplitView = documentView;
       BOOL ppSidebarIsOnRight = [[NSUserDefaults standardUserDefaults] boolForKey:@"ProjectPlus Sidebar on Right"];
@@ -340,6 +379,10 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 - (void)MM_toggleGroupsAndFilesDrawer:(id)sender
 {
   [self MM_toggleGroupsAndFilesDrawer:sender];
+  
+  // if the minimap is open, we might need to make some room on the screen
+  if ([self minimapContainerIsOpen])
+    [self adaptWindowSize];
   // if auto-mode is set, we need to check whether both drawers are now on the same side, in which case we need to
   // close the minimap and reopen it on the other side
   if ([[NSUserDefaults standardUserDefaults] integerForKey:@"Minimap_minimapSide"] == MinimapAutoSide) {
@@ -356,10 +399,12 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
     }
     // the regular old case: both are drawers!
     NSDrawer* minimapDrawer = [self getMinimapDrawer];
+    if ([minimapDrawer state] == NSDrawerClosedState || [minimapDrawer state] == NSDrawerClosingState)
+      return;
+    
     int projectDrawerState = [projectDrawer state];
     if ((projectDrawerState == NSDrawerOpeningState) || (projectDrawerState == NSDrawerOpenState))
     {
-      
       if ([projectDrawer edge] == [minimapDrawer edge])
       {
         [minimapDrawer close];
@@ -369,6 +414,12 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
       }
     }
   }
+  // if we an projectplus are both in sidepane-mode, toggling the drawer must also tog
+  // gle a special repaint of the map (similar to scrolling)
+  if ([self isInSidepaneMode]
+      && [[NSUserDefaults standardUserDefaults] boolForKey:@"ProjectPlus Sidebar Enabled"]) {
+    [[self getMinimapView] reactToScrollingTextView];
+  }
 }
 
 -(void)MM_PrefWindowWillClose:(id)arg1
@@ -376,7 +427,6 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
   [self MM_PrefWindowWillClose:arg1];
   [[[TextmateMinimap instance] lastWindowController] refreshMinimap];
 }
-
 
 #pragma mark private
 

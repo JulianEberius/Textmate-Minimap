@@ -82,30 +82,3 @@
 	return [self sideBarOnRight] ? MIN_DRAWER_VIEW_WIDTH : MIN_DOCUMENT_VIEW_WIDTH;
 }
 @end
-
-
-
-
-@interface NSSplitView(only_for_CWTMSplitView)
--(BOOL)sideBarOnRight;
-@end
-
-/* we have to change some of projectplus' methods 
- to make it compatible with splitviews in splitviews*/
-@implementation NSSplitView(projectplus)
-- (NSView*)MM_drawerView
-{
-	if([self sideBarOnRight])
-		return [[self subviews] objectAtIndex:1];
-	else
-		return [[self subviews] objectAtIndex:0];
-}
-
-- (NSView*)MM_documentView
-{
-	if([self sideBarOnRight])
-		return [[self subviews] objectAtIndex:0];
-	else
-		return [[self subviews] objectAtIndex:1];
-}
-@end

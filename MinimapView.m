@@ -105,7 +105,7 @@ int const scaleDownTo = 5;
     }
     [queue cancelAllOperations];
     [queue addOperation:op];
-    NSLog(@"adding op!");
+    //NSLog(@"adding op!");
     [op release];
     requestRedraw = NO;
     return;
