@@ -21,7 +21,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="41"/>
+			<integer value="231"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -63,7 +63,7 @@
 							<object class="NSTabViewItem" id="926000077">
 								<string key="NSIdentifier">General</string>
 								<object class="NSView" key="NSView" id="980884557">
-									<reference key="NSNextResponder" ref="520768783"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">256</int>
 									<object class="NSMutableArray" key="NSSubviews">
 										<bool key="EncodedWithXMLCoder">YES</bool>
@@ -571,7 +571,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 										</object>
 									</object>
 									<string key="NSFrame">{{10, 33}, {402, 248}}</string>
-									<reference key="NSSuperview" ref="520768783"/>
 								</object>
 								<string key="NSLabel">General</string>
 								<reference key="NSColor" ref="646245018"/>
@@ -580,7 +579,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<object class="NSTabViewItem" id="865866011">
 								<string key="NSIdentifier">Open_New</string>
 								<object class="NSView" key="NSView" id="451116678">
-									<nil key="NSNextResponder"/>
+									<reference key="NSNextResponder" ref="520768783"/>
 									<int key="NSvFlags">256</int>
 									<object class="NSMutableArray" key="NSSubviews">
 										<bool key="EncodedWithXMLCoder">YES</bool>
@@ -597,7 +596,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<object class="NSButtonCell" id="169459131">
 													<int key="NSCellFlags">-2080244224</int>
 													<int key="NSCellFlags2">0</int>
-													<string key="NSContents">Inherit</string>
+													<string key="NSContents">Inherit from last document</string>
 													<reference key="NSSupport" ref="62353035"/>
 													<reference key="NSControlView" ref="400131902"/>
 													<int key="NSTag">1</int>
@@ -833,6 +832,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 										</object>
 									</object>
 									<string key="NSFrame">{{10, 33}, {402, 248}}</string>
+									<reference key="NSSuperview" ref="520768783"/>
 								</object>
 								<string key="NSLabel">Open/New Document</string>
 								<reference key="NSColor" ref="646245018"/>
@@ -1046,14 +1046,14 @@ b3dlciB3aWxsIGxvd2VyIHBlcmZvcm1hbmNlIHdpdGggYmlnIGRvY3VtZW50cyEgA</string>
 								<reference key="NSTabView" ref="520768783"/>
 							</object>
 						</object>
-						<reference key="NSSelectedTabViewItem" ref="926000077"/>
+						<reference key="NSSelectedTabViewItem" ref="865866011"/>
 						<reference key="NSFont" ref="62353035"/>
 						<int key="NSTvFlags">0</int>
 						<bool key="NSAllowTruncatedLabels">YES</bool>
 						<bool key="NSDrawsBackground">YES</bool>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="980884557"/>
+							<reference ref="451116678"/>
 						</object>
 					</object>
 				</object>
@@ -2006,10 +2006,10 @@ b3dlciB3aWxsIGxvd2VyIHBlcmZvcm1hbmNlIHdpdGggYmlnIGRvY3VtZW50cyEgA</string>
 						<object class="IBToolTipAttribute" key="NS.object.0">
 							<string key="name">ToolTip</string>
 							<reference key="object" ref="517716510"/>
-							<string type="base64-UTF8" key="toolTip">V2hlbiByZW9wZW5pbmcgYSBkb2N1bWVudCwgdGhlIG1pbmltYXAgd2lsbCBiZSBoaWRlbiBvciBzaG93
-biBkZXBlbmRpbmcgb24gd2hldGhlciBpdCB3YXMgaGlkZGVuIG9yIG5vdCB3aGVuIHRoZSBkb2N1bWVu
-dCB3YXMgc2F2ZWQuIApXaGVuIHRoZSBkb2N1bWVudCBoYXMgbmV2ZXIgYmVlbiBzYXZlZCBiZWZvcmUs
-IHRoZSAibmV3IGRvY3VtZW50IiBiZWhhdmlvdXIgd2lsbCBiZSB1c2VkLg</string>
+							<string type="base64-UTF8" key="toolTip">V2hlbiByZW9wZW5pbmcgYSBkb2N1bWVudCwgdGhlIG1pbmltYXAgd2lsbCBiZSBoaWRkZW4gb3Igc2hv
+d24gZGVwZW5kaW5nIG9uIHdoZXRoZXIgaXQgd2FzIGhpZGRlbiBvciBub3Qgd2hlbiB0aGUgZG9jdW1l
+bnQgd2FzIHNhdmVkLiAKV2hlbiB0aGUgZG9jdW1lbnQgaGFzIG5ldmVyIGJlZW4gc2F2ZWQgYmVmb3Jl
+LCB0aGUgIm5ldyBkb2N1bWVudCIgYmVoYXZpb3VyIHdpbGwgYmUgdXNlZC4</string>
 						</object>
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
