@@ -6,6 +6,14 @@
       <description>Most recent versions of Textmate-Minimap with links to updates.</description>
       <language>en</language>
           <item>
+             <title>Version 0.71</title>
+                         <sparkle:releaseNotesLink>
+                             http://julianeberius.github.com/Textmate-Minimap/0.71.html
+                         </sparkle:releaseNotesLink>
+             <pubDate>Th, 29 Apr 2010 17:00:00 +0000</pubDate>
+             <enclosure url="http://github.com/downloads/JulianEberius/Textmate-Minimap/TextmateMinimap-0.71.zip" sparkle:version="0.71" sparkle:shortVersionString="0.71" length="509585" type="application/octet-stream" sparkle:dsaSignature="MC0CFQDRZExCPtMcM9AcOO9H5ih96y1eywIUUsukB8MvddSl7C7uSSnOpFrq83g=" />
+          </item>
+          <item>
              <title>Version 0.7</title>
                          <sparkle:releaseNotesLink>
                              http://julianeberius.github.com/Textmate-Minimap/0.70.html
