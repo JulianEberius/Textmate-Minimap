@@ -11,7 +11,7 @@
                              http://julianeberius.github.com/Textmate-Minimap/0.71.html
                          </sparkle:releaseNotesLink>
              <pubDate>Th, 29 Apr 2010 17:00:00 +0000</pubDate>
-             <enclosure url="http://github.com/downloads/JulianEberius/Textmate-Minimap/TextmateMinimap-0.71.zip" sparkle:version="0.71" sparkle:shortVersionString="0.71" length="503484" type="application/octet-stream" sparkle:dsaSignature="MC4CFQCI2DE3IkLo2ZZhHTPj8GKATcIroAIVALF5a4gI9V18GvboH+9p3mxDO8BY" />
+             <enclosure url="http://github.com/downloads/JulianEberius/Textmate-Minimap/TextmateMinimap-0.71-fixed.zip" sparkle:version="0.71" sparkle:shortVersionString="0.71" length="503484" type="application/octet-stream" sparkle:dsaSignature="MCwCFFHyidJ9Z7yMkuVDQD0gmQlamImrAhRg2xWdviAXGq5MXP23ll9P3KXeTg==" />
           </item>
           <item>
              <title>Version 0.7</title>
