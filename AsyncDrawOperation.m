@@ -75,7 +75,7 @@
 
 - (void)makePartialSnapshot
 {
-  [[minimapView drawLock] lock];
+  //[[minimapView drawLock] lock];
   NSImage* old_image = [minimapView theImage];
   int gutterSize = [minimapView gutterSize];
   NSRect tvBounds = NSMakeRect(gutterSize, 0,
@@ -120,14 +120,14 @@
     return;
   [minimapView performSelectorOnMainThread:@selector(asyncDrawFinished:) withObject:image waitUntilDone:YES];
 
-  [[minimapView drawLock] unlock];
+  //[[minimapView drawLock] unlock];
 }
 
 
 - (BOOL)checkCancelled
 {
   if ([self isCancelled]) {
-    [[minimapView drawLock] unlock];
+    //[[minimapView drawLock] unlock];
     return YES;
   }
   return NO;
@@ -140,7 +140,7 @@
 
 - (void)makeCompleteSnapshot
 {
-  [[minimapView drawLock] lock];
+  // [[minimapView drawLock] lock];
   if ([self checkCancelled])
     return;
   NSView* textView = [minimapView textView];
@@ -171,7 +171,7 @@
   if ([self checkCancelled])
     return;
   [minimapView performSelectorOnMainThread:@selector(asyncDrawFinished:) withObject:image waitUntilDone:YES];
-  [[minimapView drawLock] unlock];
+  // [[minimapView drawLock] unlock];
 }
 
 /*

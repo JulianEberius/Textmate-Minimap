@@ -57,7 +57,7 @@
 
 - (void)partialBackgroundDraw
 {
-  [[minimapView drawLock] lock];
+  //[[minimapView drawLock] lock];
   if ([self checkCancelled])
     return;
   NSImage* image = [minimapView theImage];
@@ -94,13 +94,13 @@
     return;
   [updater performSelectorOnMainThread:@selector(rangeWasRedrawn:) withObject:rangeObject waitUntilDone:YES];
 
-  [[minimapView drawLock] unlock];
+  //[[minimapView drawLock] unlock];
 }
 
 - (BOOL)checkCancelled
 {
   if ([self isCancelled]) {
-    [[minimapView drawLock] unlock];
+    //[[minimapView drawLock] unlock];
     return YES;
   }
   return NO;

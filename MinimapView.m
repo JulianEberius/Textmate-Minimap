@@ -35,9 +35,10 @@ int const scaleDownTo = 5;
 
 @implementation MinimapView
 
-@synthesize windowController, textView, theImage, timer, drawLock, 
+@synthesize windowController, textView, theImage, timer, 
     viewableRangeScaling, dirty, minimapLinesStart, gutterSize, visiblePartOfTextView;
-
+//@synthesize drawLock;
+  
 #pragma mark init
 - (id)initWithTextView:(NSView*) tv
 {
@@ -51,7 +52,7 @@ int const scaleDownTo = 5;
     firstDraw = YES;
     
     [self setViewableRangeScaling:1.0];
-    drawLock = [[NSLock alloc] init];
+    //drawLock = [[NSLock alloc] init];
     textView = tv;
     updater = [[BackgroundUpdater alloc] initWithMinimapView:self andOperationQueue:queue];
   }
@@ -66,7 +67,7 @@ int const scaleDownTo = 5;
   [theImage release];
   [updater release];
   [queue release];
-  [drawLock release];
+  // [drawLock release];
   queue = nil;
   [super dealloc];
 }

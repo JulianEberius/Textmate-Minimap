@@ -20,7 +20,7 @@ extern int const scaleDownTo;
   NSOperationQueue* queue;
   NSTimer* timer;
   NSTimer* firstDrawTimer;
-  NSLock* drawLock;
+  //NSLock* drawLock;
   BackgroundUpdater* updater;
 
   NSRange viewableRange;
@@ -45,7 +45,7 @@ extern int const scaleDownTo;
 @property(readonly) NSRect visiblePartOfTextView;
 @property(readonly, assign) NSView* textView;
 @property(readonly, retain) NSImage* theImage;
-@property(readonly, retain) NSLock* drawLock;
+//@property(readonly, retain) NSLock* drawLock;
 @property(retain) NSTimer* timer;
 
 #pragma mark init

@@ -22,7 +22,7 @@
     operationQueue = opQueue;
     dirtyRegions = [[NSMutableArray arrayWithCapacity:[[minimapView theImage] size].height/REGION_LENGTH] retain];
   }
-    return self;
+  return self;
 }
 
 - (void) dealloc
