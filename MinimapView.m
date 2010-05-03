@@ -357,12 +357,12 @@ int const scaleDownTo = 5;
 {
   int w = [textView bounds].size.width;
   NSBitmapImageRep* rawImg = [textView snapshotInRect:NSMakeRect(0,0,w,1)];
-  NSColor* refColor = [self currentBackgroundColor];
+  NSColor* refColor = [[rawImg colorAtX:0 y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];//[self currentBackgroundColor];
 
   int i = 1;
   NSColor* color = [[rawImg colorAtX:i y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
   int imgWidth = [rawImg size].width;
-  while (![color isEqual:refColor] && i < imgWidth) {
+  while ([color isEqual:refColor] && i < imgWidth) {
     i++;
     color = [[rawImg colorAtX:i y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
   }
