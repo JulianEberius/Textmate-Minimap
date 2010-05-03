@@ -62,10 +62,11 @@ int const scaleDownTo = 5;
 - (void)dealloc
 {
   [queue cancelAllOperations];
-  [queue waitUntilAllOperationsAreFinished];
   
-  [theImage release];
+  [theImage release];      
+  theImage = nil;
   [updater release];
+  updater = nil;
   [queue release];
   // [drawLock release];
   queue = nil;
@@ -240,18 +241,17 @@ int const scaleDownTo = 5;
         isInside = [self mouse:mouseLoc inRect:[self bounds]];
         switch ([theEvent type]) {
             case NSLeftMouseUp:
-        if (isInside){
-          unsigned int relativelineIdx = floor(mouseLoc.y / pixelPerLine);
-          unsigned int absoluteLineIdx = minimapLinesStart+relativelineIdx;
-          [windowController scrollToLine:absoluteLineIdx];
-        }
-        keepOn = NO;
-        break;
+              if (isInside){
+                unsigned int relativelineIdx = floor(mouseLoc.y / pixelPerLine);
+                unsigned int absoluteLineIdx = minimapLinesStart+relativelineIdx;
+                [windowController scrollToLine:absoluteLineIdx];   
+                }
+                keepOn = NO;
+                break;     
             default:
-        /* Ignore any other kind of event. */
-        break;
+              /* Ignore any other kind of event. */
+              break;       
         }
-
     };
     return;
 }
