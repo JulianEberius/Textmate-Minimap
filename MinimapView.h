@@ -25,6 +25,7 @@ extern int const scaleDownTo;
 
   NSRange viewableRange;
   NSRect visiblePartOfTextView;
+  NSRect drawnRect;
   Boolean requestRedraw;
   Boolean minimapIsScrollable;
   Boolean firstDraw;

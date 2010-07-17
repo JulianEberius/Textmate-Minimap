@@ -134,6 +134,7 @@ int const scaleDownTo = 5;
     [self setViewableRangeScaling:1.0];
     [theImage drawInRect:drawTo fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.0];
   }
+  drawnRect = drawTo;
   [self drawVisRect:drawTo];
 }
 
@@ -230,30 +231,23 @@ int const scaleDownTo = 5;
 }
 
 #pragma mark overridden-methods
-- (void)mouseDown:(NSEvent *)theEvent
+- (void)mouseUp:(NSEvent *)theEvent
 {
-    BOOL keepOn = YES;
-    BOOL isInside = YES;
-    NSPoint mouseLoc;
-    while (keepOn) {
-        theEvent = [[self window] nextEventMatchingMask: NSLeftMouseUpMask];
-        mouseLoc = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-        isInside = [self mouse:mouseLoc inRect:[self bounds]];
-        switch ([theEvent type]) {
-            case NSLeftMouseUp:
-              if (isInside){
-                unsigned int relativelineIdx = floor(mouseLoc.y / pixelPerLine);
-                unsigned int absoluteLineIdx = minimapLinesStart+relativelineIdx;
-                [windowController scrollToLine:absoluteLineIdx];   
-                }
-                keepOn = NO;
-                break;     
-            default:
-              /* Ignore any other kind of event. */
-              break;       
-        }
-    };
-    return;
+    NSPoint mouseLoc = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+    float ratio = drawnRect.size.height / [self bounds].size.height;
+
+    unsigned int relativeLineIdx;
+    if (ratio < 1.0) {
+      if (mouseLoc.y > drawnRect.size.height) {
+        return;
+      }
+      relativeLineIdx = floor(mouseLoc.y / scaleDownTo);
+    }
+    else {
+      relativeLineIdx = floor(mouseLoc.y / pixelPerLine);
+    }
+    unsigned int absoluteLineIdx = minimapLinesStart + relativeLineIdx;
+    [windowController scrollToLine:absoluteLineIdx];   
 }
 
 - (void)scrollWheel:(NSEvent *)theEvent
