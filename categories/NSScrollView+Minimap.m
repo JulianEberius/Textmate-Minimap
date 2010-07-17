@@ -22,8 +22,8 @@
   
   NSWindowController* controller = [[self window] windowController];
   if ([controller isKindOfClass:OakProjectController] || [controller isKindOfClass:OakDocumentController]) {
-    MinimapView* textShapeView = [controller getMinimapView];
-    [textShapeView reactToScrollingTextView];
+    MinimapView* minimapView = [controller getMinimapView];
+    [minimapView reactToScrollingTextView];
   }
    
 }

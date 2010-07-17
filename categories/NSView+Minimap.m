@@ -112,8 +112,8 @@
 {
   NSWindowController* controller = [[self window] windowController];
   if ([controller isKindOfClass:OakProjectController] || [controller isKindOfClass:OakDocumentController]) {
-    MinimapView* textShapeView = [controller getMinimapView];
-    return textShapeView;
+    MinimapView* minimapView = [controller getMinimapView];
+    return minimapView;
   }
   return nil;
 }

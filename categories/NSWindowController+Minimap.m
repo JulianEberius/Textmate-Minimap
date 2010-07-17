@@ -51,8 +51,8 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
  */
 - (void)refreshMinimap
 {
-  MinimapView* textShapeView = [self getMinimapView];
-  [textShapeView refresh];
+  MinimapView* minimapView = [self getMinimapView];
+  [minimapView refresh];
 }
 
 /*
@@ -92,9 +92,9 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
 - (void)scrollToLine:(unsigned int)newLine
 {
   id textView = [self textView];
-  MinimapView* textShapeView = [self getMinimapView];
+  MinimapView* minimapView = [self getMinimapView];
   [textView goToLineNumber: [NSNumber numberWithInt:newLine]];
-  [textShapeView refresh];
+  [minimapView refresh];
 }
 
 /*
@@ -160,9 +160,9 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
   [[TextmateMinimap instance] setLastWindowController:self];
   NSWindow* window=[self window];
   NSSize contentSize = NSMakeSize(160, [window frame].size.height);
-  // init textshapeview
-  MinimapView* textshapeView = [[MinimapView alloc] initWithTextView:[self textView]];
-  [textshapeView setWindowController:self];
+  // init minimapView
+  MinimapView* minimapView = [[MinimapView alloc] initWithTextView:[self textView]];
+  [minimapView setWindowController:self];
   NSMutableDictionary* ivars = [[TextmateMinimap instance] getIVarsFor:self];
   NSString* filename = nil;
   
@@ -205,10 +205,10 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
       [splitView setSideBarOnRight:sidebarOnRight];
       
       if(!sidebarOnRight)
-        [splitView addSubview:textshapeView];
+        [splitView addSubview:minimapView];
       [splitView addSubview:realDocumentView];
       if(sidebarOnRight)
-        [splitView addSubview:textshapeView];
+        [splitView addSubview:minimapView];
       
       if (ppSidebarIsOnRight)
         [preExistingSplitView addSubview:splitView];
@@ -229,10 +229,10 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
       [splitView setSideBarOnRight:sidebarOnRight];
       
       if(!sidebarOnRight)
-        [splitView addSubview:textshapeView];
+        [splitView addSubview:minimapView];
       [splitView addSubview:documentView];
       if(sidebarOnRight)
-        [splitView addSubview:textshapeView];
+        [splitView addSubview:minimapView];
       
       [window setContentView:splitView];
     }
@@ -262,7 +262,7 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
     id minimapDrawer = [[NSDrawer alloc] initWithContentSize:contentSize preferredEdge:edge];
     
     [minimapDrawer setParentWindow:window];
-    [minimapDrawer setContentView:textshapeView];
+    [minimapDrawer setContentView:minimapView];
     
     int trailingOffset = [self isSoftWrapEnabled] ? 40 : 56;
     if ([[self className] isEqualToString:@"OakProjectController"]) {
@@ -284,8 +284,8 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
     [ivars setObject:[NSNumber numberWithBool:NO]  forKey:@"minimapSidepaneModeOn"];
   }
   
-  [ivars setObject:textshapeView forKey:@"minimap"];
-  [textshapeView release];
+  [ivars setObject:minimapView forKey:@"minimap"];
+  [minimapView release];
 }
 
 /*

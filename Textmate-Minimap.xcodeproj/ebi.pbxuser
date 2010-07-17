@@ -50,26 +50,6 @@
 		path = /Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/AppKit.framework/Versions/C/Headers/NSWindow.h;
 		sourceTree = "<absolute>";
 	};
-	043A81D7118EFE41002BA802 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 048D064411216B1C009F7865 /* TextMateMinimap.h */;
-		name = "TextMateMinimap.h: 57";
-		rLen = 0;
-		rLoc = 1878;
-		rType = 0;
-		vrLen = 1451;
-		vrLoc = 840;
-	};
-	043A81D8118EFE41002BA802 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 048D064511216B1C009F7865 /* TextMateMinimap.m */;
-		name = "TextMateMinimap.m: 261";
-		rLen = 29;
-		rLoc = 10816;
-		rType = 0;
-		vrLen = 1644;
-		vrLoc = 10412;
-	};
 	043A81D9118EFE41002BA802 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 04DC1B7311536F6700F87F90 /* AsyncDrawOperation.h */;
@@ -139,25 +119,6 @@
 		rType = 0;
 		vrLen = 1287;
 		vrLoc = 332;
-	};
-	043A81E0118EFE41002BA802 /* XCBuildMessageTextBookmark */ = {
-		isa = PBXTextBookmark;
-		comments = "No declaration of property 'drawLock' found in the interface";
-		fRef = 048D065D11216C0F009F7865 /* MinimapView.m */;
-		fallbackIsa = XCBuildMessageTextBookmark;
-		rLen = 1;
-		rLoc = 39;
-		rType = 1;
-	};
-	043A81E7118F16FD002BA802 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 048D065D11216C0F009F7865 /* MinimapView.m */;
-		name = "MinimapView.m: 444";
-		rLen = 0;
-		rLoc = 13712;
-		rType = 0;
-		vrLen = 1323;
-		vrLoc = 918;
 	};
 	044682CE11592AA000BE3D86 /* AsyncBGDrawOperation.h */ = {
 		uiCtxt = {
@@ -286,6 +247,51 @@
 		vrLen = 1362;
 		vrLoc = 320;
 	};
+	046BB27911EFC7E300154497 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 048D064411216B1C009F7865 /* TextMateMinimap.h */;
+		name = "TextMateMinimap.h: 57";
+		rLen = 0;
+		rLoc = 1878;
+		rType = 0;
+		vrLen = 1311;
+		vrLoc = 840;
+	};
+	046BB27A11EFC7E300154497 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 046BB27B11EFC7E300154497 /* TextShapeView.m */;
+		rLen = 0;
+		rLoc = 9223372036854775807;
+		rType = 0;
+	};
+	046BB27B11EFC7E300154497 /* TextShapeView.m */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.objc;
+		name = TextShapeView.m;
+		path = /Users/ebi/dev/archive/rest/textmate/textshape/TextShapeView.m;
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {971, 4695}}";
+			sepNavSelRange = "{3992, 37}";
+			sepNavVisRange = "{3819, 1058}";
+		};
+	};
+	046BB27C11EFC7E300154497 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 046BB27D11EFC7E300154497 /* TextShapeView.m */;
+		name = "TextShapeView.m: 146";
+		rLen = 37;
+		rLoc = 3992;
+		rType = 0;
+		vrLen = 1058;
+		vrLoc = 3819;
+	};
+	046BB27D11EFC7E300154497 /* TextShapeView.m */ = {
+		isa = PBXFileReference;
+		name = TextShapeView.m;
+		path = /Users/ebi/dev/archive/rest/textmate/textshape/TextShapeView.m;
+		sourceTree = "<absolute>";
+	};
 	046FBB5611788EAF00F987B4 /* NSWindowController+Minimap.m:249 */ = {
 		isa = PBXFileBreakpoint;
 		actions = (
@@ -400,16 +406,16 @@
 	};
 	048D064411216B1C009F7865 /* TextMateMinimap.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1100, 1200}}";
+			sepNavIntBoundsRect = "{{0, 0}, {971, 1200}}";
 			sepNavSelRange = "{1878, 0}";
-			sepNavVisRange = "{840, 1451}";
+			sepNavVisRange = "{840, 1311}";
 		};
 	};
 	048D064511216B1C009F7865 /* TextMateMinimap.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1100, 6660}}";
+			sepNavIntBoundsRect = "{{0, 0}, {978, 5760}}";
 			sepNavSelRange = "{10816, 29}";
-			sepNavVisRange = "{10412, 1644}";
+			sepNavVisRange = "{203, 1681}";
 			sepNavWindowFrame = "{{286, 9}, {994, 769}}";
 		};
 	};
@@ -423,9 +429,9 @@
 	};
 	048D065D11216C0F009F7865 /* MinimapView.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1379, 6690}}";
-			sepNavSelRange = "{13712, 0}";
-			sepNavVisRange = "{11191, 744}";
+			sepNavIntBoundsRect = "{{0, 0}, {971, 6240}}";
+			sepNavSelRange = "{7859, 0}";
+			sepNavVisRange = "{7209, 1550}";
 			sepNavWindowFrame = "{{107, 9}, {994, 769}}";
 		};
 	};
@@ -813,6 +819,16 @@
 		path = /Developer/SDKs/MacOSX10.5.sdk/usr/include/sys/xattr.h;
 		sourceTree = "<absolute>";
 	};
+	04FC0A5A11EE579E00B9A152 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 048D065D11216C0F009F7865 /* MinimapView.m */;
+		name = "MinimapView.m: 239";
+		rLen = 0;
+		rLoc = 7859;
+		rType = 0;
+		vrLen = 1550;
+		vrLoc = 7209;
+	};
 	089C1669FE841209C02AAC07 /* Project object */ = {
 		activeArchitecturePreference = i386;
 		activeBuildConfigurationName = Debug;
@@ -890,7 +906,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					922,
+					793,
 					20,
 					48,
 					43,
@@ -953,14 +969,12 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 294577181;
-			PBXWorkspaceStateSaveDate = 294577181;
+			PBXPerProjectTemplateStateSaveDate = 300897732;
+			PBXWorkspaceStateSaveDate = 300897732;
 		};
 		perUserProjectItems = {
 			0417C08D113AB43B007BB23C /* PBXTextBookmark */ = 0417C08D113AB43B007BB23C /* PBXTextBookmark */;
 			0429D03B1120B00E0048EA21 /* PBXTextBookmark */ = 0429D03B1120B00E0048EA21 /* PBXTextBookmark */;
-			043A81D7118EFE41002BA802 /* PBXTextBookmark */ = 043A81D7118EFE41002BA802 /* PBXTextBookmark */;
-			043A81D8118EFE41002BA802 /* PBXTextBookmark */ = 043A81D8118EFE41002BA802 /* PBXTextBookmark */;
 			043A81D9118EFE41002BA802 /* PBXTextBookmark */ = 043A81D9118EFE41002BA802 /* PBXTextBookmark */;
 			043A81DA118EFE41002BA802 /* PBXTextBookmark */ = 043A81DA118EFE41002BA802 /* PBXTextBookmark */;
 			043A81DB118EFE41002BA802 /* PBXTextBookmark */ = 043A81DB118EFE41002BA802 /* PBXTextBookmark */;
@@ -968,8 +982,6 @@
 			043A81DD118EFE41002BA802 /* PBXTextBookmark */ = 043A81DD118EFE41002BA802 /* PBXTextBookmark */;
 			043A81DE118EFE41002BA802 /* PBXTextBookmark */ = 043A81DE118EFE41002BA802 /* PBXTextBookmark */;
 			043A81DF118EFE41002BA802 /* PBXTextBookmark */ = 043A81DF118EFE41002BA802 /* PBXTextBookmark */;
-			043A81E0118EFE41002BA802 /* XCBuildMessageTextBookmark */ = 043A81E0118EFE41002BA802 /* XCBuildMessageTextBookmark */;
-			043A81E7118F16FD002BA802 /* PBXTextBookmark */ = 043A81E7118F16FD002BA802 /* PBXTextBookmark */;
 			04537B61113828230019F7BF /* PBXTextBookmark */ = 04537B61113828230019F7BF /* PBXTextBookmark */;
 			04537BA911382B2D0019F7BF /* PBXTextBookmark */ = 04537BA911382B2D0019F7BF /* PBXTextBookmark */;
 			04537BAA11382B2D0019F7BF /* PBXTextBookmark */ = 04537BAA11382B2D0019F7BF /* PBXTextBookmark */;
@@ -977,6 +989,9 @@
 			04537BAE11382B2D0019F7BF /* PBXTextBookmark */ = 04537BAE11382B2D0019F7BF /* PBXTextBookmark */;
 			04537BB111382B2D0019F7BF /* PBXTextBookmark */ = 04537BB111382B2D0019F7BF /* PBXTextBookmark */;
 			04537BE7113839750019F7BF /* PBXTextBookmark */ = 04537BE7113839750019F7BF /* PBXTextBookmark */;
+			046BB27911EFC7E300154497 /* PBXTextBookmark */ = 046BB27911EFC7E300154497 /* PBXTextBookmark */;
+			046BB27A11EFC7E300154497 /* PBXTextBookmark */ = 046BB27A11EFC7E300154497 /* PBXTextBookmark */;
+			046BB27C11EFC7E300154497 /* PBXTextBookmark */ = 046BB27C11EFC7E300154497 /* PBXTextBookmark */;
 			0477C2F1118EE32A000612C2 /* PBXTextBookmark */ = 0477C2F1118EE32A000612C2 /* PBXTextBookmark */;
 			0486C2A4112323380075832F /* PBXTextBookmark */ = 0486C2A4112323380075832F /* PBXTextBookmark */;
 			0486C2A6112323380075832F /* PBXTextBookmark */ = 0486C2A6112323380075832F /* PBXTextBookmark */;
@@ -994,6 +1009,7 @@
 			04CA0FC111204A89006869D1 /* PBXTextBookmark */ = 04CA0FC111204A89006869D1 /* PBXTextBookmark */;
 			04E3B674117707B9001A899A /* PBXTextBookmark */ = 04E3B674117707B9001A899A /* PBXTextBookmark */;
 			04F15496113978FD007CA3E2 /* PBXTextBookmark */ = 04F15496113978FD007CA3E2 /* PBXTextBookmark */;
+			04FC0A5A11EE579E00B9A152 /* PBXTextBookmark */ = 04FC0A5A11EE579E00B9A152 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 047C7E4D110F278C00CC049E /* Source Control */;
 		userBookmarkGroup = 04D80D7C110F2A2A002E74B6 /* PBXBookmarkGroup */;
