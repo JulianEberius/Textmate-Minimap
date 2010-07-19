@@ -14,6 +14,7 @@
 #pragma mark new-api
 - (int)getCurrentLine:(id)textView;
 - (void)scrollToLine:(unsigned int)newLine;
+- (void)scrollToYPercentage:(float)y;
 - (void)refreshMinimap;
 - (void)toggleMinimap;
 - (BOOL)isSoftWrapEnabled;

@@ -234,20 +234,29 @@ int const scaleDownTo = 5;
 - (void)mouseUp:(NSEvent *)theEvent
 {
     NSPoint mouseLoc = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-    float ratio = drawnRect.size.height / [self bounds].size.height;
 
+    float ratio = drawnRect.size.height / [self bounds].size.height;
     unsigned int relativeLineIdx;
     if (ratio < 1.0) {
-      if (mouseLoc.y > drawnRect.size.height) {
-        return;
-      }
       relativeLineIdx = floor(mouseLoc.y / scaleDownTo);
     }
     else {
       relativeLineIdx = floor(mouseLoc.y / pixelPerLine);
     }
     unsigned int absoluteLineIdx = minimapLinesStart + relativeLineIdx;
-    [windowController scrollToLine:absoluteLineIdx];   
+    if ([windowController isSoftWrapEnabled]) {
+      // we use slightly "weaker" mode: scroll by percentage then centerCaretInDisplay...
+      // can not correctly select the first and last few lines of the document, because
+      // it always selects the center line... but will always scroll correctly at least
+      float y = absoluteLineIdx * [textView lineHeight];
+      float percentage = y / [textView bounds].size.height;
+      [windowController scrollToYPercentage:percentage];
+    } else {
+      // will select all lines correctly, but does not work in "soft wrap" mode, because
+      // "absoluteLineIdx" will not really be the absolute line (wrapping can not be  
+      // taken into account in the calculation)
+      [windowController scrollToLine:absoluteLineIdx];
+    }
 }
 
 - (void)scrollWheel:(NSEvent *)theEvent

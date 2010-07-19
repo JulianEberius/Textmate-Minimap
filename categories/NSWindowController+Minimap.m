@@ -28,6 +28,8 @@
 @interface NSView (TextMate_OakTextView_Only)
 - (id)currentStyleSheet;
 - (BOOL)storedSoftWrapSetting;
+- (void)centerCaretInDisplay:(id)sender;
+- (void)scrollViewByX:(float)x byY:(long)y;
 @end
 
 @interface NSWindowController (Private_MM_NSWindowController)
@@ -95,6 +97,24 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
   MinimapView* minimapView = [self getMinimapView];
   [textView goToLineNumber: [NSNumber numberWithInt:newLine]];
   [minimapView refresh];
+}
+
+- (void)scrollToYPercentage:(float)percentage 
+{
+  id textView = [self textView];
+  float y = ([textView bounds].size.height * percentage)
+            - ([textView visibleRect].size.height / 2);
+  /* for some reason, a simple scrollPoint or scrollRectToVisible do not work */
+  //[textView scrollPoint: NSMakePoint(0, y)];
+  if (y < 0.0)
+    y = 0.0;
+  if (y + [textView visibleRect].size.height > [textView bounds].size.height)
+    y =  [textView bounds].size.height - [textView visibleRect].size.height;
+  
+  float diff = y - [textView visibleRect].origin.y;
+  NSLog(@"y: %f diff: %f", y, diff);
+  [textView scrollViewByX:0 byY:diff];
+  [textView centerCaretInDisplay:self];
 }
 
 /*
