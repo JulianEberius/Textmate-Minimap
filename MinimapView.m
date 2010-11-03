@@ -24,7 +24,7 @@ int const scaleDownTo = 5;
 - (void)updateVisiblePartOfTextView;
 - (NSColor*)currentBackgroundColor;
 - (void)fillWithBackground;
-- (void)firstRefresh;
+//- (void)firstRefresh;
 @end
 
 // stuff implemented by the TextMate textview
@@ -78,7 +78,7 @@ int const scaleDownTo = 5;
 {
   if (firstDraw) {
     [windowController updateTrailingSpace];
-    firstDraw = NO;
+    firstDraw = NO; 
     theImage = [[textView emptySnapshotImageFor:self] retain];
     [self fillWithBackground];
     [self setNeedsDisplay:NO];
@@ -234,16 +234,7 @@ int const scaleDownTo = 5;
 - (void)mouseUp:(NSEvent *)theEvent
 {
     NSPoint mouseLoc = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-
-    float ratio = drawnRect.size.height / [self bounds].size.height;
-    unsigned int relativeLineIdx;
-    if (ratio < 1.0) {
-      relativeLineIdx = floor(mouseLoc.y / scaleDownTo);
-    }
-    else {
-      relativeLineIdx = floor(mouseLoc.y / pixelPerLine);
-    }
-    unsigned int absoluteLineIdx = minimapLinesStart + relativeLineIdx;
+    unsigned int absoluteLineIdx = [self absoluteLineIdxFromPoint:mouseLoc];
     if ([windowController isSoftWrapEnabled]) {
       // we use slightly "weaker" mode: scroll by percentage then centerCaretInDisplay...
       // can not correctly select the first and last few lines of the document, because
@@ -255,8 +246,19 @@ int const scaleDownTo = 5;
       // will select all lines correctly, but does not work in "soft wrap" mode, because
       // "absoluteLineIdx" will not really be the absolute line (wrapping can not be  
       // taken into account in the calculation)
-      [windowController scrollToLine:absoluteLineIdx];
+      if (mouseDownLineIdx != absoluteLineIdx)
+          [windowController selectFromLine:mouseDownLineIdx toLine:absoluteLineIdx];
+      else
+          [windowController scrollToLine:absoluteLineIdx];
     }
+}
+
+- (void)mouseDown:(NSEvent *)theEvent
+{
+    NSPoint mouseLoc = [self convertPoint:[theEvent locationInWindow] fromView:nil];
+    mouseDownLineIdx = [self absoluteLineIdxFromPoint:mouseLoc];
+    if (mouseDownLineIdx > [self numberOfLines])
+      mouseDownLineIdx = [self numberOfLines];
 }
 
 - (void)scrollWheel:(NSEvent *)theEvent
@@ -355,26 +357,6 @@ int const scaleDownTo = 5;
 */
 }
 
-
-
-- (void)updateGutterSize
-{
-  int w = [textView bounds].size.width;
-  NSBitmapImageRep* rawImg = [textView snapshotInRect:NSMakeRect(0,0,w,1)];
-  NSColor* refColor = [[rawImg colorAtX:0 y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];//[self currentBackgroundColor];
-
-  int i = 1;
-  NSColor* color = [[rawImg colorAtX:i y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
-  int imgWidth = [rawImg size].width;
-  while ([color isEqual:refColor] && i < imgWidth) {
-    i++;
-    color = [[rawImg colorAtX:i y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
-  }
-  if (i == imgWidth)
-    gutterSize = 0;
-  else
-    gutterSize = i+1;
-}
 - (void)setNewDocument
 {
   [queue setSuspended:NO];
@@ -441,6 +423,40 @@ int const scaleDownTo = 5;
   float h = [textView bounds].size.height;
   int totalLines = round(h/lineHeight);
   return totalLines;
+}
+
+#pragma mark private-methods
+- (void)updateGutterSize
+{
+  int w = [textView bounds].size.width;
+  NSBitmapImageRep* rawImg = [textView snapshotInRect:NSMakeRect(0,0,w,1)];
+  NSColor* refColor = [[rawImg colorAtX:0 y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];//[self currentBackgroundColor];
+
+  int i = 1;
+  NSColor* color = [[rawImg colorAtX:i y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+  int imgWidth = [rawImg size].width;
+  while ([color isEqual:refColor] && i < imgWidth) {
+    i++;
+    color = [[rawImg colorAtX:i y:0] colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+  }
+  if (i == imgWidth)
+    gutterSize = 0;
+  else
+    gutterSize = i+1;
+}
+
+- (unsigned int)absoluteLineIdxFromPoint:(NSPoint)mouseLoc
+{
+    float ratio = drawnRect.size.height / [self bounds].size.height;
+    unsigned int relativeLineIdx;
+    if (ratio < 1.0) {
+      relativeLineIdx = floor(mouseLoc.y / scaleDownTo);
+    }
+    else {
+      relativeLineIdx = floor(mouseLoc.y / pixelPerLine);
+    }
+    unsigned int absoluteLineIdx = minimapLinesStart + relativeLineIdx;
+    return absoluteLineIdx;
 }
 
 @end

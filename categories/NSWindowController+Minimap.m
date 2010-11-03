@@ -14,6 +14,8 @@
 #import "objc/runtime.h"
 #import "MMCWTMSplitView.h"
 #include "sys/xattr.h"
+#include "math.h"
+
 
 // stuff that the textmate-windowcontrollers (OakProjectController, OakDocumentControler) implement
 @interface NSWindowController (TextMate_WindowControllers_Only)
@@ -98,6 +100,33 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
   [textView goToLineNumber: [NSNumber numberWithInt:newLine]];
   [minimapView refresh];
 }
+
+- (void)selectFromLine:(unsigned int)fromLine toLine:(unsigned int)toLine
+{
+  id textView = [self textView];
+  MinimapView* minimapView = [self getMinimapView];
+
+  SEL selectionModifier;
+  if (toLine>fromLine)
+    selectionModifier = @selector(moveDownAndModifySelection:);
+  else {
+    selectionModifier = @selector(moveUpAndModifySelection:);
+    if (fromLine == [minimapView numberOfLines]) {
+      toLine += 2;
+    } else {
+      fromLine += 1; toLine += 1;
+    }
+  }
+  
+  [textView goToLineNumber: [NSNumber numberWithInt:fromLine]];
+  
+  int i;
+  for(i = 0; i <= (abs(toLine-fromLine)); ++i)
+    [self performSelector:selectionModifier withObject:nil];
+  
+  [minimapView refresh];
+}
+
 
 - (void)scrollToYPercentage:(float)percentage 
 {

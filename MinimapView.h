@@ -36,6 +36,8 @@ extern int const scaleDownTo;
   float lastScrollPosition;
   int minimapLinesStart;
   int gutterSize;
+  
+  unsigned int mouseDownLineIdx;
 }
 #pragma mark public-properties
 @property float viewableRangeScaling;
@@ -54,6 +56,7 @@ extern int const scaleDownTo;
 
 #pragma mark public-api
 - (void)refresh;
+- (void)firstRefresh;
 - (void)repaint;
 - (void)reactToScrollingTextView;
 - (int)gutterSize;
@@ -63,4 +66,5 @@ extern int const scaleDownTo;
 
 #pragma mark private-methods
 - (void)updateGutterSize;
+- (unsigned int)absoluteLineIdxFromPoint:(NSPoint)mouseLoc;
 @end

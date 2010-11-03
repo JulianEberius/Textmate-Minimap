@@ -210,6 +210,8 @@
 
     [drawer setTrailingOffset:offset];
     [mm refresh];
+    // do a complete redraw if the softWrapping was changed
+    //[mm firstRefresh];
   }
 }
 
