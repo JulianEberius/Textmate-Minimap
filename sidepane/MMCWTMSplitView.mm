@@ -42,7 +42,7 @@
 
 - (CGFloat)dividerThickness
 {
-    return 8.0;
+    return 1.0;
 }
 
 - (BOOL)sideBarOnRight;
