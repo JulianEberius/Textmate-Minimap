@@ -36,11 +36,11 @@ int const scaleDownTo = 5;
 @implementation MinimapView
 
 @synthesize windowController, textView, theImage, timer, 
-    viewableRangeScaling, dirty, minimapLinesStart, gutterSize, visiblePartOfTextView;
+    viewableRangeScaling, dirty, minimapLinesStart, gutterSize, visiblePartOfTextView, bookmarks;
 //@synthesize drawLock;
   
 #pragma mark init
-- (id)initWithTextView:(NSView*) tv
+- (id)initWithTextView:(NSView*) tv andWindowController:(NSWindowController*) controller;
 {
   self = [super init];
   if (self) {
@@ -55,6 +55,8 @@ int const scaleDownTo = 5;
     //drawLock = [[NSLock alloc] init];
     textView = tv;
     updater = [[BackgroundUpdater alloc] initWithMinimapView:self andOperationQueue:queue];
+    [self setWindowController:controller];
+    [self initializeBookmarks];
   }
   return self;
 }
@@ -368,6 +370,7 @@ int const scaleDownTo = 5;
     [firstDrawTimer invalidate];
     firstDrawTimer = nil;
   }
+  [self initializeBookmarks];
 }
 
 - (void)fillWithBackground
@@ -443,6 +446,13 @@ int const scaleDownTo = 5;
     gutterSize = 0;
   else
     gutterSize = i+1;
+}
+
+-(void)initializeBookmarks
+{
+  NSArray* bkmarks = [windowController getBookmarks];
+  [self setBookmarks:[NSMutableArray arrayWithArray:bkmarks]];
+  NSLog(@"bookmarks loaded: %@", [self bookmarks]);
 }
 
 - (unsigned int)absoluteLineIdxFromPoint:(NSPoint)mouseLoc

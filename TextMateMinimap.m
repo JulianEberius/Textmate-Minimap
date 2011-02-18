@@ -96,6 +96,7 @@ static TextmateMinimap *sharedInstance = nil;
                        withMethod:@selector(MM_toggleShowBookmarksInGutter:) error:NULL];
     [OakTextView jr_swizzleMethod:@selector(toggleFoldingsEnabled:) withMethod:@selector(MM_toggleFoldingsEnabled:) error:NULL];
     [OakTextView jr_swizzleMethod:@selector(dealloc) withMethod:@selector(MM_dealloc) error:NULL];
+    [OakTextView jr_swizzleMethod:@selector(toggleCurrentBookmark:) withMethod:@selector(MM_toggleCurrentBookmark:) error:NULL];
     [OakTabBar jr_swizzleMethod:@selector(selectTab:) withMethod:@selector(MM_selectTab:) error:NULL];
     
     // Prefs... this directly reuses a lot of code from Ciarán Walsh's ProjectPlus

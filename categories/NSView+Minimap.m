@@ -246,6 +246,24 @@
   [self schedule:@selector(refreshMinimap)];
 }
 
+- (void)MM_toggleCurrentBookmark:(id)arg1 
+{
+ [self MM_toggleCurrentBookmark:arg1];
+ NSLog(@"arg to toggle bookmark %@", arg1);
+
+ NSMutableArray* bookmarks = [[self getMinimap] bookmarks];
+ int currentLine = [[[self window] windowController] getCurrentLine:self];
+
+ unsigned idx = [bookmarks indexOfObject:[NSNumber numberWithInteger:currentLine]];
+ if (idx != NSNotFound) {
+   NSLog(@"line: %i, idx: %i", currentLine, idx);
+   [bookmarks removeObjectAtIndex:idx];
+ } else {
+   NSLog(@"added bookmark at line %i",currentLine);
+   [bookmarks addObject:[NSNumber numberWithInteger:currentLine]];
+ }
+}
+
 #pragma mark ivars
 - (void)saveValue:(id)value toIvar:(NSString*)key {
   NSMutableDictionary* ivars = [[TextmateMinimap instance] getIVarsFor:self];

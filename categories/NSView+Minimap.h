@@ -1,3 +1,4 @@
+
 //
 //  NSView+Minimap.h
 //  TextmateMinimap
@@ -31,4 +32,5 @@
 - (void)MM_toggleShowBookmarksInGutter:(id)sender;
 - (void)MM_toggleFoldingsEnabled:(id)sender;
 - (void)MM_dealloc;
+- (void)MM_toggleCurrentBookmark:(id)arg1;
 @end

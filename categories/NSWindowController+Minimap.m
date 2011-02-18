@@ -13,6 +13,7 @@
 #import "TextMateMinimap.h"
 #import "objc/runtime.h"
 #import "MMCWTMSplitView.h"
+#import "NSData+ZLib.h"
 #include "sys/xattr.h"
 #include "math.h"
 
@@ -47,6 +48,7 @@
 
 // id for saving extended file attributes
 const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
+const char* TM_BOOKMARKED_LINES_UID = "com.macromates.bookmarked_lines";
 
 @implementation NSWindowController (MM_NSWindowController)
 #pragma mark public-methods
@@ -210,8 +212,8 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
   NSWindow* window=[self window];
   NSSize contentSize = NSMakeSize(160, [window frame].size.height);
   // init minimapView
-  MinimapView* minimapView = [[MinimapView alloc] initWithTextView:[self textView]];
-  [minimapView setWindowController:self];
+  MinimapView* minimapView = [[MinimapView alloc] initWithTextView:[self textView] andWindowController:self];
+  //[minimapView setWindowController:self];
   NSMutableDictionary* ivars = [[TextmateMinimap instance] getIVarsFor:self];
   NSString* filename = nil;
   
@@ -552,6 +554,54 @@ const char* MINIMAP_STATE_ATTRIBUTE_UID = "textmate.minimap.state";
     }
   }
   return result;
+}
+
+
+- (NSArray*)getBookmarks
+{
+    NSString* filename = [[[self textView] document] filename];
+        
+    NSMutableArray* result;
+    
+    int value_size = getxattr([filename UTF8String], TM_BOOKMARKED_LINES_UID, NULL, 1, 0, 0);
+    char value[value_size];
+    int success = getxattr([filename UTF8String], TM_BOOKMARKED_LINES_UID, &value, value_size, 0, 0);
+    NSData* data;  
+    NSData* rawData = [NSData dataWithBytes:value length:value_size];
+    if (success >= 0) {
+      NSData* uncompressedData = [rawData zlibInflate];
+      if (uncompressedData)
+        data = uncompressedData;
+      else 
+        data = rawData;
+
+      NSString* bookmarkString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+      NSString* filteredString = [self filterCharacterSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789,"] fromString:bookmarkString];
+      NSArray* bookmarksStrings = [filteredString componentsSeparatedByString:@","];
+      result = [NSMutableArray arrayWithArray:[bookmarksStrings valueForKey:@"intValue"]];
+    } else {
+      result = [NSMutableArray arrayWithCapacity:5];
+    }
+    return result; 
+}
+
+- (NSString*)filterCharacterSet:(NSCharacterSet*)characterSet fromString:(NSString*)input 
+{
+  NSMutableString *strippedString = [NSMutableString 
+                                     stringWithCapacity:input.length];
+  
+  NSScanner *scanner = [NSScanner scannerWithString:input];
+  
+  while ([scanner isAtEnd] == NO) {
+    NSString *buffer;
+    if ([scanner scanCharactersFromSet:characterSet intoString:&buffer]) {
+      [strippedString appendString:buffer];
+      
+    } else {
+      [scanner setScanLocation:([scanner scanLocation] + 1)];
+    }
+  }
+  return strippedString;
 }
 
 /*

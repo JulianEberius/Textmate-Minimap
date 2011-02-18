@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0408A817130DC75A00ED3A7C /* NSData+ZLib.m in Sources */ = {isa = PBXBuildFile; fileRef = 0408A816130DC75A00ED3A7C /* NSData+ZLib.m */; };
 		0429C0FF111EFFDA0062C5AE /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 0429C0FD111EFFDA0062C5AE /* JRSwizzle.m */; };
 		0445E2C2113B545800461711 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0445E2C1113B545800461711 /* dsa_pub.pem */; };
 		044AB049113D2CA500304627 /* MMSparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 044AB048113D2CA500304627 /* MMSparkle.framework */; };
@@ -25,6 +26,7 @@
 		04C7F687117862A400A3A4DD /* NSWindow+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C7F680117862A400A3A4DD /* NSWindow+Minimap.m */; };
 		04C7F688117862A400A3A4DD /* NSWindowController+Minimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C7F682117862A400A3A4DD /* NSWindowController+Minimap.m */; };
 		04C7F689117862A400A3A4DD /* NSWindowController+Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C7F684117862A400A3A4DD /* NSWindowController+Preferences.m */; };
+		04CB82A6130DCC2C00A6E788 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 04CB82A5130DCC2C00A6E788 /* libz.dylib */; };
 		04CC435C116A7CA600FC40F4 /* README.markdown in Resources */ = {isa = PBXBuildFile; fileRef = 04CC435B116A7CA600FC40F4 /* README.markdown */; };
 		04D1F7421136CF58008BF7DA /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04D1F7411136CF58008BF7DA /* Preferences.xib */; };
 		04DC1B7511536F6700F87F90 /* AsyncDrawOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DC1B7411536F6700F87F90 /* AsyncDrawOperation.m */; };
@@ -48,6 +50,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0408A815130DC75A00ED3A7C /* NSData+ZLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ZLib.h"; sourceTree = "<group>"; };
+		0408A816130DC75A00ED3A7C /* NSData+ZLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+ZLib.m"; sourceTree = "<group>"; };
 		0429C0FC111EFFDA0062C5AE /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzle.h; sourceTree = "<group>"; };
 		0429C0FD111EFFDA0062C5AE /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
 		0429C0FE111EFFDA0062C5AE /* TextMate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMate.h; sourceTree = "<group>"; };
@@ -77,6 +81,7 @@
 		04C7F682117862A400A3A4DD /* NSWindowController+Minimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSWindowController+Minimap.m"; path = "categories/NSWindowController+Minimap.m"; sourceTree = "<group>"; };
 		04C7F683117862A400A3A4DD /* NSWindowController+Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSWindowController+Preferences.h"; path = "categories/NSWindowController+Preferences.h"; sourceTree = "<group>"; };
 		04C7F684117862A400A3A4DD /* NSWindowController+Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSWindowController+Preferences.m"; path = "categories/NSWindowController+Preferences.m"; sourceTree = "<group>"; };
+		04CB82A5130DCC2C00A6E788 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = /usr/lib/libz.dylib; sourceTree = "<absolute>"; };
 		04CC435B116A7CA600FC40F4 /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
 		04D1F7411136CF58008BF7DA /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		04DC1B7311536F6700F87F90 /* AsyncDrawOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncDrawOperation.h; sourceTree = "<group>"; };
@@ -100,6 +105,7 @@
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
 				045379821138180E0019F7BF /* ShortcutRecorder.framework in Frameworks */,
 				044AB049113D2CA500304627 /* MMSparkle.framework in Frameworks */,
+				04CB82A6130DCC2C00A6E788 /* libz.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,6 +136,8 @@
 				04C7F682117862A400A3A4DD /* NSWindowController+Minimap.m */,
 				04C7F683117862A400A3A4DD /* NSWindowController+Preferences.h */,
 				04C7F684117862A400A3A4DD /* NSWindowController+Preferences.m */,
+				0408A815130DC75A00ED3A7C /* NSData+ZLib.h */,
+				0408A816130DC75A00ED3A7C /* NSData+ZLib.m */,
 			);
 			name = categories;
 			sourceTree = "<group>";
@@ -204,6 +212,7 @@
 				089C1672FE841209C02AAC07 /* Foundation.framework */,
 				045379811138180E0019F7BF /* ShortcutRecorder.framework */,
 				044AB048113D2CA500304627 /* MMSparkle.framework */,
+				04CB82A5130DCC2C00A6E788 /* libz.dylib */,
 			);
 			name = "Other Frameworks";
 			sourceTree = "<group>";
@@ -257,7 +266,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "Textmate-Minimap" */;
 			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 089C166AFE841209C02AAC07 /* Clock */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -317,6 +333,7 @@
 				04C7F687117862A400A3A4DD /* NSWindow+Minimap.m in Sources */,
 				04C7F688117862A400A3A4DD /* NSWindowController+Minimap.m in Sources */,
 				04C7F689117862A400A3A4DD /* NSWindowController+Preferences.m in Sources */,
+				0408A817130DC75A00ED3A7C /* NSData+ZLib.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,6 +416,7 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = TextmateMinimap;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
