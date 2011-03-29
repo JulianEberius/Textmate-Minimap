@@ -21,6 +21,7 @@ int const scaleDownTo = 5;
 @interface MinimapView (Private_MinimapView)
 - (void)updateViewableRange;
 - (void)drawVisRect:(NSRect)rect;
+- (void)drawBookmarkOnLine:(unsigned)line toRect:(NSRect)drawTo;
 - (void)updateVisiblePartOfTextView;
 - (NSColor*)currentBackgroundColor;
 - (void)fillWithBackground;
@@ -138,6 +139,15 @@ int const scaleDownTo = 5;
   }
   drawnRect = drawTo;
   [self drawVisRect:drawTo];
+
+  NSEnumerator *e = [[self bookmarks] objectEnumerator];
+  int bookmarkLine;
+  id enumeratedObject;
+  
+  while ( (enumeratedObject = [e nextObject]) ) {
+    bookmarkLine = [(NSNumber*)enumeratedObject intValue];
+    [self drawBookmarkOnLine:bookmarkLine toRect:drawTo];
+  }
 }
 
 - (void)updateVisiblePartOfTextView
@@ -230,6 +240,27 @@ int const scaleDownTo = 5;
   [NSBezierPath setDefaultLineWidth:1];
   [NSBezierPath strokeRect:visibleHighlightRect];
   [NSGraphicsContext restoreGraphicsState];
+}
+
+- (void)drawBookmarkOnLine:(unsigned)line toRect:(NSRect)drawTo
+{
+  NSRect bounds = [self bounds];
+  float drawToScaling = drawTo.size.height / bounds.size.height;
+  line = line -  [self minimapLinesStart];
+    
+  NSRect visibleHighlightRect = NSMakeRect(0,
+                       (pixelPerLine*line*drawToScaling),
+                       drawTo.size.width-1,
+                       pixelPerLine*drawToScaling);
+
+  [NSGraphicsContext saveGraphicsState];
+  [[NSColor colorWithCalibratedRed:1.0 green:0.0 blue:0.0 alpha:0.2] set];
+  [NSBezierPath setDefaultLineWidth:1];
+  [NSBezierPath fillRect:visibleHighlightRect];
+  [NSGraphicsContext restoreGraphicsState];
+  NSLog(@"bounds: %@, viewableRange: %@, visPartt: %@", NSStringFromRect(bounds), NSStringFromRange(viewableRange), NSStringFromRect(visiblePartOfTextView));  
+  //   NSLog(@"line: %i, drawTo: %@", line, NSStringFromRect(drawTo));  
+  NSLog(@"asjfjabf %f , %f", (visiblePartOfTextView.origin.y / drawToScaling),pixelPerLine*drawToScaling*line);
 }
 
 #pragma mark overridden-methods
@@ -370,7 +401,6 @@ int const scaleDownTo = 5;
     [firstDrawTimer invalidate];
     firstDrawTimer = nil;
   }
-  [self initializeBookmarks];
 }
 
 - (void)fillWithBackground

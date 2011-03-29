@@ -566,9 +566,10 @@ const char* TM_BOOKMARKED_LINES_UID = "com.macromates.bookmarked_lines";
     int value_size = getxattr([filename UTF8String], TM_BOOKMARKED_LINES_UID, NULL, 1, 0, 0);
     char value[value_size];
     int success = getxattr([filename UTF8String], TM_BOOKMARKED_LINES_UID, &value, value_size, 0, 0);
-    NSData* data;  
-    NSData* rawData = [NSData dataWithBytes:value length:value_size];
+  
     if (success >= 0) {
+      NSData* data;  
+      NSData* rawData = [NSData dataWithBytes:value length:value_size];
       NSData* uncompressedData = [rawData zlibInflate];
       if (uncompressedData)
         data = uncompressedData;
@@ -576,7 +577,8 @@ const char* TM_BOOKMARKED_LINES_UID = "com.macromates.bookmarked_lines";
         data = rawData;
 
       NSString* bookmarkString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
-      NSString* filteredString = [self filterCharacterSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789,"] fromString:bookmarkString];
+      NSString* filteredString = [self filterCharacterSet:
+        [NSCharacterSet characterSetWithCharactersInString:@"0123456789,"] fromString:bookmarkString];
       NSArray* bookmarksStrings = [filteredString componentsSeparatedByString:@","];
       result = [NSMutableArray arrayWithArray:[bookmarksStrings valueForKey:@"intValue"]];
     } else {

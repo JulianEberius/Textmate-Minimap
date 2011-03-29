@@ -177,7 +177,7 @@
   [self MM_mouseUp:theEvent];
 
   // we update the complete minimap if the scrollbar moved during an operation
-  // that's basically a guess though ("if the sceen moved, there was a big update")
+  // that's basically a guess though ("if the slceen moved, there was a big update")
   // mainly, it prevents complete redraws on simple clicks...
   float scrollbarPos = [self getScrollbarValue];
   if (scrollbarPos != [(NSNumber*)[self getIVar:@"scrollbar_pos"] floatValue])
@@ -249,19 +249,17 @@
 - (void)MM_toggleCurrentBookmark:(id)arg1 
 {
  [self MM_toggleCurrentBookmark:arg1];
- NSLog(@"arg to toggle bookmark %@", arg1);
 
  NSMutableArray* bookmarks = [[self getMinimap] bookmarks];
  int currentLine = [[[self window] windowController] getCurrentLine:self];
 
  unsigned idx = [bookmarks indexOfObject:[NSNumber numberWithInteger:currentLine]];
  if (idx != NSNotFound) {
-   NSLog(@"line: %i, idx: %i", currentLine, idx);
    [bookmarks removeObjectAtIndex:idx];
  } else {
-   NSLog(@"added bookmark at line %i",currentLine);
    [bookmarks addObject:[NSNumber numberWithInteger:currentLine]];
  }
+ [self refreshMinimap];
 }
 
 #pragma mark ivars

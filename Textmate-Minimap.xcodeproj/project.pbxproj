@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0408A817130DC75A00ED3A7C /* NSData+ZLib.m in Sources */ = {isa = PBXBuildFile; fileRef = 0408A816130DC75A00ED3A7C /* NSData+ZLib.m */; };
 		0429C0FF111EFFDA0062C5AE /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 0429C0FD111EFFDA0062C5AE /* JRSwizzle.m */; };
 		0445E2C2113B545800461711 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0445E2C1113B545800461711 /* dsa_pub.pem */; };
 		044AB049113D2CA500304627 /* MMSparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 044AB048113D2CA500304627 /* MMSparkle.framework */; };
 		044AB04E113D2CA900304627 /* MMSparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 044AB048113D2CA500304627 /* MMSparkle.framework */; };
 		045379821138180E0019F7BF /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045379811138180E0019F7BF /* ShortcutRecorder.framework */; };
 		04537B7F113828CB0019F7BF /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 045379811138180E0019F7BF /* ShortcutRecorder.framework */; };
+		046E5EC0130E7CDC00CD9102 /* NSData+ZLib.m in Sources */ = {isa = PBXBuildFile; fileRef = 046E5EBF130E7CDC00CD9102 /* NSData+ZLib.m */; };
 		048D064611216B1C009F7865 /* TextMateMinimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D064511216B1C009F7865 /* TextMateMinimap.m */; };
 		048D065E11216C0F009F7865 /* MinimapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D065D11216C0F009F7865 /* MinimapView.m */; };
 		04A843DB1136972E002743B0 /* textmate-minimap.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 04A843DA1136972E002743B0 /* textmate-minimap.tiff */; };
@@ -50,8 +50,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0408A815130DC75A00ED3A7C /* NSData+ZLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ZLib.h"; sourceTree = "<group>"; };
-		0408A816130DC75A00ED3A7C /* NSData+ZLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+ZLib.m"; sourceTree = "<group>"; };
 		0429C0FC111EFFDA0062C5AE /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzle.h; sourceTree = "<group>"; };
 		0429C0FD111EFFDA0062C5AE /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
 		0429C0FE111EFFDA0062C5AE /* TextMate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMate.h; sourceTree = "<group>"; };
@@ -60,6 +58,8 @@
 		044AB048113D2CA500304627 /* MMSparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MMSparkle.framework; path = Frameworks/MMSparkle.framework; sourceTree = "<group>"; };
 		0451552D11244E160097261D /* TextMateMinimap_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMateMinimap_Prefix.pch; sourceTree = "<group>"; };
 		045379811138180E0019F7BF /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ShortcutRecorder.framework; path = Frameworks/ShortcutRecorder.framework; sourceTree = "<group>"; };
+		046E5EBE130E7CDC00CD9102 /* NSData+ZLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+ZLib.h"; path = "categories/NSData+ZLib.h"; sourceTree = "<group>"; };
+		046E5EBF130E7CDC00CD9102 /* NSData+ZLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+ZLib.m"; path = "categories/NSData+ZLib.m"; sourceTree = "<group>"; };
 		048D064411216B1C009F7865 /* TextMateMinimap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMateMinimap.h; sourceTree = "<group>"; };
 		048D064511216B1C009F7865 /* TextMateMinimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextMateMinimap.m; sourceTree = "<group>"; };
 		048D065C11216C0F009F7865 /* MinimapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MinimapView.h; sourceTree = "<group>"; };
@@ -126,6 +126,8 @@
 		048D06A0112171A8009F7865 /* categories */ = {
 			isa = PBXGroup;
 			children = (
+				046E5EBE130E7CDC00CD9102 /* NSData+ZLib.h */,
+				046E5EBF130E7CDC00CD9102 /* NSData+ZLib.m */,
 				04C7F67B117862A400A3A4DD /* NSScrollView+Minimap.h */,
 				04C7F67C117862A400A3A4DD /* NSScrollView+Minimap.m */,
 				04C7F67D117862A400A3A4DD /* NSView+Minimap.h */,
@@ -136,8 +138,6 @@
 				04C7F682117862A400A3A4DD /* NSWindowController+Minimap.m */,
 				04C7F683117862A400A3A4DD /* NSWindowController+Preferences.h */,
 				04C7F684117862A400A3A4DD /* NSWindowController+Preferences.m */,
-				0408A815130DC75A00ED3A7C /* NSData+ZLib.h */,
-				0408A816130DC75A00ED3A7C /* NSData+ZLib.m */,
 			);
 			name = categories;
 			sourceTree = "<group>";
@@ -333,7 +333,7 @@
 				04C7F687117862A400A3A4DD /* NSWindow+Minimap.m in Sources */,
 				04C7F688117862A400A3A4DD /* NSWindowController+Minimap.m in Sources */,
 				04C7F689117862A400A3A4DD /* NSWindowController+Preferences.m in Sources */,
-				0408A817130DC75A00ED3A7C /* NSData+ZLib.m in Sources */,
+				046E5EC0130E7CDC00CD9102 /* NSData+ZLib.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

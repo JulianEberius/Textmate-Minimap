@@ -2,9 +2,7 @@
 //  NSData+ZLib.h
 //  Textmate-Minimap
 //
-//  Created by Julian Eberius on 17.02.11.
-//  Copyright 2011 none. All rights reserved.
-//
+//  Copied from CocoaDev: http://www.cocoadev.com/index.pl?NSDataCategory
 
 #import <Cocoa/Cocoa.h>
 #import <Foundation/Foundation.h>
@@ -13,5 +11,4 @@
 @interface NSData (NSDataExtension)
   - (NSData *) zlibInflate;
   - (NSData *) zlibDeflate;
-
 @end
