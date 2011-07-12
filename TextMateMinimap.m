@@ -62,7 +62,7 @@ static TextmateMinimap *sharedInstance = nil;
 
 - (id)initWithPlugInController:(id <TMPlugInController>)aController
 {
-  if (self = [super init]) {
+  if ((self = [super init])) {
     [self installMenuItem];
     
     NSString* iconPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"textmate-minimap" ofType:@"tiff"];
@@ -116,6 +116,7 @@ static TextmateMinimap *sharedInstance = nil;
                     [NSNumber numberWithInt:MinimapAsSaved],
                     [NSNumber numberWithBool:YES],
                     [NSNumber numberWithBool:NO],
+                    [NSNumber numberWithBool:YES],
                     NULL
                   ]
              forKeys:[NSArray arrayWithObjects:
@@ -128,6 +129,7 @@ static TextmateMinimap *sharedInstance = nil;
                     @"Minimap_openDocumentBehaviour",
                     @"Minimap_lastDocumentHadMinimapOpen",
                     @"Minimap_showInSidepane",
+                    @"Minimap_cropMinimapHorizontaly",
                     NULL
                   ]]];
 
@@ -217,7 +219,7 @@ static TextmateMinimap *sharedInstance = nil;
 
 - (void)installMenuItem
 {
-  if(windowMenu = [[[[NSApp mainMenu] itemWithTitle:@"View"] submenu] retain])
+  if((windowMenu = [[[[NSApp mainMenu] itemWithTitle:@"View"] submenu] retain]))
   {
     NSArray* items = [windowMenu itemArray];
     

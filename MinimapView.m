@@ -140,13 +140,17 @@ int const scaleDownTo = 5;
   drawnRect = drawTo;
   [self drawVisRect:drawTo];
 
-  NSEnumerator *e = [[self bookmarks] objectEnumerator];
-  int bookmarkLine;
-  id enumeratedObject;
-  
-  while ( (enumeratedObject = [e nextObject]) ) {
-    bookmarkLine = [(NSNumber*)enumeratedObject intValue];
-    [self drawBookmarkOnLine:bookmarkLine toRect:drawTo];
+  // only draw bookmarks if softwrap is disabled
+  // with softwrap, we wont know where to lines begin or end 
+  if (![windowController isSoftWrapEnabled]) {
+    NSEnumerator *e = [[self bookmarks] objectEnumerator];
+    int bookmarkLine;
+    id enumeratedObject;
+    
+    while ( (enumeratedObject = [e nextObject]) ) {
+      bookmarkLine = [(NSNumber*)enumeratedObject intValue];
+      [self drawBookmarkOnLine:bookmarkLine toRect:drawTo];
+    }
   }
 }
 
