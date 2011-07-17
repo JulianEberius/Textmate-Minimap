@@ -20,7 +20,6 @@ extern int const scaleDownTo;
   NSOperationQueue* queue;
   NSTimer* timer;
   NSTimer* firstDrawTimer;
-  NSMutableArray* bookmarks;
   //NSLock* drawLock;
   BackgroundUpdater* updater;
 
@@ -49,9 +48,9 @@ extern int const scaleDownTo;
 @property(readonly) NSRect visiblePartOfTextView;
 @property(readonly, assign) NSView* textView;
 @property(readonly, retain) NSImage* theImage;
+@property(retain) BackgroundUpdater* updater;
 //@property(readonly, retain) NSLock* drawLock;
 @property(retain) NSTimer* timer;
-@property(retain) NSMutableArray* bookmarks;
 
 #pragma mark init
 - (id)initWithTextView:(NSView*) textView andWindowController:(NSWindowController*) controller;
@@ -68,6 +67,5 @@ extern int const scaleDownTo;
 
 #pragma mark private-methods
 - (void)updateGutterSize;
-- (void)initializeBookmarks;
 - (unsigned int)absoluteLineIdxFromPoint:(NSPoint)mouseLoc;
 @end

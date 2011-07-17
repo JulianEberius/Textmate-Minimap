@@ -73,7 +73,7 @@
     NSImage *snapshot = [[NSImage alloc] initWithSize:
                          croppedBounds.size];
     [snapshot lockFocus];
-    [self drawRect: [self frame]];
+    [self drawRect: croppedBounds];
     [snapshot unlockFocus];
     [[[TextmateMinimap instance] theLock] unlock];
     
@@ -108,7 +108,7 @@
 
 - (NSImage *)emptySnapshotImageFor:(MinimapView*)minimapView
 {
-    NSRect croppedBounds = [self bounds];
+    NSRect croppedBounds = [self croppedBounds];
     int gutterSize = [minimapView gutterSize];
     NSRect r = NSMakeRect(gutterSize, 0, croppedBounds.size.width-gutterSize, croppedBounds.size.height);
     NSRect bounds = [minimapView bounds];
@@ -148,6 +148,20 @@
     [[TextmateMinimap instance ] setTimer:timer];
 }
 
+/*
+ Same as above, only with specific wait time
+ */
+- (void)schedule:(SEL)selec withTime:(float)time
+{
+    NSTimer* old_timer = [[TextmateMinimap instance] timer];
+    if (old_timer != nil && [old_timer isValid]) {
+        [old_timer invalidate];
+    }
+    // do not refresh instantly, wait for more typing..
+    NSTimer* timer = [NSTimer scheduledTimerWithTimeInterval:time target:self selector:selec userInfo:nil repeats:NO];
+    [[TextmateMinimap instance ] setTimer:timer];
+}
+
 - (void)refreshMinimap
 {
     [[self getMinimap] refresh];
@@ -173,10 +187,10 @@
 #pragma mark other_swizzled_events
 - (void)MM_selectTab:(id)sender
 {
-    [[[TextmateMinimap instance] theLock] lock];
+//    [[[TextmateMinimap instance] theLock] lock];
     [[self getMinimap] setNewDocument];
     [self MM_selectTab:sender];
-    [[[TextmateMinimap instance] theLock] unlock];
+  //  [[[TextmateMinimap instance] theLock] unlock];
     [self refreshMinimap];
 }
 
@@ -259,22 +273,19 @@
     [self MM_redo:sender];
     [self schedule:@selector(refreshMinimap)];
 }
+- (void)MM_performKeyEquivalent:(NSEvent*)event {
+    NSUInteger modifiers = [event modifierFlags];
+    unsigned short keyCode = [event keyCode];
 
-- (void)MM_toggleCurrentBookmark:(id)arg1 
-{
-    [self MM_toggleCurrentBookmark:arg1];
-    
-    NSMutableArray* bookmarks = [[self getMinimap] bookmarks];
-    int currentLine = [[[self window] windowController] getCurrentLine:self];
-    
-    unsigned idx = [bookmarks indexOfObject:[NSNumber numberWithInteger:currentLine]];
-    if (idx != NSNotFound) {
-        [bookmarks removeObjectAtIndex:idx];
-    } else {
-        [bookmarks addObject:[NSNumber numberWithInteger:currentLine]];
+    // refresh the minimap on Cmd-G / Cmd-Shift-G
+    if ((keyCode == 5 && (modifiers & NSCommandKeyMask))
+        || (keyCode == 5 && (modifiers & (NSCommandKeyMask | NSShiftKeyMask))))
+    {
+        [self schedule:@selector(refreshMinimap) withTime:0.01];
     }
-    [self refreshMinimap];
+    [self MM_performKeyEquivalent:event];
 }
+
 
 #pragma mark ivars
 - (void)saveValue:(id)value toIvar:(NSString*)key {

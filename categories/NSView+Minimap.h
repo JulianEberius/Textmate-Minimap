@@ -26,11 +26,11 @@
 - (void)MM_mouseUp:(NSEvent *)theEvent;
 - (void)MM_undo:(id)sender;
 - (void)MM_redo:(id)sender;
+- (void)MM_performKeyEquivalent:(id)event;
 - (void)MM_toggleSoftWrap:(id)sender;
 - (void)MM_toggleShowSoftWrapInGutter:(id)sender;
 - (void)MM_toggleLineNumbers:(id)sender;
 - (void)MM_toggleShowBookmarksInGutter:(id)sender;
 - (void)MM_toggleFoldingsEnabled:(id)sender;
 - (void)MM_dealloc;
-- (void)MM_toggleCurrentBookmark:(id)arg1;
 @end

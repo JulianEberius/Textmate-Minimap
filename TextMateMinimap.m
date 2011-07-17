@@ -70,7 +70,7 @@ static TextmateMinimap *sharedInstance = nil;
     theLock = [[[NSLock alloc] init] retain];
     iVars = [[NSMutableDictionary dictionaryWithCapacity:10] retain];
 
-    sparkleUpdater = [MMSUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
+    sparkleUpdater = [SUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];
     [sparkleUpdater resetUpdateCycle];
     
     // swizzle textmate methods 
@@ -78,8 +78,7 @@ static TextmateMinimap *sharedInstance = nil;
     [OakProjectController jr_swizzleMethod:@selector(windowWillClose:) withMethod:@selector(MM_windowWillClose:) error:NULL];
     [OakDocumentController jr_swizzleMethod:@selector(windowDidLoad) withMethod:@selector(MM_windowDidLoad) error:NULL];
     [OakDocumentController jr_swizzleMethod:@selector(windowWillClose:) withMethod:@selector(MM_windowWillClose:) error:NULL];
-    [OakProjectController jr_swizzleMethod:@selector(toggleGroupsAndFilesDrawer:) 
-                                withMethod:@selector(MM_toggleGroupsAndFilesDrawer:) error:NULL];
+    [OakProjectController jr_swizzleMethod:@selector(toggleGroupsAndFilesDrawer:) withMethod:@selector(MM_toggleGroupsAndFilesDrawer:) error:NULL];
     [OakWindow jr_swizzleMethod:@selector(setRepresentedFilename:) withMethod:@selector(MM_setRepresentedFilename:) error:NULL];
     [OakWindow jr_swizzleMethod:@selector(setDocumentEdited:) withMethod:@selector(MM_setDocumentEdited:) error:NULL];
     [OakWindow jr_swizzleMethod:@selector(becomeMainWindow) withMethod:@selector(MM_becomeMainWindow) error:NULL];
@@ -89,14 +88,13 @@ static TextmateMinimap *sharedInstance = nil;
     [OakTextView jr_swizzleMethod:@selector(mouseDown:) withMethod:@selector(MM_mouseDown:) error:NULL];
     [OakTextView jr_swizzleMethod:@selector(undo:) withMethod:@selector(MM_undo:) error:NULL];
     [OakTextView jr_swizzleMethod:@selector(redo:) withMethod:@selector(MM_redo:) error:NULL];
+    [OakTextView jr_swizzleMethod:@selector(performKeyEquivalent:) withMethod:@selector(MM_performKeyEquivalent:) error:NULL];
     [OakTextView jr_swizzleMethod:@selector(toggleSoftWrap:) withMethod:@selector(MM_toggleSoftWrap:) error:NULL];
     [OakTextView jr_swizzleMethod:@selector(toggleShowSoftWrapInGutter:) withMethod:@selector(MM_toggleShowSoftWrapInGutter:) error:NULL];
     [OakTextView jr_swizzleMethod:@selector(toggleLineNumbers:) withMethod:@selector(MM_toggleLineNumbers:) error:NULL];
-    [OakTextView jr_swizzleMethod:@selector(toggleShowBookmarksInGutter:) 
-                       withMethod:@selector(MM_toggleShowBookmarksInGutter:) error:NULL];
+    [OakTextView jr_swizzleMethod:@selector(toggleShowBookmarksInGutter:) withMethod:@selector(MM_toggleShowBookmarksInGutter:) error:NULL];
     [OakTextView jr_swizzleMethod:@selector(toggleFoldingsEnabled:) withMethod:@selector(MM_toggleFoldingsEnabled:) error:NULL];
     [OakTextView jr_swizzleMethod:@selector(dealloc) withMethod:@selector(MM_dealloc) error:NULL];
-    [OakTextView jr_swizzleMethod:@selector(toggleCurrentBookmark:) withMethod:@selector(MM_toggleCurrentBookmark:) error:NULL];
     [OakTabBar jr_swizzleMethod:@selector(selectTab:) withMethod:@selector(MM_selectTab:) error:NULL];
     
     // Prefs... this directly reuses a lot of code from Ciarán Walsh's ProjectPlus
@@ -314,8 +312,8 @@ static TextmateMinimap *sharedInstance = nil;
   [defaults setInteger:newMode forKey:@"Minimap_minimapSide"];
 }
 
-- (MMSUUpdater *)updater {
-  return [MMSUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];;
+- (SUUpdater *)updater {
+  return [SUUpdater updaterForBundle:[NSBundle bundleForClass:[self class]]];;
 }
 
 - (BOOL)shortcutRecorder:(SRRecorderControl *)aRecorder isKeyCode:(NSInteger)keyCode 

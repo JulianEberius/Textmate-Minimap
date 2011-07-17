@@ -21,7 +21,6 @@ int const scaleDownTo = 5;
 @interface MinimapView (Private_MinimapView)
 - (void)updateViewableRange;
 - (void)drawVisRect:(NSRect)rect;
-- (void)drawBookmarkOnLine:(unsigned)line toRect:(NSRect)drawTo;
 - (void)updateVisiblePartOfTextView;
 - (NSColor*)currentBackgroundColor;
 - (void)fillWithBackground;
@@ -37,7 +36,7 @@ int const scaleDownTo = 5;
 @implementation MinimapView
 
 @synthesize windowController, textView, theImage, timer, 
-    viewableRangeScaling, dirty, minimapLinesStart, gutterSize, visiblePartOfTextView, bookmarks;
+viewableRangeScaling, dirty, minimapLinesStart, gutterSize, visiblePartOfTextView, updater;
 //@synthesize drawLock;
   
 #pragma mark init
@@ -55,9 +54,8 @@ int const scaleDownTo = 5;
     [self setViewableRangeScaling:1.0];
     //drawLock = [[NSLock alloc] init];
     textView = tv;
-    updater = [[BackgroundUpdater alloc] initWithMinimapView:self andOperationQueue:queue];
+    [self setUpdater: [[BackgroundUpdater alloc] initWithMinimapView:self andOperationQueue:queue]];
     [self setWindowController:controller];
-    [self initializeBookmarks];
   }
   return self;
 }
@@ -68,8 +66,7 @@ int const scaleDownTo = 5;
   
   [theImage release];      
   theImage = nil;
-  [updater release];
-  updater = nil;
+  [self setUpdater:nil];
   [queue release];
   // [drawLock release];
   queue = nil;
@@ -140,18 +137,6 @@ int const scaleDownTo = 5;
   drawnRect = drawTo;
   [self drawVisRect:drawTo];
 
-  // only draw bookmarks if softwrap is disabled
-  // with softwrap, we wont know where to lines begin or end 
-  if (![windowController isSoftWrapEnabled]) {
-    NSEnumerator *e = [[self bookmarks] objectEnumerator];
-    int bookmarkLine;
-    id enumeratedObject;
-    
-    while ( (enumeratedObject = [e nextObject]) ) {
-      bookmarkLine = [(NSNumber*)enumeratedObject intValue];
-      [self drawBookmarkOnLine:bookmarkLine toRect:drawTo];
-    }
-  }
 }
 
 - (void)updateVisiblePartOfTextView
@@ -244,27 +229,6 @@ int const scaleDownTo = 5;
   [NSBezierPath setDefaultLineWidth:1];
   [NSBezierPath strokeRect:visibleHighlightRect];
   [NSGraphicsContext restoreGraphicsState];
-}
-
-- (void)drawBookmarkOnLine:(unsigned)line toRect:(NSRect)drawTo
-{
-  NSRect bounds = [self bounds];
-  float drawToScaling = drawTo.size.height / bounds.size.height;
-  line = line -  [self minimapLinesStart];
-    
-  NSRect visibleHighlightRect = NSMakeRect(0,
-                       (pixelPerLine*line*drawToScaling),
-                       drawTo.size.width-1,
-                       pixelPerLine*drawToScaling);
-
-  [NSGraphicsContext saveGraphicsState];
-  [[NSColor colorWithCalibratedRed:1.0 green:0.0 blue:0.0 alpha:0.2] set];
-  [NSBezierPath setDefaultLineWidth:1];
-  [NSBezierPath fillRect:visibleHighlightRect];
-  [NSGraphicsContext restoreGraphicsState];
-  NSLog(@"bounds: %@, viewableRange: %@, visPartt: %@", NSStringFromRect(bounds), NSStringFromRange(viewableRange), NSStringFromRect(visiblePartOfTextView));  
-  //   NSLog(@"line: %i, drawTo: %@", line, NSStringFromRect(drawTo));  
-  NSLog(@"asjfjabf %f , %f", (visiblePartOfTextView.origin.y / drawToScaling),pixelPerLine*drawToScaling*line);
 }
 
 #pragma mark overridden-methods
@@ -368,7 +332,7 @@ int const scaleDownTo = 5;
   
   [self setDirty:YES];
   [self updateGutterSize];
-  [updater setDirtyExceptForVisiblePart];
+  [[self updater] setDirtyExceptForVisiblePart];
   
   [self setNeedsDisplayInRect:[self visibleRect]];
 }
@@ -440,8 +404,8 @@ int const scaleDownTo = 5;
   theImage = [bitmap retain];
 
   if (minimapIsScrollable && [self dirty]) {
-    [updater setDirtyExceptForVisiblePart];
-    [updater startRedrawInBackground];
+    [[self updater] setDirtyExceptForVisiblePart];
+    [[self updater] startRedrawInBackground];
     [self setDirty:NO];
   }
 
@@ -480,13 +444,6 @@ int const scaleDownTo = 5;
     gutterSize = 0;
   else
     gutterSize = i+1;
-}
-
--(void)initializeBookmarks
-{
-  NSArray* bkmarks = [windowController getBookmarks];
-  [self setBookmarks:[NSMutableArray arrayWithArray:bkmarks]];
-  NSLog(@"bookmarks loaded: %@", [self bookmarks]);
 }
 
 - (unsigned int)absoluteLineIdxFromPoint:(NSPoint)mouseLoc

@@ -9,23 +9,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "MinimapView.m"
-         timestampString = "320429147.780371"
+         timestampString = "332180258.387465"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "247"
-         endingLineNumber = "247">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "MinimapView.m"
-         timestampString = "320429147.780624"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "485"
-         endingLineNumber = "485">
+         startingLineNumber = "246"
+         endingLineNumber = "246">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

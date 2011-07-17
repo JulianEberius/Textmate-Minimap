@@ -25,7 +25,6 @@
 - (void)updateTrailingSpace;
 - (BOOL)minimapContainerIsOpen;
 - (void)setMinimapContainerIsOpen:(BOOL)open;
-- (NSArray*)getBookmarks;
 - (NSString*)filterCharacterSet:(NSCharacterSet*)characterSet fromString:(NSString*)input;
 
 #pragma mark swizzled-methods
