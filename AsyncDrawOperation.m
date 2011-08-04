@@ -79,8 +79,8 @@
   NSImage* old_image = [minimapView theImage];
   int gutterSize = [minimapView gutterSize];
   NSRect tvBounds = NSMakeRect(gutterSize, 0,
-                 [[minimapView textView] bounds].size.width-gutterSize,
-                 [[minimapView textView] bounds].size.height);
+                 [[minimapView textView] croppedBounds].size.width-gutterSize,
+                 [[minimapView textView] croppedBounds].size.height);
   NSRect bounds = [minimapView bounds];
   float scaleFactor = bounds.size.width / tvBounds.size.width;
   int h = tvBounds.size.height*scaleFactor;

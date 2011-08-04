@@ -13,6 +13,7 @@
 @interface NSView (MM_NSView)
 
 #pragma mark snapshot
+- (NSRect)croppedBounds;
 - (NSBitmapImageRep*) snapshot;
 - (NSBitmapImageRep*) snapshotInRect:(NSRect)rect;
 - (NSImage*)snapshotByDrawing;

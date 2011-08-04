@@ -36,8 +36,6 @@ extern int const scaleDownTo;
   float lastScrollPosition;
   int minimapLinesStart;
   int gutterSize;
-  
-  unsigned int mouseDownLineIdx;
 }
 #pragma mark public-properties
 @property float viewableRangeScaling;

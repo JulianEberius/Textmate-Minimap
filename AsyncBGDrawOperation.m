@@ -62,7 +62,7 @@
     return;
   NSImage* image = [minimapView theImage];
 
-  NSRect tvBounds = [[minimapView textView] bounds];
+  NSRect tvBounds = [[minimapView textView] croppedBounds];
   int gutterSize = [minimapView gutterSize];
   float scaleFactor = tvBounds.size.height / [image size].height;
   NSRect rectToRedraw = NSMakeRect(gutterSize,

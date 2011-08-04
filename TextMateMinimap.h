@@ -29,7 +29,8 @@
   NSMenuItem* showMinimapMenuItem;
   NSWindowController* prefWindowController;
   NSWindowController* lastWindowController;
-  
+  BOOL isSwitchingTabs;
+    
   NSMutableDictionary* iVars;
 
   IBOutlet NSView* preferencesView;
@@ -40,6 +41,7 @@
   
   SUUpdater* sparkleUpdater;
 }
+@property BOOL isSwitchingTabs;
 @property(retain) NSWindowController* lastWindowController;
 @property(retain, readonly) NSImage* iconImage;
 @property(retain, readonly) NSView* preferencesView;

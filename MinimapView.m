@@ -54,7 +54,7 @@ viewableRangeScaling, dirty, minimapLinesStart, gutterSize, visiblePartOfTextVie
     [self setViewableRangeScaling:1.0];
     //drawLock = [[NSLock alloc] init];
     textView = tv;
-    [self setUpdater: [[BackgroundUpdater alloc] initWithMinimapView:self andOperationQueue:queue]];
+    [self setUpdater: [[[BackgroundUpdater alloc] initWithMinimapView:self andOperationQueue:queue] autorelease]];
     [self setWindowController:controller];
   }
   return self;
@@ -247,20 +247,11 @@ viewableRangeScaling, dirty, minimapLinesStart, gutterSize, visiblePartOfTextVie
       // will select all lines correctly, but does not work in "soft wrap" mode, because
       // "absoluteLineIdx" will not really be the absolute line (wrapping can not be  
       // taken into account in the calculation)
-      if (mouseDownLineIdx != absoluteLineIdx)
-          [windowController selectFromLine:mouseDownLineIdx toLine:absoluteLineIdx];
-      else
-          [windowController scrollToLine:absoluteLineIdx];
+      [windowController scrollToLine:absoluteLineIdx];
     }
+    [self refresh];
 }
 
-- (void)mouseDown:(NSEvent *)theEvent
-{
-    NSPoint mouseLoc = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-    mouseDownLineIdx = [self absoluteLineIdxFromPoint:mouseLoc];
-    if (mouseDownLineIdx > [self numberOfLines])
-      mouseDownLineIdx = [self numberOfLines];
-}
 
 - (void)scrollWheel:(NSEvent *)theEvent
 {
@@ -345,7 +336,7 @@ viewableRangeScaling, dirty, minimapLinesStart, gutterSize, visiblePartOfTextVie
   [self updateVisiblePartOfTextView];
   visRectPosBeforeScrolling = -1;
   [self setNeedsDisplayInRect:[self visibleRect]];
-/*
+
   if (minimapIsScrollable) {
     NSTimer* old_timer = [self timer];
     if (old_timer != NULL && [old_timer isValid]) {
@@ -355,7 +346,7 @@ viewableRangeScaling, dirty, minimapLinesStart, gutterSize, visiblePartOfTextVie
     NSTimer* t = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(refresh) userInfo:nil repeats:NO];
     [self setTimer:t];
   }
-*/
+
 }
 
 - (void)setNewDocument

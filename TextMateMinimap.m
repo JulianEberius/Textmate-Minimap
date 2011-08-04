@@ -43,7 +43,7 @@ NSString* const explanationString2 = @"Explanation: based on a minimap with "
 
 @implementation TextmateMinimap
 
-@synthesize timer, theLock, iconImage, preferencesView, lastWindowController;
+@synthesize timer, theLock, iconImage, preferencesView, lastWindowController, isSwitchingTabs;
 
 static TextmateMinimap *sharedInstance = nil;
 

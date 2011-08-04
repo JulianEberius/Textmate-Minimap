@@ -30,7 +30,7 @@
 /*
  Takes a snapshot of the complete TextView, returning NSBitmapImageRep
  */
-- (NSRect) croppedBounds
+- (NSRect)croppedBounds
 {
     BOOL cropHorizontaly = [[NSUserDefaults standardUserDefaults] boolForKey:@"Minimap_cropMinimapHorizontaly"];
     NSRect croppedBounds = [self bounds];
@@ -47,7 +47,6 @@
     NSBitmapImageRep *imageRep = [self bitmapImageRepForCachingDisplayInRect:croppedBounds];
     [self cacheDisplayInRect:croppedBounds toBitmapImageRep:imageRep];
     [[[TextmateMinimap instance] theLock] unlock];
-    
     return imageRep;
 }
 /*
@@ -60,7 +59,6 @@
     NSBitmapImageRep *imageRep = [self bitmapImageRepForCachingDisplayInRect:croppedBounds];
     [self cacheDisplayInRect:rect toBitmapImageRep:imageRep];
     [[[TextmateMinimap instance] theLock] unlock];
-    
     return imageRep;
 }
 /*
@@ -76,7 +74,6 @@
     [self drawRect: croppedBounds];
     [snapshot unlockFocus];
     [[[TextmateMinimap instance] theLock] unlock];
-    
     return [snapshot autorelease];
 }
 /*
@@ -87,10 +84,20 @@
     [[[TextmateMinimap instance] theLock] lock];
     NSImage *snapshot = [[NSImage alloc] initWithSize:
                          rect.size];
-    
-    
+
     // recursively draw the subview and sub-subviews
-    [snapshot lockFocus];
+    // when a draw is still beeing performed while the tab has changed,
+    // sometimes a rect of infinite height is requested
+    // which leads to an overflow here
+    @try {
+      [snapshot lockFocus];
+    }
+    @catch (NSException *exception) {
+        // just abort this draw
+        [[[TextmateMinimap instance] theLock] unlock];
+        return [snapshot autorelease];
+    }
+
     NSAffineTransform *transform = [NSAffineTransform transform];
     [transform translateXBy:-rect.origin.x yBy:-rect.origin.y];
     [transform concat];
@@ -98,11 +105,10 @@
     [transform invert];
     [transform concat];
     [snapshot unlockFocus];
-    
+
     // reset the transform to get back a clean graphic contexts for the rest of the drawing
-    
+
     [[[TextmateMinimap instance] theLock] unlock];
-    
     return [snapshot autorelease];
 }
 
@@ -187,11 +193,23 @@
 #pragma mark other_swizzled_events
 - (void)MM_selectTab:(id)sender
 {
-//    [[[TextmateMinimap instance] theLock] lock];
-    [[self getMinimap] setNewDocument];
-    [self MM_selectTab:sender];
-  //  [[[TextmateMinimap instance] theLock] unlock];
-    [self refreshMinimap];
+    // using markhouts updated version of project-plus can lead to recursive
+    // calls to selectTab, in which case this would deadlock
+
+    // if we already own the lock, do not reaquire it
+    if ([[TextmateMinimap instance] isSwitchingTabs]) {
+        [[self getMinimap] setNewDocument];
+        [self MM_selectTab:sender];
+    } else {
+        // we are currently not switching tabs, acquire draw-lock
+        [[[TextmateMinimap instance] theLock] lock];
+        [[TextmateMinimap instance] setIsSwitchingTabs:YES];
+        [[self getMinimap] setNewDocument];
+        [self MM_selectTab:sender];
+        [[TextmateMinimap instance] setIsSwitchingTabs:NO];
+        [[[TextmateMinimap instance] theLock] unlock];
+        [self refreshMinimap];
+    }
 }
 
 - (void)MM_mouseDown:(NSEvent *)theEvent
@@ -203,14 +221,14 @@
 - (void)MM_mouseUp:(NSEvent *)theEvent
 {
     [self MM_mouseUp:theEvent];
-    
+
     // we update the complete minimap if the scrollbar moved during an operation
     // that's basically a guess though ("if the slceen moved, there was a big update")
     // mainly, it prevents complete redraws on simple clicks...
     float scrollbarPos = [self getScrollbarValue];
     if (scrollbarPos != [(NSNumber*)[self getIVar:@"scrollbar_pos"] floatValue])
         [[self getMinimap] setDirty:YES];
-    
+
     [self refreshMinimap];
 }
 
@@ -222,7 +240,7 @@
     if (old_value != [minimap numberOfLines]) {
         [self saveValue:[NSNumber numberWithBool:YES] toIvar:@"numLines_changed"];
     }
-    
+
     [self schedule:@selector(setDirtyIfMovedAndRefreshMinimap)];
 }
 
@@ -235,7 +253,7 @@
         int offset = [sender state] ? 56:40;
         NSDrawer* drawer = [wc getMinimapDrawer];
         MinimapView* mm = [wc getMinimapView];
-        
+
         [drawer setTrailingOffset:offset];
         [mm refresh];
         // do a complete redraw if the softWrapping was changed

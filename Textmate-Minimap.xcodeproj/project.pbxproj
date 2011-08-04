@@ -3,16 +3,16 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04147A3C13EAF42E00C36B8F /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04147A3A13EAF42E00C36B8F /* ShortcutRecorder.framework */; };
+		04147A3D13EAF42E00C36B8F /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04147A3B13EAF42E00C36B8F /* Sparkle.framework */; };
+		04147A3E13EAF65100C36B8F /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04147A3A13EAF42E00C36B8F /* ShortcutRecorder.framework */; };
+		04147A3F13EAF65100C36B8F /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 04147A3B13EAF42E00C36B8F /* Sparkle.framework */; };
 		0429C0FF111EFFDA0062C5AE /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 0429C0FD111EFFDA0062C5AE /* JRSwizzle.m */; };
 		0445E2C2113B545800461711 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0445E2C1113B545800461711 /* dsa_pub.pem */; };
-		045379821138180E0019F7BF /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045379811138180E0019F7BF /* ShortcutRecorder.framework */; };
-		04537B7F113828CB0019F7BF /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 045379811138180E0019F7BF /* ShortcutRecorder.framework */; };
-		045C835713CC9B2600C3F675 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045C835613CC9B2600C3F675 /* Sparkle.framework */; };
-		045C835913CC9D9000C3F675 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 045C835813CC9D9000C3F675 /* Sparkle.framework */; };
 		048D064611216B1C009F7865 /* TextMateMinimap.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D064511216B1C009F7865 /* TextMateMinimap.m */; };
 		048D065E11216C0F009F7865 /* MinimapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 048D065D11216C0F009F7865 /* MinimapView.m */; };
 		04A843DB1136972E002743B0 /* textmate-minimap.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 04A843DA1136972E002743B0 /* textmate-minimap.tiff */; };
@@ -40,23 +40,22 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				045C835913CC9D9000C3F675 /* Sparkle.framework in CopyFiles */,
-				04537B7F113828CB0019F7BF /* ShortcutRecorder.framework in CopyFiles */,
+				04147A3E13EAF65100C36B8F /* ShortcutRecorder.framework in CopyFiles */,
+				04147A3F13EAF65100C36B8F /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		04147A3A13EAF42E00C36B8F /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ShortcutRecorder.framework; path = Frameworks/ShortcutRecorder.framework; sourceTree = "<group>"; };
+		04147A3B13EAF42E00C36B8F /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Frameworks/Sparkle.framework; sourceTree = "<group>"; };
 		0429C0FC111EFFDA0062C5AE /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzle.h; sourceTree = "<group>"; };
 		0429C0FD111EFFDA0062C5AE /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
 		0429C0FE111EFFDA0062C5AE /* TextMate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMate.h; sourceTree = "<group>"; };
 		0445E2C1113B545800461711 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		044682CE11592AA000BE3D86 /* AsyncBGDrawOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncBGDrawOperation.h; sourceTree = "<group>"; };
 		0451552D11244E160097261D /* TextMateMinimap_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMateMinimap_Prefix.pch; sourceTree = "<group>"; };
-		045379811138180E0019F7BF /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ShortcutRecorder.framework; path = Frameworks/ShortcutRecorder.framework; sourceTree = "<group>"; };
-		045C835613CC9B2600C3F675 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Frameworks/Sparkle.framework; sourceTree = "<group>"; };
-		045C835813CC9D9000C3F675 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Frameworks/Sparkle.framework; sourceTree = "<group>"; };
 		048D064411216B1C009F7865 /* TextMateMinimap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMateMinimap.h; sourceTree = "<group>"; };
 		048D064511216B1C009F7865 /* TextMateMinimap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextMateMinimap.m; sourceTree = "<group>"; };
 		048D065C11216C0F009F7865 /* MinimapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MinimapView.h; sourceTree = "<group>"; };
@@ -99,8 +98,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
-				045379821138180E0019F7BF /* ShortcutRecorder.framework in Frameworks */,
-				045C835713CC9B2600C3F675 /* Sparkle.framework in Frameworks */,
+				04147A3C13EAF42E00C36B8F /* ShortcutRecorder.framework in Frameworks */,
+				04147A3D13EAF42E00C36B8F /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,7 +147,6 @@
 		089C166AFE841209C02AAC07 /* Clock */ = {
 			isa = PBXGroup;
 			children = (
-				045C835813CC9D9000C3F675 /* Sparkle.framework */,
 				04CC435B116A7CA600FC40F4 /* README.markdown */,
 				04B9A497112AF27F0082EF25 /* LICENSE.txt */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
@@ -193,6 +191,8 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				04147A3A13EAF42E00C36B8F /* ShortcutRecorder.framework */,
+				04147A3B13EAF42E00C36B8F /* Sparkle.framework */,
 				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
@@ -201,11 +201,9 @@
 		1058C7AEFEA557BF11CA2CBB /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				045C835613CC9B2600C3F675 /* Sparkle.framework */,
 				089C167FFE841241C02AAC07 /* AppKit.framework */,
 				D2F7E65807B2D6F200F64583 /* CoreData.framework */,
 				089C1672FE841209C02AAC07 /* Foundation.framework */,
-				045379811138180E0019F7BF /* ShortcutRecorder.framework */,
 			);
 			name = "Other Frameworks";
 			sourceTree = "<group>";
@@ -257,8 +255,11 @@
 /* Begin PBXProject section */
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0410;
+			};
 			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "Textmate-Minimap" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -346,8 +347,7 @@
 		1DEB913B08733D840010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -360,6 +360,7 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_5)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_6)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_7)",
+					"\"$(SRCROOT)/Frameworks\"",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/Frameworks\"";
@@ -369,7 +370,6 @@
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_6 = "\"$(SRCROOT)/Frameworks\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_7 = "\"$(SRCROOT)/Frameworks\"";
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -389,16 +389,10 @@
 		1DEB913C08733D840010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_4)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_5)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_6)",
+					"\"$(SRCROOT)/Frameworks\"",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/Frameworks\"";
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)\"";
@@ -428,8 +422,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
-				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
 			};
 			name = Debug;
 		};
@@ -439,8 +432,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
-				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
 			};
 			name = Release;
 		};
