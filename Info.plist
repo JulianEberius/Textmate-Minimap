@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleShortVersionString</key>
-	<string>0.72</string>
+	<string>0.73</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
@@ -19,7 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleVersion</key>
-	<string>0.72</string>
+	<string>0.73</string>
 	<key>NSPrincipalClass</key>
 	<string>TextmateMinimap</string>
 	<key>SUPublicDSAKeyFile</key>
