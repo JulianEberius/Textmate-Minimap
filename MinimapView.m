@@ -221,13 +221,12 @@ viewableRangeScaling, dirty, minimapLinesStart, gutterSize, visiblePartOfTextVie
   float drawToScaling = drawTo.size.height / bounds.size.height;
   NSRect visibleHighlightRect = NSMakeRect(0,
                        visRectPos*drawToScaling,
-                       drawTo.size.width-1,
+                       drawTo.size.width,
                        visRectHeight*drawToScaling);
 
   [NSGraphicsContext saveGraphicsState];
-  [[NSColor colorWithCalibratedRed:0.549 green:0.756 blue:1 alpha:0.9] set];
-  [NSBezierPath setDefaultLineWidth:1];
-  [NSBezierPath strokeRect:visibleHighlightRect];
+  [[NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:0.28] set];
+  [NSBezierPath fillRect:visibleHighlightRect];
   [NSGraphicsContext restoreGraphicsState];
 }
 

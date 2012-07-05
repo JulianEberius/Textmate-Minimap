@@ -4,3 +4,5 @@ build/
 *.tmproj
 *.tm_build_errors
 *.TM_Completions.txt.gz
+Textmate-Minimap.xcodeproj/project.xcworkspace/xcuserdata/*.xcuserdatad
+Textmate-Minimap.xcodeproj/xcuserdata/*.xcuserdatad/
